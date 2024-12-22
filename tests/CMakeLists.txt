@@ -1,0 +1,49 @@
+cmake_minimum_required(VERSION 3.28.1)
+set(TESTS_NAME gokutests)
+project(${TESTS_NAME})
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")
+
+# Use google test for unit tests
+include(FetchContent)
+
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
+include_directories((BEFORE "../debug/_deps/googletest-src/googletest/include/gtest"))
+include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soul")
+
+set(SOURCES_TEST 
+    logger_test.cpp
+    datetime_test.cpp
+)
+
+# Testing with google test
+enable_testing()
+add_executable(${TESTS_NAME} ${SOURCES_TEST})
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message("Building in Debug mode")
+    target_compile_definitions(${TESTS_NAME} PRIVATE DEBUG_MODE)
+    target_compile_options(${TESTS_NAME} PRIVATE -g -O0)
+    link_directories("/Users/soulseeker/Projects/GitHub/Goku/debug/soul")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    message("Building in Release mode")
+    target_compile_options(${TESTS_NAME} PRIVATE -O3)  # Example flags for GCC/Clang
+    link_directories("/Users/soulseeker/Projects/GitHub/Goku/release/soul")
+endif()
+
+target_link_libraries(${TESTS_NAME} GTest::gtest_main libsoul)
+
+include(GoogleTest)
+gtest_discover_tests(${TESTS_NAME})
