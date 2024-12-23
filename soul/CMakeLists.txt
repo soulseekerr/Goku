@@ -19,6 +19,7 @@ include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soul")
 set(SOURCES 
     core/datetime.cpp
     core/logger.cpp
+    ecs/entity.cpp
 )
 
 add_library(libfmt SHARED IMPORTED)

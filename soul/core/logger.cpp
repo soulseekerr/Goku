@@ -1,4 +1,7 @@
 
+#include "time_elapsed.h"
+#include "vector2.h"
+
 #include "logger.h"
 #include "datetime.h"
 

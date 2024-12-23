@@ -26,6 +26,8 @@ include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soul")
 set(SOURCES_TEST 
     logger_test.cpp
     datetime_test.cpp
+    entity_test.cpp
+    time_elapsed_test.cpp
 )
 
 # Testing with google test
