@@ -5,31 +5,32 @@
 using namespace soul;
 
 void Sprite2d::loadTexture(
-    const std::string& p_file_path, 
-    const soul::Vector2f& p_scale, 
-    bool is_smooth) {
+    const std::string& filePath, 
+    const soul::Vector2f& scale, 
+    bool isSmooth) {
 
     auto& mgr = AssetManager::getInstance();
-    _texture = mgr.addTexture(std::format("TEX_{}", _name), p_file_path, is_smooth);
+    _texture = mgr.addTexture(std::format("TEX_{}", _name), filePath, isSmooth);
     _sprite.setTexture(_texture->getTexture());
-    _scale = p_scale;
-    _sprite.setScale(_scale.x, _scale.y);
+
+    this->scale = scale;
+    _sprite.setScale(this->scale.x, this->scale.y);
 
     // sf::FloatRect spriteSize = sprite.getGlobalBounds();
     // sprite.setOrigin(spriteSize.width/2., spriteSize.height/2.);
 }
 
 void Sprite2d::loadTextureImageFilter(
-    const std::string& p_file_path, 
-    const soul::Vector2f& p_scale, 
-    bool is_smooth, 
-    soul::Color backgroundColor) {
+    const std::string& filePath, 
+    const soul::Vector2f& scale, 
+    bool isSmooth, 
+    soul::Color bgColor) {
 
-    _texture = AssetManager::getInstance().addTextureImageFilter(std::format("TEX_{}", _name), p_file_path, is_smooth, backgroundColor);
+    _texture = AssetManager::getInstance().addTextureImageFilter(std::format("TEX_{}", _name), filePath, isSmooth, bgColor);
     _sprite.setTexture(_texture->getTexture());
 
-    _scale = p_scale;
-    _sprite.setScale(_scale.x, _scale.y);
+    this->scale = scale;
+    _sprite.setScale(this->scale.x, this->scale.y);
 
     // sf::FloatRect spriteSize = sprite.getGlobalBounds();
     // sprite.setOrigin(spriteSize.width/2., spriteSize.height/2.);
@@ -44,7 +45,7 @@ void Sprite2d::setScale(int fx, int fy) {
 }
 
 void Sprite2d::setScaleFactor(int fx, int fy) {
-    _sprite.setScale(fx*_scale.x, fy*_scale.y);
+    _sprite.setScale(fx*scale.x, fy*scale.y);
 }
 
 void Sprite2d::setPosition(float x, float y) {

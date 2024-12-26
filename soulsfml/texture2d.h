@@ -39,18 +39,18 @@ public:
 
     explicit Texture2d(
         const std::string& name, 
-        const std::string& pathFile, 
+        const std::string& filePath, 
         bool isSmooth=true);
 
     virtual ~Texture2d();
 
     sf::Texture& getTexture();
 
-    Response loadTexture(const std::string& p_pathfile);
+    Response loadTexture(const std::string& filePath);
 
     Response loadTextureFromImage(
-        const std::string& p_pathfile, 
-        const soul::Color& backgroundColor);
+        const std::string& filePath, 
+        const soul::Color& bgColor);
 
     // Helper function to check if two colors are "close enough" with a tolerance
     bool colorsAreClose(
@@ -59,8 +59,8 @@ public:
         int tolerance);
 
     void makeTransparent(
-        soul::Image &image, 
-        const soul::Color& backgroundColor, 
+        soul::Image& image, 
+        const soul::Color& bgColor, 
         int tolerance);
 };
 

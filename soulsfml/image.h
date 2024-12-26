@@ -9,7 +9,7 @@ namespace soul {
 
 class Image {
 private:
-    sf::Image _image = {};
+    sf::Image _image;
 
 public:
     Image() {}
@@ -20,14 +20,13 @@ public:
     }
 
     Response loadFromFile(const std::string& pathFile) {
-        sf::Image image;
-        if (!image.loadFromFile(pathFile.c_str())) {
+        if (!_image.loadFromFile(pathFile.c_str())) {
             return Response(Status::ERROR, "Error while loading image for the texture");
         }
         return Response(Status::OK, "Image is loaded");
     }
 
-    sf::Vector2u getSize() {
+    const sf::Vector2u getSize() const {
         return _image.getSize();
     }
 

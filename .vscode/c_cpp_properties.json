@@ -8,7 +8,9 @@
                 "${workspaceFolder}/soul/core",
                 "${workspaceFolder}/soul/ecs",
                 "${workspaceFolder}/debug/_deps/googletest-src/googletest/include",
-                "${workspaceFolder}/debug/_deps/sfml-src/include"
+                "${workspaceFolder}/debug/_deps/sfml-src/include",
+                "${workspaceFolder}",
+                "${workspaceFolder}/soulsfml"
             ],
             "defines": [],
             "macFrameworkPath": [

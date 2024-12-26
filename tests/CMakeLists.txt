@@ -22,12 +22,20 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 include_directories((BEFORE "../debug/_deps/googletest-src/googletest/include/gtest"))
 include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soul")
+include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soulsfml")
+
+include_directories(BEFORE "../debug/_deps/sfml-src/include")
+include_directories(BEFORE "../debug/_deps/imgui-src/include")
+include_directories(BEFORE "../debug/_deps/imgui-src")
+include_directories(BEFORE "../debug/_deps/imgui-sfml-src")
 
 set(SOURCES_TEST 
     logger_test.cpp
     datetime_test.cpp
     entity_test.cpp
     time_elapsed_test.cpp
+    texture_test.cpp
+    sprite_test.cpp
 )
 
 # Testing with google test
@@ -45,7 +53,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     link_directories("/Users/soulseeker/Projects/GitHub/Goku/release/soul")
 endif()
 
-target_link_libraries(${TESTS_NAME} GTest::gtest_main libsoul)
+target_link_libraries(${TESTS_NAME} GTest::gtest_main libsoul libsoulsfml sfml-system sfml-window sfml-graphics)
 
 include(GoogleTest)
 gtest_discover_tests(${TESTS_NAME})
