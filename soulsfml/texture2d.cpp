@@ -24,19 +24,25 @@ Response Texture2d::loadTexture(const std::string& p_pathfile) {
 }
 
 // Helper function to check if two colors are "close enough" with a tolerance
-bool Texture2d::colorsAreClose(const sf::Color& color1, const sf::Color& color2, int tolerance) {
+bool Texture2d::colorsAreClose(const soul::Color& color1, const soul::Color& color2, int tolerance) {
     return std::abs(color1.r - color2.r) <= tolerance &&
         std::abs(color1.g - color2.g) <= tolerance &&
         std::abs(color1.b - color2.b) <= tolerance;
 }
 
-void Texture2d::makeTransparent(sf::Image &image, sf::Color backgroundColor, int tolerance) {
+void Texture2d::makeTransparent(soul::Image &image, const soul::Color& backgroundColor, int tolerance) {
     sf::Vector2u imageSize = image.getSize();
     for (unsigned int x = 0; x < imageSize.x; ++x) {
         for (unsigned int y = 0; y < imageSize.y; ++y) {
-            if (image.getPixel(x, y) == backgroundColor) {
+            
+            sf::Color color1 = image.getPixel(x, y);
+            soul::Color scolor1 = soul::Color(color1.r, color1.g, color1.b, color1.a);
+
+            if (scolor1.r == backgroundColor.r && scolor1.g == backgroundColor.g && scolor1.b == backgroundColor.b) {
+                
                 // std::cout << "set to transparent ()" << x << "," << y << ") " << endl;
-                if (colorsAreClose(image.getPixel(x, y), backgroundColor, tolerance)) {
+                if (colorsAreClose(scolor1, backgroundColor, tolerance)) {
+        
                     image.setPixel(x, y, sf::Color(0, 0, 0, 0));  // Set to transparent
                 }
             }
@@ -44,22 +50,23 @@ void Texture2d::makeTransparent(sf::Image &image, sf::Color backgroundColor, int
     }
 }
 
-Response Texture2d::loadTextureFromImage(const string& p_pathfile, sf::Color backgroundColor) {
+Response Texture2d::loadTextureFromImage(const std::string& p_pathfile, const soul::Color& backgroundColor) {
     const fs::path fsPathFile {p_pathfile};
 
     if (!fs::exists(fsPathFile)) 
         return Response(Status::ERROR, std::format("Could not find texture file {}", p_pathfile));
         
-    sf::Image image;
-    if (!image.loadFromFile(p_pathfile.c_str())) {
-        return Response(Status::ERROR, std::format("Error while loading image {} for the texture", p_pathfile));
+    soul::Image image;
+    auto resp = image.loadFromFile(p_pathfile.c_str());
+    if (resp.status == Status::ERROR) {
+        return resp;
     }
 
     // Assuming the purple color is RGB(128, 0, 128) => sf::Color(128, 0, 128)
     std::cout << "make transparent " << endl;
     makeTransparent(image, backgroundColor, 5);
 
-    if (!texture.loadFromImage(image))
+    if (!texture.loadFromImage(image.getImage()))
         return Response(Status::ERROR, std::format("Error while loading file from image {} for the texture", p_pathfile));
 
     texture.setSmooth(_isSmooth);

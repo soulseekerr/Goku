@@ -20,10 +20,10 @@ void Sprite2d::loadTexture(
 }
 
 void Sprite2d::loadTextureImageFilter(
-    const string& p_file_path, 
-    const Vector2f& p_scale, 
+    const std::string& p_file_path, 
+    const soul::Vector2f& p_scale, 
     bool is_smooth, 
-    sf::Color backgroundColor) {
+    soul::Color backgroundColor) {
 
     _texture = AssetManager::getInstance().addTextureImageFilter(std::format("TEX_{}", _name), p_file_path, is_smooth, backgroundColor);
     _sprite.setTexture(_texture->getTexture());
@@ -35,7 +35,7 @@ void Sprite2d::loadTextureImageFilter(
     // sprite.setOrigin(spriteSize.width/2., spriteSize.height/2.);
 }
 
-void Sprite2d::setTextureRect(const Vector2i& pos, const Vector2i& size) {
+void Sprite2d::setTextureRect(const soul::Vector2i& pos, const soul::Vector2i& size) {
     _sprite.setTextureRect(sf::IntRect(pos.x, pos.y, size.x, size.y));
 }
 

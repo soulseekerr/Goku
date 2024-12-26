@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "core/vector2.h"
+#include "color.h"
 #include "texture2d.h"
 
 #include <SFML/Graphics.hpp>
@@ -26,7 +27,7 @@ public:
 
 struct sSpriteData {
     // Filename for the image file
-    std::string spriteFilename;
+    std::string filename;
     // Scaling the sprite from the image
     soul::Vector2f spriteScale;
     // Initial position in the Sprite sheet
@@ -38,7 +39,7 @@ struct sSpriteData {
     // Filter Transparency By Color
     bool enableColorFilter {false};
     // Filtering Color
-    sf::Color filterColor;
+    soul::Color filterColor;
 };
 
 class Sprite2d {
@@ -60,21 +61,15 @@ public:
     virtual ~Sprite2d() {}
 
     sf::Sprite& getSprite() { return _sprite; }
+    soul::Texture2d& getTextureRef() { return *_texture.get(); }
+    soul::Vector2f& getScale() { return _scale; }
 
-    Texture2d& getTextureRef() { return *_texture.get(); }
+    void loadTexture(const std::string& p_file_path, const soul::Vector2f& p_scale, bool is_smooth);
+    void loadTextureImageFilter(const std::string& p_file_path, const soul::Vector2f& p_scale, bool is_smooth, soul::Color backgroundColor);
 
-    Vector2f& getScale() { return _scale; }
-
-    void loadTexture(const std::string& p_file_path, const Vector2f& p_scale, bool is_smooth);
-
-    void loadTextureImageFilter(const std::string& p_file_path, const Vector2f& p_scale, bool is_smooth, sf::Color backgroundColor);
-
-    void setTextureRect(const Vector2i& pos, const Vector2i& size);
-
+    void setTextureRect(const soul::Vector2i& pos, const soul::Vector2i& size);
     void setScale(int fx, int fy);
-
     void setScaleFactor(int fx, int fy);
-
     void setPosition(float x, float y);
 };
 

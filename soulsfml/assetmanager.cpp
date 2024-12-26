@@ -1,16 +1,17 @@
 
 #include "assetmanager.h"
+#include "color.h"
 
 using namespace soul;
 
-shared_ptr<Texture2d>& AssetManager::getTexture(const string& name) {
-    map<string, shared_ptr<Texture2d>>::iterator it = mapTextures.find(name);
+shared_ptr<Texture2d>& AssetManager::getTexture(const std::string& name) {
+    map<std::string, std::shared_ptr<Texture2d>>::iterator it = mapTextures.find(name);
     if (it == mapTextures.end())
         throw std::invalid_argument("Could not find texture with name " + name);
     return it->second;
 }
 
-shared_ptr<Texture2d>& AssetManager::addTexture(const string& name, const string& file_path, bool is_smooth) {
+shared_ptr<Texture2d>& AssetManager::addTexture(const std::string& name, const std::string& file_path, bool is_smooth) {
     // Texture exists
     auto& logManager = LoggerManager::getInstance();
 
@@ -23,7 +24,7 @@ shared_ptr<Texture2d>& AssetManager::addTexture(const string& name, const string
 
     // Create texture in manager
     logManager.log("Create New Texture with name {}", name);
-    auto newTexture = make_shared<Texture2d>(name, file_path, is_smooth);
+    auto newTexture = std::make_shared<Texture2d>(name, file_path, is_smooth);
 
     auto resp = newTexture->loadTexture(file_path);
     if (resp.status == Status::ERROR) throw TextureException(resp.msg.c_str());
@@ -34,7 +35,7 @@ shared_ptr<Texture2d>& AssetManager::addTexture(const string& name, const string
     return getTexture(name);
 }
 
-shared_ptr<Texture2d>& AssetManager::addTextureImageFilter(const string& name, const string& file_path, bool is_smooth, sf::Color backgroundColor) {
+std::shared_ptr<Texture2d>& AssetManager::addTextureImageFilter(const std::string& name, const std::string& file_path, bool is_smooth, const soul::Color& backgroundColor) {
     // Texture exists
     auto& logManager = LoggerManager::getInstance();
 
@@ -47,7 +48,7 @@ shared_ptr<Texture2d>& AssetManager::addTextureImageFilter(const string& name, c
 
     // Create texture in manager
     logManager.log("Create New Texture from Image with name {}", name);
-    auto newTexture = make_shared<Texture2d>(name, file_path, is_smooth);
+    auto newTexture = std::make_shared<Texture2d>(name, file_path, is_smooth);
 
     auto resp = newTexture->loadTextureFromImage(file_path, backgroundColor);
     if (resp.status == Status::ERROR) throw TextureException(resp.msg.c_str());
