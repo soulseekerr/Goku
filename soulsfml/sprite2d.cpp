@@ -40,7 +40,7 @@ void Sprite2d::setTextureRect(const soul::Vector2i& pos, const soul::Vector2i& s
     _sprite.setTextureRect(sf::IntRect(pos.x, pos.y, size.x, size.y));
 }
 
-void Sprite2d::setScale(int fx, int fy) {
+void Sprite2d::setScale(float fx, float fy) {
     _sprite.setScale(fx, fy);
 }
 

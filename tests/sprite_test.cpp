@@ -55,10 +55,25 @@ TEST(SpriteTest, BasicAssertions) {
 
     auto& mgr = soul::AssetManager::getInstance();
 
+    std::cout << "Textures: " << mgr.getCountTextures() << std::endl;
     EXPECT_EQ(mgr.getCountTextures(), 2);
-    auto& t = mgr.getTexture("TEX_PlayerSprite");
-    auto& t2 = mgr.getTexture("TEX_EnemySprite");
 
-    EXPECT_NE(t, nullptr);
-    EXPECT_NE(t2, nullptr);
+    std::shared_ptr<soul::Texture2d> tex1, tex2;
+    auto hasError3 = false;
+    try {
+        tex1 = mgr.getTexture("TEX_PlayerSprite");
+        tex2 = mgr.getTexture("TEX_EnemySprite");
+    }
+    catch(std::invalid_argument& e) {
+        std::cout << "Error: " << e.what() << std::endl;
+        hasError3 = true;
+    }
+
+    EXPECT_EQ(hasError3, false);
+    if (!hasError3) {
+        std::cout << "tex1: " << tex1->tag() << tex1->ID() << std::endl;
+        std::cout << "tex2: " << tex2->tag() << tex2->ID() << std::endl;
+        EXPECT_EQ(tex1->tag(), "TEX_PlayerSprite");
+        EXPECT_EQ(tex2->tag(), "TEX_EnemySprite");
+    }
 }

@@ -34,7 +34,7 @@ public:
 
 private:
     HashSet_t<std::string, StringHash> textureKeys;
-    map<std::string, std::shared_ptr<Texture2d>> mapTextures;
+    std::map<std::string, std::shared_ptr<Texture2d>> mapTextures;
 };
 
 } // namespace soul

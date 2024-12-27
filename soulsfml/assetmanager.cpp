@@ -4,14 +4,14 @@
 
 using namespace soul;
 
-shared_ptr<Texture2d>& AssetManager::getTexture(const std::string& name) {
-    map<std::string, std::shared_ptr<Texture2d>>::iterator it = mapTextures.find(name);
+std::shared_ptr<Texture2d>& AssetManager::getTexture(const std::string& name) {
+    std::map<std::string, std::shared_ptr<Texture2d>>::iterator it = mapTextures.find(name);
     if (it == mapTextures.end())
         throw std::invalid_argument("Could not find texture with name " + name);
     return it->second;
 }
 
-shared_ptr<Texture2d>& AssetManager::addTexture(const std::string& name, const std::string& file_path, bool is_smooth) {
+std::shared_ptr<Texture2d>& AssetManager::addTexture(const std::string& name, const std::string& file_path, bool is_smooth) {
     // Texture exists
     auto& logManager = LoggerManager::getInstance();
 
