@@ -40,7 +40,9 @@ set(SOURCES
     gamewindow.cpp
     texture2d.cpp
     sprite2d.cpp
+    spriteanimation.cpp
     assetmanager.cpp
+    shader.cpp
 )
 
 add_library(${MY_LIB_NAME} SHARED ${SOURCES})
