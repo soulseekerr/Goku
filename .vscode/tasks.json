@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "CMake Build Debug",
+        "type": "shell",
+        "command": "cmake --build build --config Debug",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": [
+          "$gcc"
+        ]
+      },
+      {
+        "type": "cmake",
+        "label": "CMake: build",
+        "command": "build",
+        "targets": [
+          "all"
+        ],
+        "preset": "${command:cmake.activeBuildPresetName}",
+        "group": "build",
+        "problemMatcher": [],
+        "detail": "CMake template build task"
+      },
+      {
+        "label": "build",
+        "type": "shell",
+        "command": "cmake",
+        "args": [
+          "--build",
+          "${workspaceFolder}/debug"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": ["$gcc"],
+        "detail": "Generated task for building with CMake"
+      }
+    ]
+}
+  

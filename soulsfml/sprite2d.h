@@ -43,6 +43,14 @@ struct sSpriteData {
 
 class Scene;
 
+
+struct sTransformScalars {
+    float moveSpeed {0.0f};
+    float gravityForce {0.0f};
+    float jumpForce {0.0f};
+    int direction {1};
+};
+
 class Sprite2d {
 private:
     // Sprite name
@@ -58,6 +66,10 @@ public:
     soul::Vector2f position;
     // Scale of the sprite
     soul::Vector2f scale;
+    // Speed of the sprite
+    soul::Vector2f velocity;
+
+    sTransformScalars transform;
 
     Sprite2d() = delete;
     explicit Sprite2d(const std::string& name) : _name(name){}
@@ -74,6 +86,7 @@ public:
     void setScale(float fx, float fy);
     void setScaleFactor(int fx, int fy);
     void setPosition(float x, float y);
+    void setVelocity(float x, float y);
 };
 
 } // namespace soul

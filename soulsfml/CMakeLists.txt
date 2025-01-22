@@ -43,6 +43,8 @@ set(SOURCES
     spriteanimation.cpp
     assetmanager.cpp
     shader.cpp
+    animable.cpp
+    state.cpp
 )
 
 add_library(${MY_LIB_NAME} SHARED ${SOURCES})

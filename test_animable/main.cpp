@@ -1,7 +1,5 @@
 
 #include "core/logger.h"
-#include "sprite2d.h"
-#include "spriteanimation.h"
 #include "assetmanager.h"
 #include "animable.h"
 
@@ -9,59 +7,19 @@
 
 #include <SFML/Graphics.hpp>
 
-#define DEBUGMODE
-
-#ifdef DEBUGMODE
-#define DEFINED_LOG_LEVEL soul::LOG_LEVEL::LOG_DEBUG
-#else
-#define DEFINED_LOG_LEVEL soul::LOG_LEVEL::LOG_INFO
-#endif
 
 int main(int argc, char** argv) {
     auto& logManager = soul::LoggerManager::getInstance();
-    logManager.addLogger(make_shared<soul::LoggerConsole>(DEFINED_LOG_LEVEL));
+    logManager.addLogger(make_shared<soul::LoggerConsole>(soul::LOG_LEVEL::LOG_DEBUG));
     logManager.log("Starting Sprite Animation Test");
 
     // Create a window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Sprite Example");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Animable Objects");
     window.setFramerateLimit(60);
-
-    std::shared_ptr<soul::Sprite2d> sprite;
-    std::shared_ptr<soul::AnimationSet> animations;
-    shared_ptr<soul::SpriteAnimation> animationIdle;
+    
 
     auto name = "PlayerSprite";
     auto filePath = "/Users/soulseeker/Projects/GitHub/gokugame/textures/Kid Goku.png";
-    auto isSmooth = true;
-
-    sprite = std::make_shared<soul::Sprite2d>(name);
-    animations = std::make_shared<soul::AnimationSet>(sprite);
-    animationIdle = std::make_shared<soul::SpriteAnimation>();
-
-    try {
-        sprite->loadTexture(
-            filePath, 
-            soul::Vector2f(1.0f, 1.0f), 
-            isSmooth);
-    }
-    catch(soul::TextureException& e) {
-       std::cout << "Error: " << e.what() << std::endl;
-       exit(-1);
-    }
-
-    // Set the initial position of the sprite
-    sprite->setPosition(100.f, 50.f);
-    sprite->setScale(1.0f, 1.0f);
-    sprite->setTextureRect(soul::Vector2i(10, 128), soul::Vector2i(80, 102));
-
-    // Idle 2nd line
-    animationIdle->addFrame(10, 128, 80, 102, 0.25f);
-    animationIdle->addFrame(100, 128, 80, 102, 0.25f);
-    animationIdle->addFrame(190, 128, 80, 102, 0.25f);
-    animationIdle->addFrame(100, 128, 80, 102, 0.25f);
-
-    animations->addAnimation(soul::AnimationState::Idle, animationIdle);
-    animations->setAnimationState(soul::AnimationState::Idle);
 
     auto animable = std::make_shared<soul::Animable>(name);
 
@@ -90,9 +48,7 @@ int main(int argc, char** argv) {
     animationIdle2->addFrame(100, 128, 80, 102, 0.25f);
     animable->addAnimation(soul::AnimationState::Idle, animationIdle2);
 
-    // Get the sprite
-    auto& spritePtr = sprite->getSprite();
-    auto& spritePtr2 = animable->getSprite();
+    auto& spritePtr = animable->getSprite();
 
     auto lastTime = std::chrono::high_resolution_clock::now();
 
@@ -110,7 +66,7 @@ int main(int argc, char** argv) {
                 switch (event.key.code) {
 
                     case sf::Keyboard::Escape:  
-                        cout << "Exiting the game." << endl;
+                        cout << "Exiting." << endl;
                         window.close();
                         exit(0);
                     break;
@@ -125,14 +81,12 @@ int main(int argc, char** argv) {
 
         // Update the animation associated to the current movement or action
         animable->updateStates(dt);
-        animations->update(dt);
 
         // Clear the window
         window.clear(sf::Color::White);
 
         // Draw the sprite
         window.draw(spritePtr);
-        window.draw(spritePtr2);
 
         // Display what has been drawn
         window.display();

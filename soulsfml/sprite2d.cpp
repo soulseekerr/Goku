@@ -51,3 +51,8 @@ void Sprite2d::setScaleFactor(int fx, int fy) {
 void Sprite2d::setPosition(float x, float y) {
     _sprite.setPosition(x, y);
 }
+
+void Sprite2d::setVelocity(float x, float y) {
+    velocity.x = x;
+    velocity.y = y;
+}
