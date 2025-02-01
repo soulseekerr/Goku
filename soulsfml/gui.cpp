@@ -1,0 +1,144 @@
+#include "gui.h"
+#include "animable.h"
+
+#include <SFML/Graphics/RenderWindow.hpp>
+
+using namespace soul;
+
+void GuiDebugLog::render(GameWindow& gw) {
+
+    ImGui::SetNextWindowSize(ImVec2(400, 250), ImGuiCond_FirstUseEver);
+
+    // Actually call in the regular Log helper (which will Begin() into the same window as we just did)
+    if (!ImGui::Begin("DebugLog")) {
+        ImGui::End();
+        return;
+    }
+
+    // Options menu
+    if (ImGui::BeginPopup("Options")) {
+        ImGui::Checkbox("Auto-scroll", &AutoScroll);
+        ImGui::EndPopup();
+    }
+
+    // Main window
+    if (ImGui::Button("Options"))
+        ImGui::OpenPopup("Options");
+    ImGui::SameLine();
+    bool bt_clear = ImGui::Button("Clear");
+    ImGui::SameLine();
+    bool bt_copy = ImGui::Button("Copy");
+    ImGui::SameLine();
+    Filter.Draw("Filter", -100.0f);
+
+    ImGui::Separator();
+
+    if (ImGui::BeginChild("scrolling", ImVec2(0, 0), ImGuiChildFlags_None, ImGuiWindowFlags_HorizontalScrollbar)) {
+        if (bt_clear)
+            clear();
+        if (bt_copy)
+            ImGui::LogToClipboard();
+
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+        const char* buf = Buf.begin();
+        const char* buf_end = Buf.end();
+        if (Filter.IsActive()) {
+        //     // In this example we don't use the clipper when Filter is enabled.
+        //     // This is because we don't have random access to the result of our filter.
+        //     // A real application processing logs with ten of thousands of entries may want to store the result of
+        //     // search/filter.. especially if the filtering function is not trivial (e.g. reg-exp).
+            for (int line_no = 0; line_no < LineOffsets.Size; line_no++) {
+                const char* line_start = buf + LineOffsets[line_no];
+                const char* line_end = (line_no + 1 < LineOffsets.Size) ? (buf + LineOffsets[line_no + 1] - 1) : buf_end;
+                if (Filter.PassFilter(line_start, line_end))
+                    ImGui::TextUnformatted(line_start, line_end);
+            }
+        }
+        else {
+            // The simplest and easy way to display the entire buffer:
+            //   ImGui::TextUnformatted(buf_begin, buf_end);
+            // And it'll just work. TextUnformatted() has specialization for large blob of text and will fast-forward
+            // to skip non-visible lines. Here we instead demonstrate using the clipper to only process lines that are
+            // within the visible area.
+            // If you have tens of thousands of items and their processing cost is non-negligible, coarse clipping them
+            // on your side is recommended. Using ImGuiListClipper requires
+            // - A) random access into your data
+            // - B) items all being the  same height,
+            // both of which we can handle since we have an array pointing to the beginning of each line of text.
+            // When using the filter (in the block of code above) we don't have random access into the data to display
+            // anymore, which is why we don't use the clipper. Storing or skimming through the search result would make
+            // it possible (and would be recommended if you want to search through tens of thousands of entries).
+            ImGuiListClipper clipper;
+            clipper.Begin(LineOffsets.Size);
+            while (clipper.Step()) {
+                for (int line_no = clipper.DisplayStart; line_no < clipper.DisplayEnd; line_no++) {
+                    const char* line_start = buf + LineOffsets[line_no];
+                    const char* line_end = (line_no + 1 < LineOffsets.Size) ? (buf + LineOffsets[line_no + 1] - 1) : buf_end;
+                    ImGui::TextUnformatted(line_start, line_end);
+                }
+            }
+            clipper.End();
+        }
+        ImGui::PopStyleVar();
+
+        // Keep up at the bottom of the scroll region if we were already at the bottom at the beginning of the frame.
+        // Using a scrollbar or mouse-wheel will take away from the bottom edge.
+        if (AutoScroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+            ImGui::SetScrollHereY(1.0f);
+    }
+    ImGui::EndChild();
+    ImGui::End();
+}
+
+
+
+void GuiAnimableStates::init() {
+    tmp_pos_x = stats->getPosition().x;
+    tmp_pos_y = stats->getPosition().y;
+    tmp_jumpForce = stats->getTransform().initialVelocityY;
+    tmp_gravityForce = stats->getTransform().gravity;
+}
+
+void GuiAnimableStates::render(GameWindow& gw) {
+    
+    // ImGui::SetNextWindowPos(ImVec2(game.window.getSize().x - 300, game.window.getSize() + 50), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(300, 400), ImGuiCond_FirstUseEver);
+
+    ImGui::Begin("Player Stats");
+    
+    ImGui::InputInt("PosX", &tmp_pos_x);
+    ImGui::InputInt("PosY", &tmp_pos_y);
+    ImGui::InputInt("Jump Force", &tmp_jumpForce);
+    ImGui::InputInt("Gravity Force", &tmp_gravityForce);
+
+    if (ImGui::Button("Update")) {        
+        stats->setPosition(tmp_pos_x, tmp_pos_y);
+        // stats.etTransform().jumpForce = tmp_jumpForce;
+        // stats.getTransform().gravityForce = tmp_gravityForce;
+        // LoggerManager::getInstance().log("Player Position changed: {},{}", player.transform.pos.x, player.transform.pos.y);
+    }
+
+    ImGui::Text("Position : %f, %f", stats->getPosition().x, stats->getPosition().y);
+
+    auto scale = stats->getSprite().getScale();
+    // auto velocity = stats.getVelocity();
+    ImGui::Text("Sprite Scale x,y : %.0f, %.0f", scale.x, scale.y);
+
+    // ImGui::Text("Velocity x,y : %d, %d", velocity.x, velocity.y);
+    ImGui::Text("Jumping : %s", stats->input.is_jumping ? "Yes" : "No");
+    
+    ImGui::End();
+}
+
+
+LoggerGui::LoggerGui(const LOG_LEVEL level, shared_ptr<GuiDebugLog>& p_guiDebugLog)
+    : ILogger(level), guiDebugLog(p_guiDebugLog) {
+
+}
+
+LoggerGui::~LoggerGui() {}
+
+void LoggerGui::write(const LOG_LEVEL level, const std::string& s) {
+
+    guiDebugLog->addLog("%s\n", s.c_str());
+}

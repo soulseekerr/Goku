@@ -8,8 +8,13 @@ namespace soul {
 class Animable;
 class StateManager;
 class WalkState;
-// class JumpState;
+class JumpState;
 
+/**
+ * @brief Movement State of an Animable object
+ * MovementState is an abstract class that defines the interface for all states
+ *  defined for movements of an Animable object
+ */
 class MovementState {
 public:
     MovementState() = default;
@@ -23,12 +28,16 @@ public:
 
 protected:
     void translateX(Animable& a, float dt);
-    // void jumpY(Animable& a, float dt);
-    // bool landY(Animable& a, float dt);
+    void jumpY(Animable& a, float dt);
+    bool landY(Animable& a, float dt);
 
     soul::LoggerManager& logManager = soul::LoggerManager::getInstance();
 };
 
+/** 
+ * @brief StateManager of Animable objects
+ * StateManager is a class that manages all the states of an Animable object
+ */
 class StateManager {
 private:
     std::map<AnimationState, MovementState*> mapMovementStates;
@@ -67,23 +76,23 @@ public:
 
 private:
     WalkState* _walkStateRef;
-    // JumpState* _jumpStateRef;
+    JumpState* _jumpStateRef;
 };
 
-// class JumpState : public MovementState {
-// public:
-//     JumpState() = default;
+class JumpState : public MovementState {
+public:
+    JumpState() = default;
 
-//     void defineDependencies(StateManager& stateMgr) override;
+    void defineDependencies(StateManager& stateMgr) override;
 
-//     void handleInput(Animable& a) override;
-//     void update(Animable& a, float dt) override;
-//     void enter(Animable& a) override;
+    void handleInput(Animable& a) override;
+    void update(Animable& a, float dt) override;
+    void enter(Animable& a) override;
 
-// private:
-//     IdleState* _idleStateRef;
-//     WalkState* _walkStateRef;
-// };
+private:
+    IdleState* _idleStateRef;
+    WalkState* _walkStateRef;
+};
 
 class WalkState : public MovementState {
 public:
@@ -96,7 +105,7 @@ public:
     void enter(Animable& a) override;
 
 private:
-    // JumpState* _jumpStateRef;
+    JumpState* _jumpStateRef;
     IdleState* _idleStateRef;
 };
 

@@ -4,6 +4,8 @@
 #include "animable.h"
 #include "state.h"
 #include "core/utils.h"
+#include "gui.h"
+#include "gamewindow.h"
 
 #include <iostream>
 #include <thread>
@@ -17,20 +19,29 @@ int main(int argc, char** argv) {
     logManager.addLogger(make_shared<soul::LoggerConsole>(soul::LOG_LEVEL::LOG_DEBUG));
     logManager.log("Starting Sprite Animation Test");
 
+    // GUI for monitoring player states
+    std::shared_ptr<soul::GuiDebugLog> guiDebugLog;
+    guiDebugLog = make_shared<soul::GuiDebugLog>();
+
+    // Add Log ImGui window to show the logs
+    logManager.addLogger(make_shared<soul::LoggerGui>(soul::LOG_LEVEL::LOG_DEBUG, guiDebugLog));
+
     // Create a window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Animable Object States");
-    window.setFramerateLimit(60);
+    soul::GameWindow& gw = soul::GameWindow::getInstance();
+    gw.initialise("Goku Game: Animable Object States", 800, 600, false, 60);
+    // sf::RenderWindow window(sf::VideoMode(800, 600), "Animable Object States");
+    // window.setFramerateLimit(60);
 
     auto name = "PlayerSprite";
     auto filePath = "/Users/soulseeker/Projects/GitHub/gokugame/textures/Kid Goku.png";
 
     soul::StateManager stateManager;
     soul::IdleState* idleState = stateManager.registerMovement<soul::IdleState>(soul::AnimationState::Idle);
-    // soul::JumpState* jumpState = stateManager.registerMovement<soul::JumpState>(soul::AnimationState::Jump);
+    soul::JumpState* jumpState = stateManager.registerMovement<soul::JumpState>(soul::AnimationState::Jump);
     soul::WalkState* walkState = stateManager.registerMovement<soul::WalkState>(soul::AnimationState::Walk);
 
     idleState->defineDependencies(stateManager);
-    // jumpState->defineDependencies(stateManager);
+    jumpState->defineDependencies(stateManager);
     walkState->defineDependencies(stateManager);
 
     auto animable = std::make_shared<soul::Animable>(name);
@@ -40,19 +51,18 @@ int main(int argc, char** argv) {
         soul::Vector2f(1.2f, 1.2f), // Scaling the sprite from the image
         soul::Vector2i(10, 128), // Initial px position in the Sprite sheet
         soul::Vector2i(80, 102), // Initial px size in the Sprite sheet
-        soul::Vector2i(300, 300), // Coordinates px of screen as they are defined 0,0 from top left.
+        soul::Vector2i(300, 450), // Coordinates px of screen as they are defined 0,0 from top left.
         false, // Filter Transparency By Color
         soul::Color(0, 0, 0, 0) // Filtering Color
     };
 
-    auto windowPositionY = 300;
-
     soul::sTransformScalars scalars;
-    scalars.moveSpeed = 6.0f;
-    scalars.gravityForce = 0.0f;
-    scalars.jumpForce = 0.0f;
+    scalars.initialVelocityX = 6.0f;
+    scalars.gravity = 1700.0f;
+    scalars.initialVelocityY = -700.0f;
+    scalars.groundY = 450;
 
-    animable->load(windowPositionY, spriteData, scalars);
+    animable->load(spriteData, scalars);
     
     // Idle 2nd line
     auto animIdle = std::make_shared<soul::SpriteAnimation>();
@@ -68,18 +78,22 @@ int main(int argc, char** argv) {
     animable->addAnimation(soul::AnimationState::Walk, animWalk);
 
     // Jump 6th line
-    // auto animJump = std::make_shared<soul::SpriteAnimation>();
-    // animJump->addFrame(190, 550, 80, 115, 0.10f);
-    // animJump->addFrame(190, 550, 80, 115, 0.10f);
-    // animJump->addFrame(190, 550, 80, 115, 0.10f);
-    // animJump->addFrame(190, 550, 80, 115, 0.10f);
-    // animJump->addFrame(460, 550, 80, 115, 0.10f);
-    // animJump->addFrame(460, 550, 80, 115, 0.10f);
-    // animJump->addFrame(190, 550, 80, 115, 0.10f);
-    // animable->addAnimation(soul::AnimationState::Jump, animJump);
+    auto animJump = std::make_shared<soul::SpriteAnimation>();
+    animJump->addFrame(190, 550, 80, 115, 0.10f);
+    animJump->addFrame(190, 550, 80, 115, 0.10f);
+    animJump->addFrame(190, 550, 80, 115, 0.10f);
+    animJump->addFrame(190, 550, 80, 115, 0.10f);
+    animJump->addFrame(460, 550, 80, 115, 0.10f);
+    animJump->addFrame(460, 550, 80, 115, 0.10f);
+    animJump->addFrame(190, 550, 80, 115, 0.10f);
+    animable->addAnimation(soul::AnimationState::Jump, animJump);
 
     animable->setAnimationState(soul::AnimationState::Idle);
     animable->setMovementState(*stateManager.getMovementState<soul::IdleState>(soul::AnimationState::Idle));
+
+    animable->resetPosition();
+
+    std::shared_ptr<soul::GuiAnimableStates> guiStates = make_shared<soul::GuiAnimableStates>(animable);
 
     sf::Clock deltaClock;
     auto lastTime = std::chrono::high_resolution_clock::now();
@@ -94,16 +108,19 @@ int main(int argc, char** argv) {
     text.setFillColor(sf::Color(20, 25, 25));
     text.setCharacterSize(20);
    
-    auto text_y = window.getSize().y/20 - (float)text.getCharacterSize();
-    text.setPosition(window.getSize().x - 150, text_y);
+    auto text_y = gw.window.getSize().y/20 - (float)text.getCharacterSize();
+    text.setPosition(gw.window.getSize().x - 150, text_y);
 
     // Main game loop
-    while (window.isOpen()) {
+    while (gw.window.isOpen()) {
         // Handle events
         sf::Event event;
-        while (window.pollEvent(event)) {
+        while (gw.window.pollEvent(event)) {
+
+            ImGui::SFML::ProcessEvent(gw.window, event);
+
             if (event.type == sf::Event::Closed) {
-                window.close();
+                gw.window.close();
             }
 
             if (event.type == sf::Event::KeyPressed) {
@@ -112,14 +129,14 @@ int main(int argc, char** argv) {
 
                     case sf::Keyboard::Escape:  
                         cout << "Exiting." << endl;
-                        window.close();
+                        gw.window.close();
                         exit(0);
                     break;
                     
                     case sf::Keyboard::Left:  animable->input.left = true; break;
                     case sf::Keyboard::Right: animable->input.right = true; break;
-                    // case sf::Keyboard::Up: animable->input.up = true; break;
-                    // case sf::Keyboard::Down: animable->input.down = true; break;
+                    case sf::Keyboard::Up: animable->input.up = true; break;
+                    case sf::Keyboard::Down: animable->input.down = true; break;
                     
                     default: break;
                 }
@@ -131,8 +148,8 @@ int main(int argc, char** argv) {
 
                     case sf::Keyboard::Left:  animable->input.left = false; break;
                     case sf::Keyboard::Right: animable->input.right = false; break;
-                    // case sf::Keyboard::Up: animable->input.up = false; break;
-                    // case sf::Keyboard::Down: animable->input.down = false; break;
+                    case sf::Keyboard::Up: animable->input.up = false; break;
+                    case sf::Keyboard::Down: animable->input.down = false; break;
 
                     default: break;
                 }
@@ -143,6 +160,8 @@ int main(int argc, char** argv) {
         float dt = std::chrono::duration<float>(currentTime - lastTime).count();
         lastTime = currentTime;
 
+        ImGui::SFML::Update(gw.window, sf::seconds(dt));
+
         // auto localdt = deltaClock.getElapsedTime().asSeconds();
 
         // Hanlde Inputs in the Animable object
@@ -152,21 +171,27 @@ int main(int argc, char** argv) {
         animable->updateStates(dt);
 
         // Clear the window
-        window.clear(sf::Color::White);
+        gw.window.clear(sf::Color(50, 50, 50, 0));
 
         // Calculate frame time and FPS
         text.setString(std::format("{:.1f} f/s", 1/dt));
-        window.draw(text);
+        gw.window.draw(text);
 
-        // Draw the sprite
-        window.draw(animable->getSprite());
+        gw.window.draw(animable->getSprite());
+
+        guiDebugLog->render(gw);
+        guiStates->render(gw);
+
+        ImGui::SFML::Render(gw.window);
 
         // Display what has been drawn
-        window.display();
+        gw.window.display();
 
         // Sleep to control frame rate (for demonstration)
         // std::this_thread::sleep_for(std::chrono::milliseconds(16)); // Cap at ~60 FPS
     }
+
+    //ImGui::SFML::Shutdown();
 
     return 0;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/core.h"
 #include "ecs/entity.h"
 #include "spriteanimation.h"
 #include "state.h"
@@ -12,12 +13,15 @@ namespace soul {
 class Sprite2d;
 struct sSpriteData;
 
+// Input that the player can do and has an effect on the states
 struct sInput {
+    // Movements
     bool up {false};
     bool down {false};
     bool left {false};
     bool right {false};
 
+    // Actions
     bool punch {false};
     bool punchStick {false};
     bool kick {false};
@@ -27,23 +31,27 @@ struct sInput {
     bool knocked {false};
     bool defensive {false};
 
+    // Boolean states
     bool is_shooting {false};
     bool is_jumping {false};
     bool is_on_ground {false};
 };
 
+/**
+ * @brief Animable class
+ * Class that embeds a sprite and animations for an active entity
+ */
 class Animable : public Entity {
+    // TOCHANGE: friend class to allow access to the sprite instance
     friend class MovementState;
-protected:
-    // Renderable has a sprite instance
+private:
+    // Entity has a sprite instance
     std::shared_ptr<Sprite2d> _sprite;
     // List of animations for the player from the sprite (sheet)
     std::shared_ptr<AnimationSet> _animations;
     // Ajustment to invert the vertical position of the sprite in the window
-    int _windowPositionY;
-
-    int _initialPositionY;
-
+    int _groundY;
+    // Current State of the entity
     MovementState* _currentMovementState {nullptr};
 
 public:
@@ -55,42 +63,64 @@ public:
     explicit Animable(const std::string& name);
     virtual ~Animable() = default;
 
-    sf::Sprite& getSprite() const { return _sprite->getSprite();}
-
-    std::shared_ptr<AnimationSet>& getAnimations() { return _animations; }
-
-    void load(const int& windowPositionY, const sSpriteData& spriteData, const sTransformScalars& scalars);
-
-    void addAnimation(AnimationState state, std::shared_ptr<SpriteAnimation> animation);
-
-    void handleInput();
-
-    void updateStates(float dt);
-
-    void setAnimationState(AnimationState state);
+    // Get methods to access the sprite and animations
+    _ALWAYS_INLINE_ sf::Sprite& getSprite() const {
+        return _sprite->getSprite();}
     
-    void setMovementState(MovementState& state);
+    _ALWAYS_INLINE_ std::shared_ptr<AnimationSet>& getAnimations() { 
+        return _animations;
+    }
+    
+    _ALWAYS_INLINE_ const soul::Vector2f& getPosition() const {
+        return _sprite->position;
+    }
 
-    void incrPositionX(float x) {
+    _ALWAYS_INLINE_ const sTransformScalars& getTransform() const {
+        return _sprite->transform;
+    }
+
+    _ALWAYS_INLINE_ const int& getGroundY() const {
+        return _groundY;
+    }
+
+    _ALWAYS_INLINE_ void incrPositionX(float x) {
         _sprite->position.x += x;
     }
 
-    void incrPositionY(float y) {
+    _ALWAYS_INLINE_ void incrPositionY(float y) {
         _sprite->position.y += y;
     }
 
-    void setVelocityX(float x) {
+    _ALWAYS_INLINE_ void setVelocityX(float x) {
         _sprite->velocity.x = x;
     }
 
-    void setPosition(float x, float y) {
-        _sprite->setPosition(x, y);
+    _ALWAYS_INLINE_ void setPosition(float x, float y) {
+        _sprite->setPosition(x, y);        
     }
 
-    void resetPosition() {
-        // inverted position on y axis
-        setPosition(_sprite->position.x, _windowPositionY - _sprite->position.y);
+    _ALWAYS_INLINE_ void resetPosition() {
+        _sprite->setPosition(_sprite->position.x, _sprite->position.y);
     }
+
+    // Load the sprite data and the transform scalars
+    void load(const sSpriteData& spriteData, const sTransformScalars& scalars);
+
+    // Add an animation to the animation set
+    void addAnimation(AnimationState state, std::shared_ptr<SpriteAnimation> animation);
+
+    // Handle the input from the animable object
+    void handleInput();
+
+    // Update the states of the animable object
+    void updateStates(float dt);
+
+    // Set the animation state
+    void setAnimationState(AnimationState state);
+
+    // Set current the movement state    
+    void setMovementState(MovementState& state);
+
 };
 
 } // namespace soul

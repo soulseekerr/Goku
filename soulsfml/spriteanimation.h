@@ -7,6 +7,10 @@
 
 namespace soul {
 
+/**
+ * @brief Frame struct
+ * This struct holds the information for a single frame of an animation
+ */
 struct Frame {
     int x;
     int y;
@@ -15,6 +19,11 @@ struct Frame {
     float displayTimeSeconds;
 };
 
+/**
+ * @brief SpriteAnimation class
+ * This class is responsible for managing a set of frames and displaying them
+ * in a sequence to create an animation
+ */
 class SpriteAnimation {
 public:
     SpriteAnimation();
@@ -33,8 +42,11 @@ public:
     void reset();
 
 private:
+    // The frames that make up the animation
     Vector_t<Frame> _frames;
+    // The frame index we are currently at
     int _currentFrameIndex {0};
+    // Current frame time
     float _currentFrameTime {0.0f};
 };
 
@@ -56,6 +68,10 @@ enum class AnimationState {
     Attack
 };
 
+/**
+ * @brief AnimationSet class
+ * This class is responsible for managing a set of animations and switching between them
+ */
 class AnimationSet {
 public:
     AnimationSet(std::shared_ptr<Sprite2d>& sprite);

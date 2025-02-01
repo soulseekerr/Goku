@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.28.1)
 set(TESTS_NAME test_state_animable)
 project(${TESTS_NAME})
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall -fprofile-instr-generate -fcoverage-mapping")
+
+# -fprofile-instr-generate: Enables instrumentation to collect profiling data.
+# -fcoverage-mapping: Generates mapping data for code coverage.
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")
@@ -24,7 +28,7 @@ add_executable(${TESTS_NAME} ${SOURCES})
 
 message("Building in Debug mode")
 target_compile_definitions(${TESTS_NAME} PRIVATE DEBUG_MODE)
-target_compile_options(${TESTS_NAME} PRIVATE -g -O0)
+target_compile_options(${TESTS_NAME} PRIVATE -g -O0 -fprofile-instr-generate -fcoverage-mapping)
 link_directories("/Users/soulseeker/Projects/GitHub/Goku/debug/soul")
 
-target_link_libraries(${TESTS_NAME} GTest::gtest_main libsoul libsoulsfml sfml-system sfml-window sfml-graphics)
+target_link_libraries(${TESTS_NAME} GTest::gtest_main libsoul libsoulsfml sfml-system sfml-window sfml-graphics ImGui-SFML::ImGui-SFML)

@@ -34,11 +34,12 @@ int main(int argc, char** argv) {
     };
 
     soul::sTransformScalars scalars;
-    scalars.moveSpeed = 10.0f;
-    scalars.gravityForce = 100.0f;
-    scalars.jumpForce = 500.0f;
+    scalars.initialVelocityX = 6.0f;
+    scalars.gravity = 1700.0f;
+    scalars.initialVelocityY = -700.0f;
+    scalars.groundY = 450;
 
-    animable->load(200, spriteData, scalars);
+    animable->load(spriteData, scalars);
     
     auto animationIdle2 = std::make_shared<soul::SpriteAnimation>();
     // Idle 2nd line

@@ -3,7 +3,7 @@ set(MY_LIB_NAME libsoulsfml)
 project(${MY_LIB_NAME} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall -fprofile-instr-generate -fcoverage-mapping")
 
 message(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -45,6 +45,7 @@ set(SOURCES
     shader.cpp
     animable.cpp
     state.cpp
+    gui.cpp
 )
 
 add_library(${MY_LIB_NAME} SHARED ${SOURCES})
@@ -58,7 +59,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     include_directories(BEFORE "../debug/_deps/imgui-sfml-src")
 
     target_compile_definitions(${MY_LIB_NAME} PRIVATE DEBUG_MODE)
-    target_compile_options(${MY_LIB_NAME} PRIVATE -g -O0)
+    target_compile_options(${MY_LIB_NAME} PRIVATE -g -O0 -fprofile-instr-generate -fcoverage-mapping    )
 
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     message("Building in Release mode")

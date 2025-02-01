@@ -10,7 +10,9 @@
                 "${workspaceFolder}/debug/_deps/googletest-src/googletest/include",
                 "${workspaceFolder}/debug/_deps/sfml-src/include",
                 "${workspaceFolder}",
-                "${workspaceFolder}/soulsfml"
+                "${workspaceFolder}/soulsfml",
+                "${workspaceFolder}/debug/_deps/imgui-src",
+                "${workspaceFolder}/debug/_deps/imgui-sfml-src"
             ],
             "defines": [],
             "macFrameworkPath": [

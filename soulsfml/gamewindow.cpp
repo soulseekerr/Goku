@@ -3,7 +3,7 @@
 
 using namespace soul;
 
-void GameWindow::initialise(int p_width, int p_height, bool p_fullscreen, int p_frameRateLimit) {
+void GameWindow::initialise(const std::string& title, int p_width, int p_height, bool p_fullscreen, int p_frameRateLimit) {
 
     LoggerManager& logManager = LoggerManager::getInstance();
 
@@ -32,13 +32,13 @@ void GameWindow::initialise(int p_width, int p_height, bool p_fullscreen, int p_
     if (_fullscreen) {
         window.create(
             sf::VideoMode::getFullscreenModes()[0], 
-            "Goku Game",
+            title,
             sf::Style::Fullscreen);
             // contextSettings);
     } else {
         window.create(
             sf::VideoMode(p_width, p_height), 
-            "Goku Game",
+            title,
             sf::Style::Default);
             // contextSettings);
     }

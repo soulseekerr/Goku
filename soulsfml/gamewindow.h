@@ -28,12 +28,18 @@ public:
     const char* what() const noexcept { return msg; } 
 };
 
+/**
+ * @brief GameWindow class
+ * 
+ * Singleton class that manages the game window
+ */
 class GameWindow : public SingletonT<GameWindow> {
 
     MAKE_SINGLETON(GameWindow)
 
 public:
     void initialise(
+        const std::string& title, 
         int p_width, 
         int p_height, 
         bool p_fullscreen, 
