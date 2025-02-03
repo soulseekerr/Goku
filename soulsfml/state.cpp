@@ -157,26 +157,70 @@ void WalkState::defineDependencies(StateManager& stateMgr) {
 }
 
 void WalkState::handleInput(Animable& a) {
-    // if not moving
+    // if not moving, we go to Idle
     if (!a.input.left && !a.input.right) {
         a.setMovementState(*_idleStateRef);
     }
     
+    // if we jump while walking, we switch the state to Jump
     if (a.input.up) {
         a.setMovementState(*_jumpStateRef);
     }
 }
 
 void WalkState::update(Animable& a, float dt) {
-    // logManager.logDebug("WalkState::update");
     // Update walk logic (e.g., moving the player position)
-    // The animation update is handled by the AnimationSet
     translateX(a, dt);
-
     a.resetPosition();
 }
 
 void WalkState::enter(Animable& a) {
     // logManager.logDebug("WalkState::enter");
     a.setAnimationState(AnimationState::Walk); // Set walk animation
+}
+
+bool ActionState::playOnce(Animable& a) {
+    auto& currentAnim = a.getAnimations()->getCurrentAnimation();
+
+    if (!currentAnim->isLastFrame()) 
+        return false;
+
+    a.setActionState(*_idleStateRef);
+    a.setAnimationState(AnimationState::ActionIdle);
+    return true;
+}
+
+void ActionIdleState::defineDependencies(StateManager& stateMgr) {
+    _punchStateRef = stateMgr.getActionState<PunchState>(AnimationState::Punch);
+}
+
+void ActionIdleState::handleInput(Animable& a) {
+    // Certain actions cannot be applied while jumping
+
+    // Transition to Punch based on input but not if we are jumping
+    if (!a.input.is_jumping && a.input.punch) {
+        a.setActionState(*_punchStateRef);
+    }
+}
+
+void ActionIdleState::update(Animable& a, float dt) {
+}
+
+void ActionIdleState::enter(Animable& a) {
+}
+
+void PunchState::defineDependencies(StateManager& stateMgr) {
+    _idleStateRef = stateMgr.getActionState<ActionIdleState>(AnimationState::ActionIdle);
+}
+
+void PunchState::handleInput(Animable& a) {
+}
+
+void PunchState::update(Animable& a, float dt) {
+    ActionState::playOnce(a);
+    a.resetPosition(); 
+}
+
+void PunchState::enter(Animable& a) {
+    a.setAnimationState(AnimationState::Punch);
 }

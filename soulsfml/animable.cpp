@@ -66,9 +66,13 @@ void Animable::addAnimation(AnimationState state, std::shared_ptr<SpriteAnimatio
 
 // Handle the input from the animable object
 void Animable::handleInput() {
-    if (!_currentMovementState) return;
+    if (_currentMovementState) {
+        _currentMovementState->handleInput(*this);
+    }
 
-    _currentMovementState->handleInput(*this);
+    if (_currentActionState) {
+        _currentActionState->handleInput(*this);
+    }
 }
 
 // Update the states of the animable object
@@ -76,6 +80,11 @@ void Animable::updateStates(float dt) {
     if (_currentMovementState) {
         _currentMovementState->update(*this, dt);
     }
+
+    if (_currentActionState) {
+        _currentActionState->update(*this, dt);
+    }
+
     _animations->update(dt);
 }
 
@@ -88,4 +97,10 @@ void Animable::setAnimationState(AnimationState state) {
 void Animable::setMovementState(MovementState& state) {
     _currentMovementState = &state;
     _currentMovementState->enter(*this);
+}
+
+// Set the current action state 
+void Animable::setActionState(ActionState& state) {
+    _currentActionState = &state;
+    _currentActionState->enter(*this);
 }

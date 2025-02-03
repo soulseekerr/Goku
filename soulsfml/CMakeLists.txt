@@ -46,6 +46,7 @@ set(SOURCES
     animable.cpp
     state.cpp
     gui.cpp
+    entitymanager.cpp
 )
 
 add_library(${MY_LIB_NAME} SHARED ${SOURCES})
@@ -59,7 +60,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     include_directories(BEFORE "../debug/_deps/imgui-sfml-src")
 
     target_compile_definitions(${MY_LIB_NAME} PRIVATE DEBUG_MODE)
-    target_compile_options(${MY_LIB_NAME} PRIVATE -g -O0 -fprofile-instr-generate -fcoverage-mapping    )
+    target_compile_options(${MY_LIB_NAME} PRIVATE -g -O0 -Wreturn-stack-address -fprofile-instr-generate -fcoverage-mapping    )
 
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     message("Building in Release mode")

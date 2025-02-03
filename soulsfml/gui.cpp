@@ -130,6 +130,54 @@ void GuiAnimableStates::render(GameWindow& gw) {
     ImGui::End();
 }
 
+void GuiSpriteTest::init(const std::string& spriteFilename) {
+
+    _spritePosition.x = 975;
+    _spritePosition.y = 10;
+
+    _pos.x = 0;
+    _pos.y = 0;
+    _size.x = 45;
+    _size.y = 80;
+    _scale.x = 2.0f;
+    _scale.y = 2.0f;
+
+    _sprite->loadTexture(spriteFilename, _scale, true);
+
+    auto initialSpritePosition = Vector2i(0, 0);
+    auto initialSpriteSize = Vector2i(_size.x, _size.y);
+
+    // Initial sprite to load
+    _sprite->setTextureRect(initialSpritePosition, initialSpriteSize);
+}
+
+void GuiSpriteTest::render(GameWindow& gw) {
+
+    _sprite->getSprite().setPosition(_spritePosition.x, _spritePosition.y);
+
+    ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_FirstUseEver);
+    ImGui::Begin("Sprite Test");
+        ImGui::InputInt("SpPosX", &_spritePosition.x);
+        ImGui::InputInt("SpPosY", &_spritePosition.y);
+        ImGui::InputInt("TexPosX", &_pos.x);
+        ImGui::InputInt("TexPosY", &_pos.y);
+        ImGui::InputInt("TexSizeX", &_size.x);
+        ImGui::InputInt("TexSizeY", &_size.y);
+        ImGui::InputFloat("TexScaleX", &_scale.x);
+        ImGui::InputFloat("TexScaleY", &_scale.y);
+
+        if (ImGui::Button("Update")) {        
+            _sprite->setTextureRect(_pos, _size);
+            _sprite->setScale(_scale.x, _scale.y);
+            LoggerManager::getInstance().log("Tex Position/Size update: ({},{}) ({},{})", _pos.x, _pos.y, _size.x, _size.y);
+        }
+
+        ImGui::Text("Sprite Position : %d, %d", _spritePosition.x, _spritePosition.y);
+        ImGui::Text("Tex Position : %d, %d", _pos.x, _pos.y);
+        ImGui::Text("Tex Size : %d, %d", _size.x, _size.y);
+    ImGui::End();
+}
+
 
 LoggerGui::LoggerGui(const LOG_LEVEL level, shared_ptr<GuiDebugLog>& p_guiDebugLog)
     : ILogger(level), guiDebugLog(p_guiDebugLog) {

@@ -89,6 +89,25 @@ public:
 };
 
 /**
+ * @brief GuiSpriteTest class
+ * Window for testing a sprite
+ */
+class GuiSpriteTest : public GuiWindow {
+private:
+    shared_ptr<Sprite2d> _sprite;
+    Vector2i _pos, _size;
+    Vector2f _scale;
+    Vector2i _spritePosition;
+
+public:
+    GuiSpriteTest() : GuiWindow(), _sprite(make_shared<soul::Sprite2d>("SpriteTest")) {}
+    virtual ~GuiSpriteTest() {}
+
+    void init(const std::string& spriteFilename);
+    void render(GameWindow& gw) override;
+};
+
+/**
  * @brief LoggerGui class
  * Logger for the GUI window
  */

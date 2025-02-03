@@ -53,6 +53,7 @@ private:
 enum class AnimationState {
     None, 
     Idle, 
+    ActionIdle,
     Walk, 
     Jump, 
     Knocked,
@@ -62,7 +63,7 @@ enum class AnimationState {
     Kick2,
     JumpKick,
     Defensive,
-    Shoot,
+    ShootFireball,
     Patrol,
     Chase,
     Attack

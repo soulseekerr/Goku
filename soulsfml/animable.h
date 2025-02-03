@@ -23,13 +23,13 @@ struct sInput {
 
     // Actions
     bool punch {false};
-    bool punchStick {false};
-    bool kick {false};
-    bool kick2 {false};
-    bool jumpkick {false};
+    // bool punchStick {false};
+    // bool kick {false};
+    // bool kick2 {false};
+    // bool jumpkick {false};
     bool shoot {false};
-    bool knocked {false};
-    bool defensive {false};
+    // bool knocked {false};
+    // bool defensive {false};
 
     // Boolean states
     bool is_shooting {false};
@@ -53,6 +53,8 @@ private:
     int _groundY;
     // Current State of the entity
     MovementState* _currentMovementState {nullptr};
+    // Current Action of the entity
+    ActionState* _currentActionState {nullptr};
 
 public:
     // Input states
@@ -115,12 +117,14 @@ public:
     // Update the states of the animable object
     void updateStates(float dt);
 
-    // Set the animation state
+    // Set the current animation state
     void setAnimationState(AnimationState state);
 
-    // Set current the movement state    
+    // Set the current movement state    
     void setMovementState(MovementState& state);
 
+    // Set current action state
+    void setActionState(ActionState& state);
 };
 
 } // namespace soul
