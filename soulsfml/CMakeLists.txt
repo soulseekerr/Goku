@@ -47,6 +47,8 @@ set(SOURCES
     state.cpp
     gui.cpp
     entitymanager.cpp
+    player.cpp
+    fireball.cpp
 )
 
 add_library(${MY_LIB_NAME} SHARED ${SOURCES})

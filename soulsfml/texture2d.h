@@ -44,6 +44,9 @@ public:
 
     virtual ~Texture2d();
 
+    // Update the entity with specialized logic
+    virtual bool update(float dt) { return isActive(); }
+
     sf::Texture& getTexture();
 
     Response loadTexture(const std::string& filePath);

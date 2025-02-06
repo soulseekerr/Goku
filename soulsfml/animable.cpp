@@ -1,6 +1,7 @@
 
 #include "animable.h"
 #include "sprite2d.h"
+#include "gamewindow.h"
 
 using namespace soul;
 
@@ -58,6 +59,8 @@ void Animable::load(const sSpriteData& spriteData, const sTransformScalars& scal
 
     // inverted position on y axis
     _sprite->setPosition(_sprite->position.x, _groundY - _sprite->position.y);
+
+    _sprite->setRotation(scalars.angle);
 }
 
 void Animable::addAnimation(AnimationState state, std::shared_ptr<SpriteAnimation> animation) {
@@ -103,4 +106,20 @@ void Animable::setMovementState(MovementState& state) {
 void Animable::setActionState(ActionState& state) {
     _currentActionState = &state;
     _currentActionState->enter(*this);
+}
+
+bool Animable::update(float dt) {
+
+    handleInput();
+    
+    // Update the states and animation associated to the current movement or action
+    updateStates(dt);
+
+    return isActive();
+}
+
+void Animable::render() {
+    soul::GameWindow& gw = soul::GameWindow::getInstance();
+
+    gw.window.draw(_sprite->getSprite());
 }

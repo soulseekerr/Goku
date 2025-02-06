@@ -3,7 +3,6 @@
 #include "ecs/entity.h"
 #include <iostream>
 
-
 // Demonstrate some basic assertions.
 TEST(EntityTest, BasicAssertions) {
 

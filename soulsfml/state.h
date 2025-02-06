@@ -41,7 +41,7 @@ public:
     ActionState() = default;
     virtual ~ActionState() = default;
 
-    virtual void defineDependencies(StateManager& stateMgr) = 0;
+    virtual void defineDependencies(StateManager& stateMgr);
 
     virtual void handleInput(Animable& a) = 0;
     virtual void update(Animable& a, float dt) = 0;
@@ -157,6 +157,7 @@ private:
 };
 
 class PunchState;
+class ShootState;
 
 class ActionIdleState : public ActionState {
 public:
@@ -172,11 +173,23 @@ public:
 private:
     // Direct References to other states accessed by this state
     PunchState* _punchStateRef;
+    ShootState* _shootStateRef;
 };
 
 class PunchState : public ActionState {
 public:
     PunchState() = default;
+
+    void defineDependencies(StateManager& stateMgr) override;
+
+    void handleInput(Animable& a) override;
+    void update(Animable& a, float dt) override;
+    void enter(Animable& a) override;
+};
+
+class ShootState : public ActionState {
+public:
+    ShootState() = default;
 
     void defineDependencies(StateManager& stateMgr) override;
 

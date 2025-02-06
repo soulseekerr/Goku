@@ -61,6 +61,26 @@
         }
       ],
       "preLaunchTask": "build"
+    },
+    {
+      "name": "Debug test_entity_states with CMake",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin/test_entity_states", // Replace with your executable path
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "lldb", // Use lldb instead of gdb
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for lldb",
+          "text": "settings set target.prefer-dynamic-value run-target",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build"
     }
   ]
 }

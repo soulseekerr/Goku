@@ -6,12 +6,12 @@
 
 using namespace soul;
 
-std::vector<std::shared_ptr<soul::Animable>>& EntityManager::getEntities(const std::string& tag) {
-    map<string, vector<shared_ptr<soul::Animable>>>::iterator it = _mapEntities.find(tag);
+std::vector<std::shared_ptr<soul::Entity>>& EntityManager::getEntities(const std::string& tag) {
+    std::map<string, vector<std::shared_ptr<soul::Entity>>>::iterator it = _mapEntities.find(tag);
     if (it == _mapEntities.end()) {
         // we create a new empty vector
         std::cout << "Creating new Vector " << tag << endl;
-        std::vector<std::shared_ptr<soul::Animable>> v;
+        std::vector<std::shared_ptr<soul::Entity>> v;
         _mapEntities[tag] = v;
 
         it = _mapEntities.find(tag);
@@ -22,7 +22,7 @@ std::vector<std::shared_ptr<soul::Animable>>& EntityManager::getEntities(const s
     return it->second;
 }
 
-void EntityManager::addEntity(std::shared_ptr<soul::Animable>& e) {
+void EntityManager::addEntity(std::shared_ptr<soul::Entity>& e) {
     // Create the entity
     _totalEntities++;
 
@@ -33,7 +33,7 @@ void EntityManager::addEntity(std::shared_ptr<soul::Animable>& e) {
 
 void EntityManager::removeDeadEntities() {
 
-    std::vector<std::tuple<int, string>> dead_entities_positions;
+    std::vector<std::tuple<int, std::string>> dead_entities_positions;
 
     int index = 0;
     for (auto& e : _entities) {

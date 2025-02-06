@@ -56,3 +56,7 @@ void Sprite2d::setVelocity(float x, float y) {
     velocity.x = x;
     velocity.y = y;
 }
+
+void Sprite2d::setRotation(float angle) {
+    _sprite.setRotation(angle);
+}

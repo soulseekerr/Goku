@@ -63,6 +63,7 @@ enum class AnimationState {
     Kick2,
     JumpKick,
     Defensive,
+    Shoot,
     ShootFireball,
     Patrol,
     Chase,

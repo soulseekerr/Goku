@@ -179,6 +179,10 @@ void WalkState::enter(Animable& a) {
     a.setAnimationState(AnimationState::Walk); // Set walk animation
 }
 
+void ActionState::defineDependencies(StateManager& stateMgr) {
+    _idleStateRef = stateMgr.getActionState<ActionIdleState>(AnimationState::ActionIdle);
+}
+
 bool ActionState::playOnce(Animable& a) {
     auto& currentAnim = a.getAnimations()->getCurrentAnimation();
 
@@ -191,7 +195,9 @@ bool ActionState::playOnce(Animable& a) {
 }
 
 void ActionIdleState::defineDependencies(StateManager& stateMgr) {
+    ActionState::defineDependencies(stateMgr);
     _punchStateRef = stateMgr.getActionState<PunchState>(AnimationState::Punch);
+    _shootStateRef = stateMgr.getActionState<ShootState>(AnimationState::ShootFireball);
 }
 
 void ActionIdleState::handleInput(Animable& a) {
@@ -200,6 +206,9 @@ void ActionIdleState::handleInput(Animable& a) {
     // Transition to Punch based on input but not if we are jumping
     if (!a.input.is_jumping && a.input.punch) {
         a.setActionState(*_punchStateRef);
+    }
+    else if (!a.input.is_shooting && a.input.shoot) {
+        a.setActionState(*_shootStateRef);
     }
 }
 
@@ -210,10 +219,13 @@ void ActionIdleState::enter(Animable& a) {
 }
 
 void PunchState::defineDependencies(StateManager& stateMgr) {
-    _idleStateRef = stateMgr.getActionState<ActionIdleState>(AnimationState::ActionIdle);
+    ActionState::defineDependencies(stateMgr);
 }
 
 void PunchState::handleInput(Animable& a) {
+    if (!a.input.punch) {
+        a.setActionState(*_idleStateRef);
+    }
 }
 
 void PunchState::update(Animable& a, float dt) {
@@ -223,4 +235,24 @@ void PunchState::update(Animable& a, float dt) {
 
 void PunchState::enter(Animable& a) {
     a.setAnimationState(AnimationState::Punch);
+}
+
+
+void ShootState::defineDependencies(StateManager& stateMgr) {
+    ActionState::defineDependencies(stateMgr);
+}
+
+void ShootState::handleInput(Animable& a) {
+    if (!a.input.shoot) {
+        a.setActionState(*_idleStateRef);
+    }
+}
+
+void ShootState::update(Animable& a, float dt) {
+    ActionState::playOnce(a);
+    a.resetPosition(); 
+}
+
+void ShootState::enter(Animable& a) {
+    a.setAnimationState(AnimationState::Shoot);
 }

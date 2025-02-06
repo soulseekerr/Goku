@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/core.h"
 #include "ecs/entity.h"
 #include "spriteanimation.h"
 #include "state.h"
@@ -57,6 +56,8 @@ private:
     ActionState* _currentActionState {nullptr};
 
 public:
+    // States of the entity
+    soul::StateManager stateManager;
     // Input states
     sInput input;
 
@@ -64,6 +65,14 @@ public:
     Animable() = delete;
     explicit Animable(const std::string& name);
     virtual ~Animable() = default;
+
+    // Load the entity with specialized logic
+    virtual void loadData() override {}
+
+    // Update the entity with specialized logic
+    virtual bool update(float dt) override;
+
+    virtual void render() override;
 
     // Get methods to access the sprite and animations
     _ALWAYS_INLINE_ sf::Sprite& getSprite() const {
@@ -85,6 +94,10 @@ public:
         return _groundY;
     }
 
+    _ALWAYS_INLINE_ void setTransform(const sTransformScalars& transform) const {
+        _sprite->transform = transform;
+    }
+
     _ALWAYS_INLINE_ void incrPositionX(float x) {
         _sprite->position.x += x;
     }
@@ -103,6 +116,28 @@ public:
 
     _ALWAYS_INLINE_ void resetPosition() {
         _sprite->setPosition(_sprite->position.x, _sprite->position.y);
+    }
+
+    template <typename T>
+    T* registerMovement(AnimationState state) {
+        return stateManager.registerMovement<T>(state);
+    }
+
+    template <typename T>
+    T* registerAction(AnimationState state) {
+        return stateManager.registerAction<T>(state);
+    }
+
+    // Get MovementState of the given AnimationState
+    template <typename T>
+    T* getMovementState(AnimationState state) {
+        return stateManager.getMovementState<T>(state);
+    }
+
+    // Get MovementState of the given AnimationState
+    template <typename T>
+    T* getActionState(AnimationState state) {
+        return stateManager.getActionState<T>(state);
     }
 
     // Load the sprite data and the transform scalars

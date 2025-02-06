@@ -60,6 +60,7 @@ struct sTransformScalars {
     float initialVelocityY {0.0f};
     float gravity {0.0f};
     int direction {1};
+    float angle {0.0f};
     int groundY {800};
 };
 
@@ -111,6 +112,8 @@ public:
     void setPosition(float x, float y);
     
     void setVelocity(float x, float y);
+
+    void setRotation(float angle);
 };
 
 } // namespace soul

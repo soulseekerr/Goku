@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/core.h"
 #include "core/logger.h"
 
 #include <iostream>
@@ -38,6 +39,7 @@ private:
 
 // Forward declaration of AScene
 class AScene;
+class Entity;
 
 /**
  * @brief Base class for all entities in the game world.
@@ -82,6 +84,14 @@ public:
 
     void setSceneRef(std::shared_ptr<AScene> sceneRef);
     const std::shared_ptr<AScene>& getSceneRef() const;
+
+    // Load the entity with specialized logic
+    virtual void loadData() {}
+
+    // Update the entity with specialized logic
+    virtual bool update(float dt) { return _active; }
+
+    virtual void render() {}
 };
 
 } // namespace soul
