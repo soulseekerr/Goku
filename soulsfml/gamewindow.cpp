@@ -3,18 +3,19 @@
 
 using namespace soul;
 
-void GameWindow::initialise(const std::string& title, int p_width, int p_height, bool p_fullscreen, int p_frameRateLimit) {
+void GameWindow::initialise(const std::string& title, unsigned int p_width, unsigned int p_height, bool p_fullscreen, int p_frameRateLimit) {
 
-    LoggerManager& logManager = LoggerManager::getInstance();
+    // LoggerManager& logManager = LoggerManager::getInstance();
 
     _fullscreen = p_fullscreen;
 
     // Display the list of all the video modes available for fullscreen
-    auto modes = sf::VideoMode::getFullscreenModes();
+    // auto modes = sf::VideoMode::getFullscreenModes();
 
     // for (std::size_t i = 0; i < modes.size(); ++i)
-    for (auto & m : modes)
-        logManager.log("Mode: {}x{} - {} bpp", m.width, m.height, m.bitsPerPixel);
+    // for (auto & m : modes)
+        // auto t = m.getFullscreenModes();
+        // logManager.log("Mode: {}x{} - {} bpp", m.width, m.height, m.bitsPerPixel);
     
     // sf::ContextSettings contextSettings;
     // contextSettings.depthBits = 24;  // 24-bit depth buffer
@@ -31,13 +32,13 @@ void GameWindow::initialise(const std::string& title, int p_width, int p_height,
 
     if (_fullscreen) {
         window.create(
-            sf::VideoMode::getFullscreenModes()[0], 
+            sf::VideoMode({800, 600}),
             title,
-            sf::Style::Fullscreen);
+            sf::State::Fullscreen);
             // contextSettings);
     } else {
         window.create(
-            sf::VideoMode(p_width, p_height), 
+            sf::VideoMode({p_width, p_height}), 
             title,
             sf::Style::Default);
             // contextSettings);

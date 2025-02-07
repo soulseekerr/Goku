@@ -34,3 +34,4 @@
 # folders
 debug/**
 release/**
+build/**

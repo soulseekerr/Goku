@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
     logManager.log("Starting Sprite Animation Test");
 
     // Create a window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Animable Objects");
+    sf::RenderWindow window(sf::VideoMode({800, 600}), "Animable Objects");
     window.setFramerateLimit(60);
     
 
@@ -55,22 +55,22 @@ int main(int argc, char** argv) {
 
     // Main game loop
     while (window.isOpen()) {
-        // Handle events
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+        
+        while (const std::optional event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>()) {
                 window.close();
             }
 
-            if (event.type == sf::Event::KeyPressed) {
+            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
 
-                switch (event.key.code) {
+                switch (keyPressed->scancode) {
 
-                    case sf::Keyboard::Escape:  
-                        cout << "Exiting." << endl;
+                    case sf::Keyboard::Scancode::Escape:  
+                        cout << "Exiting the game." << endl;
                         window.close();
                         exit(0);
                     break;
+
                     default: break;
                 }
             }

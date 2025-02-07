@@ -4,6 +4,7 @@
 #include "assetmanager.h"
 
 #include <iostream>
+#include <optional>
 
 #include <SFML/Graphics.hpp>
 
@@ -21,7 +22,7 @@ int main(int argc, char** argv) {
     logManager.log("Starting Sprite Test");
 
     // Create a window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Sprite Example");
+    sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML Sprite Example");
     window.setFramerateLimit(60);
 
     std::shared_ptr<soul::Sprite2d> sprite;
@@ -53,10 +54,9 @@ int main(int argc, char** argv) {
 
     // Main game loop
     while (window.isOpen()) {
-        // Handle events
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+
+        while (const std::optional event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>()) {
                 window.close();
             }
         }

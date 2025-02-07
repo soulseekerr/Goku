@@ -102,7 +102,9 @@ private:
     Vector2i _spritePosition;
 
 public:
-    GuiSpriteTest() : GuiWindow(), _sprite(make_shared<soul::Sprite2d>("SpriteTest")) {}
+    GuiSpriteTest(const std::string& spriteTestFile) : GuiWindow(), _sprite(make_shared<soul::Sprite2d>("SpriteTest")) {
+        init(spriteTestFile);
+    }
     virtual ~GuiSpriteTest() {}
 
     void init(const std::string& spriteFilename);

@@ -105,65 +105,66 @@ int main(int argc, char** argv) {
     animable->resetPosition();
 
     std::shared_ptr<soul::GuiAnimableStates> guiStates = std::make_shared<soul::GuiAnimableStates>(animable);
-    std::shared_ptr<soul::GuiSpriteTest> guiSpriteTest = std::make_shared<soul::GuiSpriteTest>();
+    const std::string spriteTestFile = "/Users/soulseeker/Projects/GitHub/gokugame/textures/Kid Goku.png";
+    std::shared_ptr<soul::GuiSpriteTest> guiSpriteTest = std::make_shared<soul::GuiSpriteTest>(spriteTestFile);
 
     sf::Clock deltaClock;
     auto lastTime = std::chrono::high_resolution_clock::now();
 
     sf::Font font;
-    sf::Text text;
-
     const string fontFilename = "/Users/soulseeker/Projects/cpp_projects/sfml_sparky/build/bin/fonts/MontereyFLF-Bold.ttf";
-    font.loadFromFile(fontFilename);
+    if (!font.openFromFile(fontFilename)) {
+        std::cout << "Error while opening font file!" << fontFilename << std::endl;
+        return -1;
+    }
 
-    text.setFont(font);
+    sf::Text text(font);
     text.setFillColor(sf::Color(20, 25, 25));
     text.setCharacterSize(20);
    
     auto text_y = gw.window.getSize().y/20 - (float)text.getCharacterSize();
-    text.setPosition(gw.window.getSize().x - 150, text_y);
+    text.setPosition(sf::Vector2f(gw.window.getSize().x - 150, text_y));
 
     // Main game loop
     while (gw.window.isOpen()) {
-        // Handle events
-        sf::Event event;
-        while (gw.window.pollEvent(event)) {
 
-            ImGui::SFML::ProcessEvent(gw.window, event);
+        while (const std::optional event = gw.window.pollEvent()) {
 
-            if (event.type == sf::Event::Closed) {
+            ImGui::SFML::ProcessEvent(gw.window, *event);
+
+            if (event->is<sf::Event::Closed>()) {
                 gw.window.close();
             }
 
-            if (event.type == sf::Event::KeyPressed) {
+            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
 
-                switch (event.key.code) {
+                switch (keyPressed->scancode) {
 
-                    case sf::Keyboard::Escape:  
-                        cout << "Exiting." << endl;
+                    case sf::Keyboard::Scancode::Escape:  
+                        std::cout << "Exiting the game." << std::endl;
                         gw.window.close();
                         exit(0);
                     break;
-                    
-                    case sf::Keyboard::Left:  animable->input.left = true; break;
-                    case sf::Keyboard::Right: animable->input.right = true; break;
-                    case sf::Keyboard::Up: animable->input.up = true; break;
-                    case sf::Keyboard::Down: animable->input.down = true; break;
-                    case sf::Keyboard::P: animable->input.punch = true; break;
-                    
+
+                    case sf::Keyboard::Scancode::Left:  animable->input.left = true; break;
+                    case sf::Keyboard::Scancode::Right: animable->input.right = true; break;
+                    case sf::Keyboard::Scancode::Up: animable->input.up = true; break;
+                    case sf::Keyboard::Scancode::Down: animable->input.down = true; break;
+                    case sf::Keyboard::Scancode::P: animable->input.punch = true; break;
+
                     default: break;
                 }
             }
-            
-            if (event.type == sf::Event::KeyReleased) {
 
-                switch (event.key.code) {
+            else if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {
 
-                    case sf::Keyboard::Left:  animable->input.left = false; break;
-                    case sf::Keyboard::Right: animable->input.right = false; break;
-                    case sf::Keyboard::Up: animable->input.up = false; break;
-                    case sf::Keyboard::Down: animable->input.down = false; break;
-                    case sf::Keyboard::P: animable->input.punch = false; break;
+                switch (keyReleased->scancode) {
+
+                    case sf::Keyboard::Scancode::Left:  animable->input.left = false; break;
+                    case sf::Keyboard::Scancode::Right: animable->input.right = false; break;
+                    case sf::Keyboard::Scancode::Up: animable->input.up = false; break;
+                    case sf::Keyboard::Scancode::Down: animable->input.down = false; break;
+                    case sf::Keyboard::Scancode::P: animable->input.punch = false; break;
 
                     default: break;
                 }

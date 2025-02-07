@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.28.1)
 set(TESTS_NAME test_entity_states)
 project(${TESTS_NAME})
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall -fprofile-instr-generate -fcoverage-mapping")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall -fsanitize=address -fprofile-instr-generate -fcoverage-mapping")
 
 # -fprofile-instr-generate: Enables instrumentation to collect profiling data.
 # -fcoverage-mapping: Generates mapping data for code coverage.

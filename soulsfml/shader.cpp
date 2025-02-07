@@ -19,7 +19,7 @@ bool Shader::load(const std::string& shader_name) {
 
     std::cout << "Loading from file " << shader_frag_file << std::endl;
         
-    if (!shader.loadFromFile(shader_frag_file, sf::Shader::Fragment))
+    if (!shader.loadFromFile(shader_frag_file, sf::Shader::Type::Fragment))
         throw ShaderException("Error while Shader.");
 
     isShaderLoaded = true;

@@ -31,11 +31,11 @@ public:
     }
 
     sf::Color getPixel(unsigned int x, unsigned int y) { 
-        return _image.getPixel(x, y);
+        return _image.getPixel(sf::Vector2u(x, y));
     }
 
     void setPixel(unsigned int x, unsigned int y, sf::Color color) { 
-        _image.setPixel(x, y, color);
+        _image.setPixel(sf::Vector2u(x, y), color);
     }
 };
 

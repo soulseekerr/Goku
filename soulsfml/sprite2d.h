@@ -75,7 +75,7 @@ private:
     // Texture on the sprite
     std::shared_ptr<soul::Texture2d> _texture;
     // SFML Sprite
-    sf::Sprite _sprite;
+    std::shared_ptr<sf::Sprite> _sprite;
 
 public:
     // Position of the sprite
@@ -92,7 +92,7 @@ public:
     virtual ~Sprite2d() {}
 
     _ALWAYS_INLINE_ sf::Sprite& getSprite() { 
-        return _sprite; 
+        return *_sprite.get(); 
     }
 
     _ALWAYS_INLINE_ std::shared_ptr<soul::Texture2d> getTexture() { 

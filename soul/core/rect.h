@@ -19,7 +19,7 @@ public:
 
     // TODO to test versus isAABBIntersection
     bool intersects(const Rect<T>& r) {
-        return left < r.left + r.width && left + width > r.left && top < r.top + r.height && top + height > r.y;
+        return left < r.left + r.width && left + width > r.left && top < r.top + r.height && top + height > r.height;
     }
 };
 

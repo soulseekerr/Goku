@@ -12,14 +12,22 @@
                 "${workspaceFolder}",
                 "${workspaceFolder}/soulsfml",
                 "${workspaceFolder}/debug/_deps/imgui-src",
-                "${workspaceFolder}/debug/_deps/imgui-sfml-src"
+                "${workspaceFolder}/debug/_deps/imgui-sfml-src",
+                "/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1",
+                "/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1/__thread"
             ],
             "defines": [],
             "macFrameworkPath": [
                 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
             ],
+            "compilerPath": "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang++",
+            "compilerArgs": [
+                "-stdlib=libc++",
+                "-fexperimental-library"
+            ],
             "cStandard": "c17",
-            "intelliSenseMode": "macos-clang-arm64"
+            "intelliSenseMode": "macos-clang-arm64",
+            "cppStandard": "c++20"
         }
     ],
     "version": 4

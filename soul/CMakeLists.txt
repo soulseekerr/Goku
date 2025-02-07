@@ -2,8 +2,12 @@ cmake_minimum_required(VERSION 3.28)
 set(MY_LIB_NAME libsoul)
 project(${MY_LIB_NAME} LANGUAGES CXX)
 
+# Set the C and C++ compilers to Clang 19
+# set(CMAKE_C_COMPILER /opt/homebrew/Cellar/llvm/19.1.7/bin/clang)
+# set(CMAKE_CXX_COMPILER /opt/homebrew/Cellar/llvm/19.1.7/bin/clang++)
+
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall -I/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1")
 
 message(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})

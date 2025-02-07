@@ -160,7 +160,7 @@ void GuiSpriteTest::init(const std::string& spriteFilename) {
 
 void GuiSpriteTest::render(GameWindow& gw) {
 
-    _sprite->getSprite().setPosition(_spritePosition.x, _spritePosition.y);
+    _sprite->getSprite().setPosition(sf::Vector2f(_spritePosition.x, _spritePosition.y));
 
     ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_FirstUseEver);
     ImGui::Begin("Sprite Test");

@@ -40,8 +40,8 @@ class GameWindow : public SingletonT<GameWindow> {
 public:
     void initialise(
         const std::string& title, 
-        int p_width, 
-        int p_height, 
+        unsigned int p_width, 
+        unsigned int p_height, 
         bool p_fullscreen, 
         int p_frameRateLimit);
 
