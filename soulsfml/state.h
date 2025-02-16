@@ -35,6 +35,7 @@ protected:
 };
 
 class ActionIdleState;
+class IdleState;
 
 class ActionState {
 public:
@@ -47,13 +48,14 @@ public:
     virtual void update(Animable& a, float dt) = 0;
     virtual void enter(Animable& a) = 0;
 
-    soul::LoggerManager& logManager = soul::LoggerManager::getInstance();
-
     bool playOnce(Animable& a);
 
 protected:
+    soul::LoggerManager& logManager = soul::LoggerManager::getInstance();
+    
     // Direct References to other states accessed by this state
-    ActionIdleState* _idleStateRef;
+    ActionIdleState* _idleStateRef {nullptr};
+    IdleState* _idleMovementStateRef {nullptr};
 };
 
 /** 
@@ -157,7 +159,12 @@ private:
 };
 
 class PunchState;
+class PunchStickState;
 class ShootState;
+class KickState;
+class Kick2State;
+class DefensiveState;
+class KnockedOutState;
 
 class ActionIdleState : public ActionState {
 public:
@@ -173,7 +180,12 @@ public:
 private:
     // Direct References to other states accessed by this state
     PunchState* _punchStateRef;
+    PunchStickState* _punchStickStateRef;
     ShootState* _shootStateRef;
+    KickState* _kickStateRef;
+    Kick2State* _kick2StateRef;
+    DefensiveState* _defStateRef;
+    KnockedOutState* _koStateRef;
 };
 
 class PunchState : public ActionState {
@@ -187,12 +199,68 @@ public:
     void enter(Animable& a) override;
 };
 
+class PunchStickState : public ActionState {
+public:
+    PunchStickState() = default;
+    
+     void defineDependencies(StateManager& stateMgr) override;
+    
+    void handleInput(Animable& a) override;
+    void update(Animable& a, float dt) override;
+    void enter(Animable& a) override;
+};
+
 class ShootState : public ActionState {
 public:
     ShootState() = default;
 
     void defineDependencies(StateManager& stateMgr) override;
 
+    void handleInput(Animable& a) override;
+    void update(Animable& a, float dt) override;
+    void enter(Animable& a) override;
+};
+
+
+class KickState : public ActionState {
+public:
+    KickState() = default;
+    
+    void defineDependencies(StateManager& stateMgr) override;
+    
+    void handleInput(Animable& a) override;
+    void update(Animable& a, float dt) override;
+    void enter(Animable& a) override;
+};
+
+class Kick2State : public ActionState {
+public:
+    Kick2State() = default;
+        
+    void defineDependencies(StateManager& stateMgr) override;
+        
+    void handleInput(Animable& a) override;
+    void update(Animable& a, float dt) override;
+    void enter(Animable& a) override;
+};
+
+class DefensiveState : public ActionState {
+public:
+    DefensiveState() = default;
+            
+    void defineDependencies(StateManager& stateMgr) override;
+            
+    void handleInput(Animable& a) override;
+    void update(Animable& a, float dt) override;
+    void enter(Animable& a) override;
+};
+
+class KnockedOutState : public ActionState {
+public:
+    KnockedOutState() = default;
+                
+    void defineDependencies(StateManager& stateMgr) override;
+                
     void handleInput(Animable& a) override;
     void update(Animable& a, float dt) override;
     void enter(Animable& a) override;

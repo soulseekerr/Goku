@@ -180,10 +180,8 @@ int main(int argc, char** argv) {
         // auto localdt = deltaClock.getElapsedTime().asSeconds();
 
         // Hanlde Inputs in the Animable object
-        animable->handleInput();
-
         // Update the states and animation associated to the current movement or action
-        animable->updateStates(dt);
+        animable->update(dt);
 
         // Clear the window
         gw.window.clear(sf::Color(50, 50, 50, 0));

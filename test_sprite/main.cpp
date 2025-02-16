@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     // Set the initial position of the sprite
     sprite->setPosition(100.f, 50.f);
     sprite->setScale(1.5f, 1.5f);
-    sprite->setTextureRect(soul::Vector2i(10, 128), soul::Vector2i(80, 100));
+    sprite->setTextureRect(10, 128, 80, 100);
 
     // Get the sprite
     auto& spritePtr = sprite->getSprite();

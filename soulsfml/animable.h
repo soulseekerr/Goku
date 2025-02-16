@@ -22,15 +22,14 @@ struct sInput {
 
     // Actions
     bool punch {false};
-    // bool punchStick {false};
-    // bool kick {false};
-    // bool kick2 {false};
-    // bool jumpkick {false};
+    bool punchStick {false};
+    bool kick {false};
+    bool kick2 {false};
+    bool jumpkick {false};
     bool shoot {false};
-    // bool knocked {false};
-    // bool defensive {false};
+    bool knockedout {false};
+    bool defensive {false};
 
-    // Boolean states
     bool is_shooting {false};
     bool is_jumping {false};
     bool is_on_ground {false};
@@ -72,6 +71,8 @@ public:
     // Update the entity with specialized logic
     virtual bool update(float dt) override;
 
+    virtual void updateData(int id) override;
+
     virtual void render() override;
 
     // Get methods to access the sprite and animations
@@ -104,6 +105,11 @@ public:
 
     _ALWAYS_INLINE_ void incrPositionY(float y) {
         _sprite->position.y += y;
+    }
+
+    _ALWAYS_INLINE_ void incrRotation(float a) {
+        sf::Angle angle = _sprite->getSprite().getRotation();
+        _sprite->setRotation(angle.asDegrees() + a);
     }
 
     _ALWAYS_INLINE_ void setVelocityX(float x) {

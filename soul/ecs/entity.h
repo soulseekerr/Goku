@@ -41,6 +41,20 @@ private:
 class AScene;
 class Entity;
 
+struct IRenderable {
+    // Load the entity with specialized logic
+    virtual void loadData() = 0;
+    // Render the entity with specialized logic
+    virtual void render() = 0;
+};
+
+struct IUpdatable {
+    // Update the entity with specialized logic
+    [[nodiscard]] virtual bool update(float dt) = 0;
+    // Update data
+    virtual void updateData(int id) = 0;
+};
+
 /**
  * @brief Base class for all entities in the game world.
  * 
@@ -56,7 +70,7 @@ class Entity;
  * 
  * @note The entity class is not intended to be instantiated directly.
  */
-class Entity {
+class Entity : public IRenderable, IUpdatable {
 private:
     static RandomNumberGenerator _gen;
     // Tag of the entity
@@ -79,19 +93,23 @@ public:
     const std::string& tag() const;
     const uint32_t& ID() const;
 
-    bool isActive() const;
+    // Check if the entity is active
+    _ALWAYS_INLINE_ bool isActive() const { return _active; }
+
     void setActive(bool active);
 
     void setSceneRef(std::shared_ptr<AScene> sceneRef);
     const std::shared_ptr<AScene>& getSceneRef() const;
 
     // Load the entity with specialized logic
-    virtual void loadData() {}
+    virtual void loadData() override {}
 
     // Update the entity with specialized logic
-    virtual bool update(float dt) { return _active; }
+    virtual bool update(float dt) override { return _active; }
 
-    virtual void render() {}
+    virtual void updateData(int id) override {}
+
+    virtual void render() override {}
 };
 
 } // namespace soul

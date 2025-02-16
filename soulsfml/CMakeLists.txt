@@ -8,7 +8,7 @@ project(${MY_LIB_NAME} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_LIBRARIES "-stdlib=libc++")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++20 -Wall -I/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1 -fprofile-instr-generate -fcoverage-mapping")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++20 -g -O0 -Wall -I/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1 -fprofile-instr-generate -fcoverage-mapping")
 
 message(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -72,6 +72,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     include_directories(BEFORE "/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1")
 
     target_compile_definitions(${MY_LIB_NAME} PRIVATE DEBUG_MODE)
+    # target_compile_definitions(${MY_LIB_NAME} PRIVATE DEBUG_MODE_STATES)
     target_compile_options(${MY_LIB_NAME} PRIVATE -g -O0 -Wreturn-stack-address -fprofile-instr-generate -fcoverage-mapping -I/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1)
 
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")

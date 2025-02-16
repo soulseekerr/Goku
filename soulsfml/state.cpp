@@ -46,8 +46,8 @@ bool MovementState::landY(Animable& a, float dt) {
     if (a.input.is_jumping) {
         // If we are in jump mode we apply gravity in positive terms
         // because screen coords we go down in positive
-        logManager.logDebug("MovementState::landY by dt {} speed {} velocity {} posy {}", 
-            dt, a._sprite->transform.initialVelocityX, a._sprite->velocity.x, a._sprite->position.y);
+        // logManager.logDebug("MovementState::landY by dt {} speed {} velocity {} posy {}", 
+        //     dt, a._sprite->transform.initialVelocityX, a._sprite->velocity.x, a._sprite->position.y);
 
         a._sprite->velocity.y += a._sprite->transform.gravity * dt; // Apply gravity
     }
@@ -181,6 +181,7 @@ void WalkState::enter(Animable& a) {
 
 void ActionState::defineDependencies(StateManager& stateMgr) {
     _idleStateRef = stateMgr.getActionState<ActionIdleState>(AnimationState::ActionIdle);
+    _idleMovementStateRef = stateMgr.getMovementState<IdleState>(AnimationState::Idle);
 }
 
 bool ActionState::playOnce(Animable& a) {
@@ -189,15 +190,18 @@ bool ActionState::playOnce(Animable& a) {
     if (!currentAnim->isLastFrame()) 
         return false;
 
-    a.setActionState(*_idleStateRef);
-    a.setAnimationState(AnimationState::ActionIdle);
     return true;
 }
 
 void ActionIdleState::defineDependencies(StateManager& stateMgr) {
     ActionState::defineDependencies(stateMgr);
     _punchStateRef = stateMgr.getActionState<PunchState>(AnimationState::Punch);
+    _punchStickStateRef = stateMgr.getActionState<PunchStickState>(AnimationState::PunchStick);
     _shootStateRef = stateMgr.getActionState<ShootState>(AnimationState::ShootFireball);
+    _kickStateRef = stateMgr.getActionState<KickState>(AnimationState::Kick);
+    _kick2StateRef = stateMgr.getActionState<Kick2State>(AnimationState::Kick2);
+    _defStateRef = stateMgr.getActionState<DefensiveState>(AnimationState::Defensive);
+    _koStateRef = stateMgr.getActionState<KnockedOutState>(AnimationState::Knocked);
 }
 
 void ActionIdleState::handleInput(Animable& a) {
@@ -207,8 +211,23 @@ void ActionIdleState::handleInput(Animable& a) {
     if (!a.input.is_jumping && a.input.punch) {
         a.setActionState(*_punchStateRef);
     }
+    else if (a.input.punchStick) {
+        a.setActionState(*_punchStickStateRef);
+    }
     else if (!a.input.is_shooting && a.input.shoot) {
         a.setActionState(*_shootStateRef);
+    }
+    else if (!a.input.is_jumping && a.input.kick) {
+        a.setActionState(*_kickStateRef);
+    }
+    else if (!a.input.is_jumping && a.input.kick2) {
+        a.setActionState(*_kick2StateRef);
+    }
+    else if (!a.input.is_jumping && a.input.defensive) {
+        a.setActionState(*_defStateRef);
+    }
+    else if (a.input.knockedout) {
+        a.setActionState(*_koStateRef);
     }
 }
 
@@ -222,14 +241,14 @@ void PunchState::defineDependencies(StateManager& stateMgr) {
     ActionState::defineDependencies(stateMgr);
 }
 
-void PunchState::handleInput(Animable& a) {
-    if (!a.input.punch) {
-        a.setActionState(*_idleStateRef);
-    }
-}
+void PunchState::handleInput(Animable& a) {}
 
 void PunchState::update(Animable& a, float dt) {
-    ActionState::playOnce(a);
+    // Is Last Frame?
+    if (ActionState::playOnce(a)) {
+        a.setActionState(*_idleStateRef);
+        a.setMovementState(*_idleMovementStateRef);
+    }
     a.resetPosition(); 
 }
 
@@ -237,22 +256,120 @@ void PunchState::enter(Animable& a) {
     a.setAnimationState(AnimationState::Punch);
 }
 
+void PunchStickState::defineDependencies(StateManager& stateMgr) {
+    ActionState::defineDependencies(stateMgr);
+}
+
+void PunchStickState::handleInput(Animable& a) {}
+
+void PunchStickState::update(Animable& a, float dt) {
+    // Is Last Frame?
+    if (ActionState::playOnce(a)) {
+        a.setActionState(*_idleStateRef);
+        a.setMovementState(*_idleMovementStateRef);
+    }
+    a.resetPosition(); 
+}
+
+void PunchStickState::enter(Animable& a) {
+    a.setAnimationState(AnimationState::PunchStick);
+}
 
 void ShootState::defineDependencies(StateManager& stateMgr) {
     ActionState::defineDependencies(stateMgr);
 }
 
-void ShootState::handleInput(Animable& a) {
-    if (!a.input.shoot) {
-        a.setActionState(*_idleStateRef);
-    }
-}
+void ShootState::handleInput(Animable& a) {}
 
 void ShootState::update(Animable& a, float dt) {
-    ActionState::playOnce(a);
+    // Is Last Frame?
+    if (ActionState::playOnce(a)) {
+        a.setActionState(*_idleStateRef);
+        a.setMovementState(*_idleMovementStateRef);
+    }
     a.resetPosition(); 
 }
 
 void ShootState::enter(Animable& a) {
     a.setAnimationState(AnimationState::Shoot);
+}
+
+
+void KickState::defineDependencies(StateManager& stateMgr) {
+    ActionState::defineDependencies(stateMgr);
+}
+
+void KickState::handleInput(Animable& a) {}
+
+void KickState::update(Animable& a, float dt) {
+    // Is Last Frame?
+    if (ActionState::playOnce(a)) {
+        a.setActionState(*_idleStateRef);
+        a.setMovementState(*_idleMovementStateRef);
+    }
+    a.resetPosition(); 
+}
+
+void KickState::enter(Animable& a) {
+    a.setAnimationState(AnimationState::Kick);
+}
+
+
+void Kick2State::defineDependencies(StateManager& stateMgr) {
+    ActionState::defineDependencies(stateMgr);
+}
+
+void Kick2State::handleInput(Animable& a) {}
+
+void Kick2State::update(Animable& a, float dt) {
+    // Is Last Frame?
+    if (ActionState::playOnce(a)) {
+        a.setActionState(*_idleStateRef);
+        a.setMovementState(*_idleMovementStateRef);
+    }
+    a.resetPosition(); 
+}
+
+void Kick2State::enter(Animable& a) {
+    a.setAnimationState(AnimationState::Kick2);
+}
+
+
+void DefensiveState::defineDependencies(StateManager& stateMgr) {
+    ActionState::defineDependencies(stateMgr);
+}
+
+void DefensiveState::handleInput(Animable& a) {}
+
+void DefensiveState::update(Animable& a, float dt) {
+    // Is Last Frame?
+    if (ActionState::playOnce(a)) {
+        a.setActionState(*_idleStateRef);
+        a.setMovementState(*_idleMovementStateRef);
+    }
+    a.resetPosition(); 
+}
+
+void DefensiveState::enter(Animable& a) {
+    a.setAnimationState(AnimationState::Defensive);
+}
+
+
+void KnockedOutState::defineDependencies(StateManager& stateMgr) {
+    ActionState::defineDependencies(stateMgr);
+}
+
+void KnockedOutState::handleInput(Animable& a) {}
+
+void KnockedOutState::update(Animable& a, float dt) {
+    // Is Last Frame?
+    if (ActionState::playOnce(a)) {
+        a.setActionState(*_idleStateRef);
+        a.setMovementState(*_idleMovementStateRef);
+    }
+    a.resetPosition(); 
+}
+
+void KnockedOutState::enter(Animable& a) {
+    a.setAnimationState(AnimationState::Knocked);
 }

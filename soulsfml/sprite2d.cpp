@@ -36,8 +36,8 @@ void Sprite2d::loadTextureImageFilter(
     // sprite.setOrigin(spriteSize.width/2., spriteSize.height/2.);
 }
 
-void Sprite2d::setTextureRect(const soul::Vector2i& pos, const soul::Vector2i& size) {
-    _sprite->setTextureRect(sf::IntRect(sf::Vector2i(pos.x, pos.y), sf::Vector2i(size.x, size.y)));
+void Sprite2d::setTextureRect(const int& px, const int& py, const int& sx, const int& sy) {
+    _sprite->setTextureRect(sf::IntRect(sf::Vector2i(px, py), sf::Vector2i(sx, sy)));
 }
 
 void Sprite2d::setScale(float fx, float fy) {

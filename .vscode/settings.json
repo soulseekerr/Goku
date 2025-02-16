@@ -67,6 +67,7 @@
         "memory": "cpp",
         "print": "cpp",
         "concepts": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "barrier": "cpp"
     }
 }

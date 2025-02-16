@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.28.1)
 set(TESTS_NAME test_entity_states)
 project(${TESTS_NAME})
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall -fsanitize=address -fprofile-instr-generate -fcoverage-mapping")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -g -O0 -Wall -Wreturn-stack-address -fsanitize=address -fsanitize=leak -fprofile-instr-generate -fcoverage-mapping")
 
 # -fprofile-instr-generate: Enables instrumentation to collect profiling data.
 # -fcoverage-mapping: Generates mapping data for code coverage.
@@ -28,7 +28,8 @@ add_executable(${TESTS_NAME} ${SOURCES})
 
 message("Building in Debug mode")
 target_compile_definitions(${TESTS_NAME} PRIVATE DEBUG_MODE)
-target_compile_options(${TESTS_NAME} PRIVATE -g -O0 -Wreturn-stack-address -fprofile-instr-generate -fcoverage-mapping)
+target_compile_definitions(${TESTS_NAME} PRIVATE DEBUG_MODE_STATES)
+target_compile_options(${TESTS_NAME} PRIVATE -g -O0 -Wall -Wreturn-stack-address -fsanitize=address -fsanitize=leak -fprofile-instr-generate -fcoverage-mapping)
 link_directories("/Users/soulseeker/Projects/GitHub/Goku/debug/soul")
 
 target_link_libraries(${TESTS_NAME} GTest::gtest_main libsoul libsoulsfml sfml-system sfml-window sfml-graphics ImGui-SFML::ImGui-SFML)

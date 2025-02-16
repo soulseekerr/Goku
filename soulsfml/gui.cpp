@@ -155,7 +155,9 @@ void GuiSpriteTest::init(const std::string& spriteFilename) {
     auto initialSpriteSize = Vector2i(_size.x, _size.y);
 
     // Initial sprite to load
-    _sprite->setTextureRect(initialSpritePosition, initialSpriteSize);
+    _sprite->setTextureRect(
+        initialSpritePosition.x, initialSpritePosition.y,
+        initialSpriteSize.x, initialSpriteSize.y);
 }
 
 void GuiSpriteTest::render(GameWindow& gw) {
@@ -174,7 +176,7 @@ void GuiSpriteTest::render(GameWindow& gw) {
         ImGui::InputFloat("TexScaleY", &_scale.y);
 
         if (ImGui::Button("Update")) {        
-            _sprite->setTextureRect(_pos, _size);
+            _sprite->setTextureRect(_pos.x, _pos.y, _size.x, _size.y);
             _sprite->setScale(_scale.x, _scale.y);
             LoggerManager::getInstance().log("Tex Position/Size update: ({},{}) ({},{})", _pos.x, _pos.y, _size.x, _size.y);
         }

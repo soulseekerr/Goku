@@ -55,7 +55,9 @@ void Animable::load(const sSpriteData& spriteData, const sTransformScalars& scal
         exit(-1);
     }
 
-    _sprite->setTextureRect(spriteData.initialSpritePosition, spriteData.initialSpriteSize);
+    _sprite->setTextureRect(
+        spriteData.initialSpritePosition.x, spriteData.initialSpritePosition.y,
+        spriteData.initialSpriteSize.x, spriteData.initialSpriteSize.y);
 
     // inverted position on y axis
     _sprite->setPosition(_sprite->position.x, _groundY - _sprite->position.y);
@@ -108,6 +110,8 @@ void Animable::setActionState(ActionState& state) {
     _currentActionState->enter(*this);
 }
 
+void Animable::updateData(int id) {}
+
 bool Animable::update(float dt) {
 
     handleInput();
@@ -120,6 +124,8 @@ bool Animable::update(float dt) {
 
 void Animable::render() {
     soul::GameWindow& gw = soul::GameWindow::getInstance();
+
+    // std::cout << "Render " << this->ID() << std::endl;
 
     gw.window.draw(_sprite->getSprite());
 }

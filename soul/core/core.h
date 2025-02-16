@@ -3,6 +3,8 @@
 #include <atomic>
 #include <type_traits>
 
+#include <semaphore>
+
 // Caught with -Wdangling 
 // warning: temporary whose address is used as value of local variable ...
 // string_view foo(const string& s LIFEIME_BOUND) ...

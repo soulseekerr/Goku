@@ -19,11 +19,6 @@ const std::string& soul::Entity::tag() const {
     return _tag;
 }
 
-// Check if the entity is active
-bool soul::Entity::isActive() const {
-    return _active;
-}
-
 // Set the active state of the entity
 void soul::Entity::setActive(bool active) {
     _active = active;

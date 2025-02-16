@@ -40,7 +40,7 @@ void SpriteAnimation::incrementFrame() {
 const Frame& SpriteAnimation::getCurrentFrame() const { return _frames[_currentFrameIndex]; }
 
 bool SpriteAnimation::isLastFrame() const {
-    // std::cout << "currentFrameIndex=" << currentFrameIndex << " / " << frames.size() <<  std::endl;
+    // std::cout << "currentFrameIndex=" << _currentFrameIndex << " / " << _frames.size() <<  std::endl;
     return _currentFrameIndex >= _frames.size() - 1 ? true : false;
 }
 
@@ -97,7 +97,7 @@ void AnimationSet::update(float dt) {
     if(newFrame) {
         const Frame& data = _currentAnimation.second->getCurrentFrame();
         // _spriteRef->setTextureRect(sf::IntRect(data.x, data.y, data.width, data.height));
-        _spriteRef->setTextureRect(soul::Vector2i(data.x, data.y), soul::Vector2i(data.width, data.height));
+        _spriteRef->setTextureRect(data.x, data.y, data.width, data.height);
     }
 }
 

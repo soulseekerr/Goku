@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
     // Set the initial position of the sprite
     sprite->setPosition(100.f, 50.f);
     sprite->setScale(1.0f, 1.0f);
-    sprite->setTextureRect(soul::Vector2i(10, 128), soul::Vector2i(80, 102));
+    sprite->setTextureRect(10, 128, 80, 102);
 
     // Idle 2nd line
     animationIdle->addFrame(10, 128, 80, 102, 0.25f);

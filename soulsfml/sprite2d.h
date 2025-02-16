@@ -103,7 +103,8 @@ public:
 
     void loadTextureImageFilter(const std::string& filePath, const soul::Vector2f& scale, bool isSmooth, soul::Color bgColor);
 
-    void setTextureRect(const soul::Vector2i& pos, const soul::Vector2i& size);
+    // void setTextureRect(const soul::Vector2i& pos, const soul::Vector2i& size);
+    void setTextureRect(const int& px, const int& py, const int& sx, const int& sy);
     
     void setScale(float fx, float fy);
     

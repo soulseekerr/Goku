@@ -23,41 +23,44 @@ std::vector<std::shared_ptr<soul::Entity>>& EntityManager::getEntities(const std
 }
 
 void EntityManager::addEntity(std::shared_ptr<soul::Entity>& e) {
-    // Create the entity
-    _totalEntities++;
-
     // // Add the entity to the list created to prevent iterator invalidation
-    logManager.logDebug("Adding entity instance {} {}", e->ID(), e->tag());
+    logManager.logDebug("Adding entity instance ID:{} tag:{} IsActive:{}", e->ID(), e->tag(), e->isActive());
     _entitiesToAdd.push_back(e);
 }
 
 void EntityManager::removeDeadEntities() {
+    // Remove dead entities from _entities
+    size_t count_before = _entities.size();
+    _entities.erase(std::remove_if(_entities.begin(), _entities.end(),
+        [](const std::shared_ptr<Entity>& e) {
+            return (!e->isActive());
+        }), _entities.end());
 
-    std::vector<std::tuple<int, std::string>> dead_entities_positions;
+    auto diff = count_before - _entities.size();
+    if (diff > 0) {
+        logManager.logDebug("{} entities removed.", diff);
+    }
 
-    int index = 0;
-    for (auto& e : _entities) {
-        if (!e->isActive()) {
-            // std::cout << "Add dead entity ID " << e->id() << " Tag " << e->tag() << endl;
-            dead_entities_positions.push_back({index, e->tag()});
+    // Remove dead entities from _mapEntities
+    for (auto it = _mapEntities.begin(); it != _mapEntities.end(); ) {
+        it->second.erase(std::remove_if(it->second.begin(), it->second.end(),
+            [](const std::shared_ptr<Entity>& e) {
+                return (!e->isActive());
+            }), it->second.end());
+
+        // If no more entities remain under a tag, remove the tag
+        if (it->second.empty()) {
+            it = _mapEntities.erase(it);
+        } else {
+            ++it;
         }
-        index++;
     }
-
-    for (auto t : dead_entities_positions) {
-        // std::cout << "Deleting dead entity " << std::get<1>(t) << endl;
-        _entities.erase(_entities.begin() + std::get<0>(t));
-    }
-    
-    for (auto t : dead_entities_positions)
-        _mapEntities.erase(std::get<1>(t));
 }
 
 void EntityManager::update()
 {
     // Add the new entities in the containers
-    for (auto e : _entitiesToAdd)
-    {
+    for (auto e : _entitiesToAdd) {
         // std::cout << "Add Entity " << e->tag() << " to map entities" << endl; 
         _entities.push_back(e);
         _mapEntities[e->tag()].push_back(e);

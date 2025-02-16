@@ -6,7 +6,6 @@
 #include "core/utils.h"
 #include "gui.h"
 #include "gamewindow.h"
-#include "entitymanager.h"
 
 #include <iostream>
 #include <thread>
@@ -20,9 +19,6 @@ int main(int argc, char** argv) {
     logManager.addLogger(make_shared<soul::LoggerConsole>(soul::LOG_LEVEL::LOG_DEBUG));
     logManager.log("Starting Sprite Animation Test");
 
-    // Container for entities
-    soul::EntityManager&  entities = soul::EntityManager::getInstance();
-
     // GUI for monitoring player states
     std::shared_ptr<soul::GuiDebugLog> guiDebugLog = std::make_shared<soul::GuiDebugLog>();
 
@@ -31,7 +27,7 @@ int main(int argc, char** argv) {
 
     // Create a window
     soul::GameWindow& gw = soul::GameWindow::getInstance();
-    gw.initialise("Goku Game: Animable Object States", 800, 600, false, 60);
+    gw.initialise("Goku Game: Animable Object States", 1200, 800, false, 60);
     // sf::RenderWindow window(sf::VideoMode(800, 600), "Animable Object States");
     // window.setFramerateLimit(60);
 
@@ -87,6 +83,12 @@ int main(int argc, char** argv) {
                     case sf::Keyboard::Scancode::P: player->input.punch = true; break;
                     case sf::Keyboard::Scancode::S: player->input.shoot = true; break;
                     case sf::Keyboard::Scancode::Space: player->input.shoot = true; break;
+                    case sf::Keyboard::Scancode::K: player->input.kick = true; break;
+                    case sf::Keyboard::Scancode::L: player->input.kick2 = true; break;
+                    case sf::Keyboard::Scancode::E: player->input.jumpkick = true; break;
+                    case sf::Keyboard::Scancode::A: player->input.punchStick = true; break;
+                    case sf::Keyboard::Scancode::D: player->input.defensive = true; break;
+                    case sf::Keyboard::Scancode::Q: player->input.knockedout = true; break;
 
                     default: break;
                 }
@@ -103,6 +105,12 @@ int main(int argc, char** argv) {
                     case sf::Keyboard::Scancode::P: player->input.punch = false; break;
                     case sf::Keyboard::Scancode::S: player->input.shoot = false; break;
                     case sf::Keyboard::Scancode::Space: player->input.shoot = false; break;
+                    case sf::Keyboard::Scancode::K: player->input.kick = false; break;
+                    case sf::Keyboard::Scancode::L: player->input.kick2 = false; break;
+                    case sf::Keyboard::Scancode::E: player->input.jumpkick = false; break;
+                    case sf::Keyboard::Scancode::A: player->input.punchStick = false; break;
+                    case sf::Keyboard::Scancode::D: player->input.defensive = false; break;
+                    case sf::Keyboard::Scancode::Q: player->input.knockedout = false; break;
 
                     default: break;
                 }
@@ -112,23 +120,12 @@ int main(int argc, char** argv) {
         auto currentTime = std::chrono::high_resolution_clock::now();
         float dt = std::chrono::duration<float>(currentTime - lastTime).count();
         lastTime = currentTime;
+        // auto localdt = deltaClock.getElapsedTime().asSeconds();
 
         ImGui::SFML::Update(gw.window, sf::seconds(dt));
 
         // Update the player 
         player->update(dt);
-
-        // auto localdt = deltaClock.getElapsedTime().asSeconds();
-
-        // important to refresh the entities in the manager instance
-        // also to delete from memory any dead entities
-        entities.update();
-
-        // Hanlde Inputs in the Animable objects
-        for (const auto& entity : entities.getEntities()) {
-            // Update the states and animation associated to the current movement or action
-            entity->update(dt);
-        }
 
         // Clear the window
         gw.window.clear(sf::Color(50, 50, 50, 0));
@@ -137,18 +134,7 @@ int main(int argc, char** argv) {
         text.setString(std::format("{:.1f} f/s", 1/dt));
         gw.window.draw(text);
 
-        // Draw all the entities
-        for (const auto& e : entities.getEntities()) {
-            if (!e->isActive()) {
-
-                logManager.log("Entity is no longer active {}", e->tag());
-                continue;
-            }
-
-            e->render();
-        }
-
-        gw.window.draw(player->getSprite());
+        player->render();
 
         guiDebugLog->render(gw);
         guiStates->render(gw);

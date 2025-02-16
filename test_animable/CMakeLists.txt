@@ -24,6 +24,7 @@ add_executable(${TESTS_NAME} ${SOURCES})
 
 message("Building in Debug mode")
 target_compile_definitions(${TESTS_NAME} PRIVATE DEBUG_MODE)
+# target_compile_definitions(${TESTS_NAME} PRIVATE DEBUG_MODE_STATES)
 target_compile_options(${TESTS_NAME} PRIVATE -g -O0)
 link_directories("/Users/soulseeker/Projects/GitHub/Goku/debug/soul")
 

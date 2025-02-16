@@ -1,0 +1,69 @@
+
+# problems with Clang / llvm versions on macos
+# Clang 16 vs Clang 19
+
+
+# Keep v16 to align with Clang version on this machine.
+# brew install llvm@16
+# brew link --force llvm@16
+
+
+# Ensure your program is compiled with the necessary flags to generate profiling information.
+# This tells Clang to instrument your binary with profiling data.
+
+# clang++ -fprofile-instr-generate -fcoverage-mapping -o your_program your_program.cpp
+
+# Once the program is compiled, run it to generate the profiling data.
+# This will create a .profraw file (e.g., default.profraw) in your working directory.
+
+# ./your_program
+
+# Next, you need to merge the raw profile data (.profraw) into a format that can 
+
+# /Library/Developer/CommandLineTools/usr/bin/llvm-profdata merge default.profraw -o default.profdata
+# /usr/local/opt/llvm@16/bin/llvm-profdata merge default.profraw -o default.profdata
+
+# This generates the .profdata file that contains the merged profiling data.
+
+# /Library/Developer/CommandLineTools/usr/bin/llvm-cov show ./your_program -instr-profile=default.profdata
+
+# /opt/homebrew/opt/llvm/bin/llvm-cov show ./your_program -instr-profile=default.profdata
+
+# This will output annotated source code, showing which lines were executed and how frequently.
+
+
+# Recap
+
+# clang++ -fprofile-instr-generate -fcoverage-mapping -o your_program your_program.cpp
+
+# ./debug/Debug/bin/test_state_animable 
+
+# /opt/homebrew/opt/llvm@16/bin/llvm-profdata merge default.profraw -o default.profdata
+
+# /Library/Developer/CommandLineTools/usr/bin/llvm-cov export ./debug/Debug/bin/test_state_animable -instr-profile=default.profdata > coverage.json
+
+# /opt/homebrew/opt/llvm@16/bin/llvm-cov show ./debug/Debug/bin/test_state_animable \
+# -instr-profile=default.profdata \
+# -format=html \
+# -output-dir=coverage_html
+
+# /opt/homebrew/opt/llvm@16/bin/llvm-cov report ./debug/Debug/bin/test_state_animable \
+# -instr-profile=default.profdata
+
+# /opt/homebrew/opt/llvm@16/bin/llvm-cov report ./debug/Debug/bin/test_state_animable \ 
+# -instr-profile=default.profdata > llvm_report.txt
+
+
+# Reconfigure cmake for the compiler paths
+# cmake -B build -DCMAKE_C_COMPILER=/opt/homebrew/Cellar/llvm/19.1.7/bin/clang -DCMAKE_CXX_COMPILER=/opt/homebrew/Cellar/llvm/19.1.7/bin/clang++
+
+# Clear Cache and Reconfigure
+# rm -rf build    # Remove the old build folder
+# cmake -B build -DCMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang -DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++
+# cmake --build build  # Rebuild using Clang 19
+
+
+# Verify the compiler
+# cmake --system-information | grep "CMAKE_CXX_COMPILER"
+
+# /opt/homebrew/opt/llvm/bin/clang++ --print-resource-dir

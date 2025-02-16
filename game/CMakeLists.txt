@@ -23,6 +23,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     link_directories("/Users/soulseeker/Projects/GitHub/Goku/debug/soul")
     link_directories("/Users/soulseeker/Projects/GitHub/Goku/debug/soulsfml")
     target_compile_definitions(${BINARY_NAME} PRIVATE DEBUG_MODE)
+    # target_compile_definitions(${BINARY_NAME} PRIVATE DEBUG_MODE_STATES)
     target_compile_definitions(${BINARY_NAME} PRIVATE GL_SILENCE_DEPRECATION)
     target_compile_options(${BINARY_NAME} PRIVATE -g -O0 -Wdeprecated-declarations)
 
