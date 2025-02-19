@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.28.1)
 set(TESTS_NAME gokutests)
 project(${TESTS_NAME})
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -g -O0 -Wall")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")
@@ -21,9 +21,9 @@ FetchContent_MakeAvailable(googletest)
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 include_directories((BEFORE "../debug/_deps/googletest-src/googletest/include/gtest"))
+include_directories((BEFORE "../debug/_deps/benchmark-src/include/benchmark"))
 include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soul")
 include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soulsfml")
-
 include_directories(BEFORE "../debug/_deps/sfml-src/include")
 include_directories(BEFORE "../debug/_deps/imgui-src/include")
 include_directories(BEFORE "../debug/_deps/imgui-src")
@@ -36,6 +36,7 @@ set(SOURCES_TEST
     time_elapsed_test.cpp
     texture_test.cpp
     sprite_test.cpp
+    safe_numeric_test.cpp
 )
 
 # Testing with google test
@@ -54,7 +55,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     link_directories("/Users/soulseeker/Projects/GitHub/Goku/release/soul")
 endif()
 
-target_link_libraries(${TESTS_NAME} GTest::gtest_main libsoul libsoulsfml sfml-system sfml-window sfml-graphics)
+target_link_libraries(${TESTS_NAME} GTest::gtest_main benchmark::benchmark libsoul libsoulsfml sfml-system sfml-window sfml-graphics)
 
 include(GoogleTest)
 gtest_discover_tests(${TESTS_NAME})
