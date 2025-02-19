@@ -35,3 +35,6 @@
 debug/**
 release/**
 build/**
+test_entity_states/build/**
+soul/build/**
+soulsfml/build/**
