@@ -29,6 +29,7 @@ include_directories(BEFORE "../debug/_deps/imgui-sfml-src")
 
 set(SOURCES_TEST 
     safe_numeric_benchmark.cpp
+    hashset_benchmark.cpp
 )
 
 # Testing with google test
