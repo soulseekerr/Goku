@@ -42,7 +42,7 @@ struct sSpriteData {
     // Initial px size in the Sprite sheet
     soul::Vector2i initialSpriteSize;
     // Coordinates px of screen as they are defined 0,0 from top left.
-    soul::Vector2i initialPosition;
+    soul::Vector2f initialPosition;
     // Filter Transparency By Color
     bool enableColorFilter {false};
     // Filtering Color

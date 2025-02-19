@@ -8,8 +8,8 @@ using namespace soul;
 Fireball::Fireball(
     FireballSystem& system,
     const std::string& tag, 
-    int initialPosX, 
-    int initialPosY, 
+    float initialPosX, 
+    float initialPosY, 
     float initialLifetime, 
     float speedX, 
     int direction, 
@@ -37,7 +37,7 @@ void Fireball::loadData() {
         soul::Vector2f(1.5f, 1.5f), // Scaling the sprite from the image
         soul::Vector2i(10, 128), // Initial px position in the Sprite sheet
         soul::Vector2i(70, 70), // Initial px size in the Sprite sheet
-        soul::Vector2i(posX, posY), // Coordinates px of screen as they are defined 0,0 from top left.
+        soul::Vector2f(posX, posY), // Coordinates px of screen as they are defined 0,0 from top left.
         false, // Filter Transparency By Color
         soul::Color(0, 0, 0, 0) // Filtering Color
     };
@@ -75,30 +75,20 @@ void Fireball::loadData() {
 }
 
 void Fireball::updateData(int index) {
-    // auto& sp = this->getSprite();
+    const auto& pos = _system.getCurrentPosition();
+    const auto& dir = _system.getCurrentDirection();
 
-    const auto& playerPos = _system.getPlayer().getPosition();
-    const int& dir = _system.getPlayer().getTransform().direction;
-
-    int initialPosX = playerPos.x + dir * (index-1) * 70;
-    float speedX = 100.0f;
-
-    _metrics.speedX = speedX;
+    // auto pos_x = pos.x + dir * (index-1) * 70.0f;
+    // auto pos_y = pos.y;
+    
     _metrics.lifetime = 1.0f;
     _metrics.direction = dir;
-    _initialPosition.x = initialPosX;
-    _initialPosition.y = playerPos.y;
+    _initialPosition.x = pos.x;
+    _initialPosition.y = pos.y;
     _angleSprite = -90.0f * dir;
 
-    // std::cout << "updateData PosX: " << _initialPosition.x << "   PosY: " << _initialPosition.y << std::endl;
-
-    // sp.setPosition(sf::Vector2f(_initialPosition.x + 0.01f, _initialPosition.y + 0.01f));
-    // sp.setScale(sp.getScale() * (dir * 1.0f));
-
-    // std::cout << "Animable PosX: " << sp.getPosition().x << std::endl;
-
-    Animable::setVelocityX(speedX);
-
+    this->setPosition(pos.x, pos.y);
+    Animable::resetPosition();
     setActive(true);
 }
 
@@ -115,7 +105,7 @@ bool Fireball::update(float dt) {
         std::cout << "Fireball is dead now, disabling it" << std::endl;
         setActive(false);
         _system.signalShoot();
-        return false;
+        return isActive();
     }
 
     // std::cout << std::format("pos x: {:.0f} pos y: {:.0f} lifetime = {:.1f}", x, y, _metrics.lifetime) << std::endl;
@@ -127,8 +117,8 @@ bool Fireball::update(float dt) {
 
 void FireballSystem::initFireballs(Player* player) {
     _player = player;
-    auto& transform = _player->getTransform();
-    auto& pos = _player->getPosition();
+    const auto& transform = _player->getTransform();
+    const auto& pos = _player->getPosition();
 
     // Allocate fireballs ready to use
     for (auto id = 1; id <= _thr_fireball_count; id++) {
@@ -170,16 +160,19 @@ void FireballSystem::initFireballs(Player* player) {
 void FireballSystem::latchFireballs() {       
     // Create a latch with predefined number of threads to run in parallel
     // _thr_fireball_count: Number of Fireballs to create
-    auto count = getFireballCount();
 
 #ifdef DEBUG_MODE_STATES
     logManager.logDebug("{} fireballs to latch", count);
 #endif
 
-    std::latch latch(count);
+    // Saving current Player position (copy!)
+    _currentPosition = soul::Vector2f(_player->getPosition());
+    _currentDirection = _player->getTransform().direction;
+
+    std::latch latch(_thr_fireball_count);
 
     std::vector<std::jthread> jthreads;
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < _thr_fireball_count; ++i) {
         jthreads.emplace_back([this, &latch, i]() { threadLatchFireball(latch, i); });
     }
 
@@ -187,8 +180,6 @@ void FireballSystem::latchFireballs() {
 }
 
 void FireballSystem::threadLatchFireball(std::latch& latch, int index) {
-    auto& logManager = soul::LoggerManager::getInstance();
-    
     // Get Next Active Fireball
     auto fb = _fireballs[index];
 
@@ -197,7 +188,7 @@ void FireballSystem::threadLatchFireball(std::latch& latch, int index) {
         // Update data in the entity before rendering it
         fb->updateData(index);
 
-    } else{
+    } else {
         logManager.logWarn("No Fireball available from the pool!");
     }
 
@@ -221,24 +212,6 @@ void FireballSystem::signalShoot() {
             _player->input.is_shooting = false;
         }
     }
-}
-
-std::shared_ptr<Entity>& FireballSystem::getPoolable(const int index) {
-    // std::scoped_lock lock(_mutex_poolable); // it is done in a thread
-    // auto it = std::find_if(_poolables.begin(), _poolables.end(),
-        // [](std::shared_ptr<Entity>& e) {
-            // return !e->isActive();  // get non active entity
-        // });
-
-    // If a valid entity is found, return it; otherwise, return optional nullopt
-    // return (it != _poolables.end()) ? std::make_optional(*it) : std::nullopt;
-    // if (it != _poolables.end()) {
-    //     (*it)->setActive(true);  // Ensure the entity is marked active
-    //     return std::make_optional(*it);
-    // }
-
-    // return std::nullopt;
-    return _fireballs[index];
 }
 
 void FireballSystem::update(float dt) {

@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
         soul::Vector2f(1.2f, 1.2f), 
         soul::Vector2i(10, 128), 
         soul::Vector2i(80, 102), 
-        soul::Vector2i(300, 50), 
+        soul::Vector2f(300, 50), 
         false, 
         soul::Color(0, 0, 0, 0)    
     };

@@ -18,7 +18,7 @@ void Player::loadData() {
         soul::Vector2f(1.2f, 1.2f), // Scaling the sprite from the image
         soul::Vector2i(10, 128), // Initial px position in the Sprite sheet
         soul::Vector2i(80, 102), // Initial px size in the Sprite sheet
-        soul::Vector2i(300, 450), // Coordinates px of screen as they are defined 0,0 from top left.
+        soul::Vector2f(300, 450), // Coordinates px of screen as they are defined 0,0 from top left.
         false, // Filter Transparency By Color
         soul::Color(0, 0, 0, 0) // Filtering Color
     };

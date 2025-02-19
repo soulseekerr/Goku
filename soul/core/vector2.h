@@ -13,6 +13,11 @@ public:
     Vector2(T x_, T y_) : x(x_), y(y_) {}
     ~Vector2() = default;
 
+    Vector2(const Vector2<T>& o) {
+        x = o.x;
+        y = o.y;
+    }
+
     float length() const
     {
         return sqrtf((x*x)+(y*y));

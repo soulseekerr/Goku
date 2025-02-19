@@ -26,7 +26,7 @@ private:
     // Reference to the system of fireballs
     FireballSystem& _system;
     sFireballMetrics _metrics;
-    soul::Vector2i _initialPosition;
+    soul::Vector2f _initialPosition;
     float _angleSprite;
 
 public:
@@ -35,8 +35,8 @@ public:
     explicit Fireball(
         FireballSystem& system,
         const std::string& tag, 
-        int initialPosX, 
-        int initialPosY, 
+        float initialPosX, 
+        float initialPosY, 
         float initialLifetime, 
         float speedX, 
         int direction,
@@ -67,8 +67,11 @@ private:
     
     // Pointer to the instance of Player
     Player* _player;
+    // Current position and direction to save when we shoot
+    soul::Vector2f _currentPosition;
+    int _currentDirection;
     // Number of fireballs to shoot
-    static constexpr int _thr_fireball_count = 10;
+    static constexpr int _thr_fireball_count = 1;
     // Container for poolables (flyweight)
     std::vector<std::shared_ptr<Entity>> _fireballs;
     // Atomic counter variable used as lock for fireball shots
@@ -78,11 +81,10 @@ public:
     FireballSystem() : _player(nullptr) {}
     ~FireballSystem() = default;
 
-    std::shared_ptr<Entity>& getPoolable(const int index);
-
     const Player& getPlayer() const { return *_player; } 
 
-    int getFireballCount() const { return _thr_fireball_count; }
+    const soul::Vector2f& getCurrentPosition() const { return _currentPosition; }
+    const int getCurrentDirection() const { return _currentDirection; }
 
     const std::vector<std::shared_ptr<Entity>>& getFireballs() const { return _fireballs; }
     
