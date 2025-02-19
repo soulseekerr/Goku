@@ -2,7 +2,6 @@
 
 #include <atomic>
 #include <type_traits>
-
 #include <semaphore>
 
 // Caught with -Wdangling 
@@ -81,31 +80,6 @@ public:
 		return value.fetch_sub(p_value, std::memory_order_acq_rel);
 	}
 
-	_ALWAYS_INLINE_ T exchange_if_greater(T p_value) {
-		while (true) {
-			T tmp = value.load(std::memory_order_acquire);
-			if (tmp >= p_value) {
-				return tmp; // already greater, or equal
-			}
-
-			if (value.compare_exchange_weak(tmp, p_value, std::memory_order_acq_rel)) {
-				return p_value;
-			}
-		}
-	}
-
-	_ALWAYS_INLINE_ T conditional_increment() {
-		while (true) {
-			T c = value.load(std::memory_order_acquire);
-			if (c == 0) {
-				return 0;
-			}
-			if (value.compare_exchange_weak(c, c + 1, std::memory_order_acq_rel)) {
-				return c + 1;
-			}
-		}
-	}
-
 	_ALWAYS_INLINE_ explicit SafeNumeric<T>(T p_value = static_cast<T>(0)) {
 		set(p_value);
 	}
@@ -114,9 +88,11 @@ public:
 class SafeFlag {
 	std::atomic_bool flag;
 
-	static_assert(std::atomic_bool::is_always_lock_free);
+	static_assert(std::atomic_bool::is_always_lock_free, "Atomic bool must be lock-free");
 
 public:
+	explicit SafeFlag(bool p_value = false) : flag(p_value) {}
+
 	_ALWAYS_INLINE_ bool is_set() const {
 		return flag.load(std::memory_order_acquire);
 	}
@@ -131,9 +107,5 @@ public:
 
 	_ALWAYS_INLINE_ void set_to(bool p_value) {
 		flag.store(p_value, std::memory_order_release);
-	}
-
-	_ALWAYS_INLINE_ explicit SafeFlag(bool p_value = false) {
-		set_to(p_value);
 	}
 };

@@ -1,12 +1,31 @@
 {
   "version": "0.2.0",
   "configurations": [
-
+    {
+      "name": "Debug gokutests with CMake",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin/gokutests",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "/Users/soulseeker/Projects/GitHub/Goku",
+      "environment": [],
+      "externalConsole": true,
+      "MIMode": "lldb", // Use lldb instead of gdb
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for lldb",
+          "text": "settings set target.prefer-dynamic-value run-target",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build"
+    },
     {
       "name": "Debug Goku with CMake",
       "type": "cppdbg",
       "request": "launch",
-      "program": "/Users/soulseeker/Projects/GitHub/Goku/debug/goku", // Replace with your executable path
+      "program": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin/goku",
       "args": [],
       "stopAtEntry": false,
       "cwd": "/Users/soulseeker/Projects/GitHub/Goku",
@@ -26,7 +45,7 @@
       "name": "Debug test_spriteanim with CMake",
       "type": "cppdbg",
       "request": "launch",
-      "program": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin/test_spriteanim", // Replace with your executable path
+      "program": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin/test_spriteanim",
       "args": [],
       "stopAtEntry": false,
       "cwd": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin",
@@ -46,7 +65,7 @@
       "name": "Debug test_state_animable with CMake",
       "type": "cppdbg",
       "request": "launch",
-      "program": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin/test_state_animable", // Replace with your executable path
+      "program": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin/test_state_animable",
       "args": [],
       "stopAtEntry": false,
       "cwd": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin",
@@ -66,7 +85,7 @@
       "name": "Debug test_entity_states with CMake",
       "type": "cppdbg",
       "request": "launch",
-      "program": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin/test_entity_states", // Replace with your executable path
+      "program": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin/test_entity_states",
       "args": [],
       "stopAtEntry": false,
       "cwd": "/Users/soulseeker/Projects/GitHub/Goku/debug/Debug/bin",
