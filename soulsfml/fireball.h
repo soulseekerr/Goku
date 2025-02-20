@@ -86,6 +86,8 @@ public:
     const soul::Vector2f& getCurrentPosition() const { return _currentPosition; }
     const int getCurrentDirection() const { return _currentDirection; }
 
+    const int getFireballCount() const { return _thr_fireball_count; }
+
     const std::vector<std::shared_ptr<Entity>>& getFireballs() const { return _fireballs; }
     
     void initFireballs(Player* player);

@@ -37,6 +37,8 @@ set(SOURCES_TEST
     texture_test.cpp
     sprite_test.cpp
     safe_numeric_test.cpp
+    singleton_test.cpp
+    fireball_test.cpp
 )
 
 # Testing with google test
