@@ -120,6 +120,8 @@ void FireballSystem::initFireballs(Player* player) {
     const auto& transform = _player->getTransform();
     const auto& pos = _player->getPosition();
 
+    _fireballs.clear();
+
     // Allocate fireballs ready to use
     for (auto id = 1; id <= _thr_fireball_count; id++) {
 
