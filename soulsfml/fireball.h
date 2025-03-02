@@ -71,7 +71,7 @@ private:
     soul::Vector2f _currentPosition;
     int _currentDirection;
     // Number of fireballs to shoot
-    static constexpr int _thr_fireball_count = 1;
+    static constexpr int _thr_fireball_count = 2;
     // Container for poolables (flyweight)
     std::vector<std::shared_ptr<Entity>> _fireballs;
     // Atomic counter variable used as lock for fireball shots
