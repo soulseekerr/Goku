@@ -40,8 +40,8 @@ set(IMGUI_SFML_FIND_SFML OFF)
 set(IMGUI_SFML_IMGUI_DEMO ON)
 FetchContent_MakeAvailable(imgui-sfml)
 
-include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soul")
-include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soulsfml")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soul")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soulsfml")
 include_directories(BEFORE "/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1")
 
 

@@ -18,7 +18,7 @@ include(FetchContent)
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
 
-include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soul")
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soul")
 
 set(SOURCES 
     core/datetime.cpp
