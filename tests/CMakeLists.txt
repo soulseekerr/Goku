@@ -39,6 +39,8 @@ set(SOURCES_TEST
     safe_numeric_test.cpp
     singleton_test.cpp
     fireball_test.cpp
+    hashset_test.cpp
+    collision_test.cpp
 )
 
 # Testing with google test
