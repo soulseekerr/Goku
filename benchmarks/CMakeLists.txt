@@ -31,6 +31,7 @@ set(SOURCES_TEST
     safe_numeric_benchmark.cpp
     hashset_benchmark.cpp
     sort_benchmark.cpp
+    sort_multithread_benchmark.cpp
 )
 
 # Testing with google test
