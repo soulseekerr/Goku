@@ -13,13 +13,13 @@ public:
 
     T left, top, width, height;
 
-    bool contains(const soul::Vector2<T>& v) {
+    bool contains(const soul::Vector2<T>& v) const {
         return v.x >= left && v.x <= left+width && v.y >= top && v.y <= top+height;
     }
 
     // TODO to test versus isAABBIntersection
-    bool intersects(const Rect<T>& r) {
-        return left < r.left + r.width && left + width > r.left && top < r.top + r.height && top + height > r.height;
+    bool intersects(const Rect<T>& r) const {
+        return left < r.left + r.width && left + width > r.left && top < r.top + r.height && top + height > r.top;
     }
 };
 
