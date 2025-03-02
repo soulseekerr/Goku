@@ -13,6 +13,7 @@ include_directories(BEFORE "/Users/soulseeker/Projects/GitHub/Goku/soulsfml")
 
 set(SOURCES 
     main.cpp 
+    game.cpp
 )
 
 add_executable(${BINARY_NAME} ${SOURCES})

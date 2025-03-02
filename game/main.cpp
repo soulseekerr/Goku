@@ -1,8 +1,7 @@
 
 #include "core/logger.h"
-#include <iostream>
-
-#define DEBUGMODE
+#include "core/utils.h"
+#include "game.h"
 
 #ifdef DEBUGMODE
 #define DEFINED_LOG_LEVEL soul::LOG_LEVEL::LOG_DEBUG
@@ -13,8 +12,9 @@
 int main(int argc, char** argv) {
     auto& logManager = soul::LoggerManager::getInstance();
     logManager.addLogger(make_shared<soul::LoggerConsole>(DEFINED_LOG_LEVEL));
+    logManager.log("Starting Goku");
 
-    logManager.log("Starting Game Goku");
+    Game& game = Game::getInstance();
 
-    return 0;
+    return game.run();
 }
