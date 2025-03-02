@@ -9,3 +9,7 @@ A state machine pattern is implemented to handle character animations efficientl
 Tools such as ImGui are used for real-time visualization and adjustment of game parameters and entity states.
 Google Test for unit tests.
 Google Benchmark for testing performance on container classes.
+
+Clang 19.7
+SFML 3
+CMake 3.28
