@@ -28,6 +28,7 @@ private:
     sFireballMetrics _metrics;
     soul::Vector2f _initialPosition;
     float _angleSprite;
+    int _previousDirection {1};
 
 public:
     Fireball() = delete;
@@ -55,6 +56,9 @@ public:
 
     const float& getSpeedX() const { return _metrics.speedX; }
     const float& getLifetime() const { return _metrics.lifetime; }
+
+    const int getPreviousDirection() const { return _previousDirection; }
+    void setPreviousDirection(int dir) { _previousDirection = dir; }
 };
 
 /**
@@ -68,8 +72,9 @@ private:
     // Pointer to the instance of Player
     Player* _player;
     // Current position and direction to save when we shoot
-    soul::Vector2f _currentPosition;
-    int _currentDirection;
+    // soul::Vector2f _currentPosition;
+    // int _currentDirection;
+    
     // Number of fireballs to shoot
     static constexpr int _thr_fireball_count = 2;
     // Container for poolables (flyweight)
@@ -82,9 +87,6 @@ public:
     ~FireballSystem() = default;
 
     const Player& getPlayer() const { return *_player; } 
-
-    const soul::Vector2f& getCurrentPosition() const { return _currentPosition; }
-    const int getCurrentDirection() const { return _currentDirection; }
 
     const int getFireballCount() const { return _thr_fireball_count; }
 

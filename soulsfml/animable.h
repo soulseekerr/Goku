@@ -35,6 +35,38 @@ struct sInput {
     bool is_on_ground {false};
 };
 
+
+// enum class InputAction {
+//     Up,
+//     Down,
+//     Left,
+//     Right,
+//     Punch,
+//     PunchStick,
+//     Kick,
+//     Kick2,
+//     JumpKick,
+//     Shoot,
+//     KnockedOut,
+//     Defensive,
+//     IsShooting,
+//     IsJumping,
+//     IsOnGround,
+//     Count // Used for the size of bitset
+// };
+
+// Input handler using bitset
+// class InputState {
+// public:
+//     void press(InputAction action) { state.set(static_cast<size_t>(action)); }
+//     void release(InputAction action) { state.reset(static_cast<size_t>(action)); }
+//     bool isPressed(InputAction action) const { return state.test(static_cast<size_t>(action)); }
+//     void reset() { state.reset(); }
+    
+// private:
+//     std::bitset<static_cast<size_t>(InputAction::Count)> state;
+// };
+
 /**
  * @brief Animable class
  * Class that embeds a sprite and animations for an active entity
@@ -110,6 +142,10 @@ public:
     _ALWAYS_INLINE_ void incrRotation(float a) {
         sf::Angle angle = _sprite->getSprite().getRotation();
         _sprite->setRotation(angle.asDegrees() + a);
+    }
+
+    _ALWAYS_INLINE_ void setRotation(float a) {
+        _sprite->setRotation(a);
     }
 
     _ALWAYS_INLINE_ void setVelocityX(float x) {

@@ -75,28 +75,31 @@ void Fireball::loadData() {
 }
 
 void Fireball::updateData(int index) {
-    const auto& pos = _system.getCurrentPosition();
-    const auto& dir = _system.getCurrentDirection();
-
-    // auto pos_x = pos.x + dir * (index-1) * 70.0f;
-    // auto pos_y = pos.y;
+    const auto& pos = _system.getPlayer().getPosition();
+    const auto& dir = _system.getPlayer().getTransform().direction;
     
-    _metrics.lifetime = 1.0f;
+    _metrics.lifetime = 2.0f;
     _metrics.direction = dir;
     _initialPosition.x = pos.x;
     _initialPosition.y = pos.y;
-    _angleSprite = -90.0f * dir;
 
-    this->setPosition(pos.x, pos.y);
+    Animable::setPosition(pos.x, pos.y);
     Animable::resetPosition();
+
+    if (getPreviousDirection() != dir) {
+        setPreviousDirection(dir);
+        _angleSprite = _angleSprite + 180 * dir;
+        Animable::setRotation(_angleSprite);
+    }
+
     setActive(true);
 }
 
 bool Fireball::update(float dt) {
     // Update bullet position based on velocity
     Animable::incrPositionX(_metrics.direction * _metrics.speedX * dt);
-    Animable::incrRotation(_metrics.direction * 10.0f * dt);
-
+    // Animable::incrRotation(_metrics.direction * 10.0f * dt);
+    
     // Decrease remaining lifetime
     _metrics.lifetime -= dt;
 
@@ -132,7 +135,7 @@ void FireballSystem::initFireballs(Player* player) {
         int initialPosY = pos.y;
         float initialLifetime = 2.0f;
         float speedX = 300.0f;
-        float angle = -90.0f * direction;  
+        float angle = -90 * direction;  
 
         // Dont use auto keyword here to allow implicit casting
         std::shared_ptr<soul::Entity> fb;
@@ -168,8 +171,8 @@ void FireballSystem::latchFireballs() {
 #endif
 
     // Saving current Player position (copy!)
-    _currentPosition = soul::Vector2f(_player->getPosition());
-    _currentDirection = _player->getTransform().direction;
+    // _currentPosition = soul::Vector2f(_player->getPosition());
+    // _currentDirection = _player->getTransform().direction;
 
     std::latch latch(_thr_fireball_count);
 
