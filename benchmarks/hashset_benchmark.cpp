@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <unordered_map>
+#include <chrono>
+#include <unordered_set>
 
 using namespace soul;
 
@@ -116,3 +118,53 @@ static void BM_UnorderedMapRemove(benchmark::State& state) {
     }
 }
 BENCHMARK(BM_UnorderedMapRemove)->Arg(1000)->Arg(10000)->Arg(100000);
+
+
+// V2
+// Google Benchmark for HashSet_t
+static void BM_HashSetInsert2(benchmark::State& state) {
+    HashSet_t<int> hashSet;
+    for (auto _ : state) {
+        for (int i = 0; i < state.range(0); ++i) {
+            hashSet.insert(i);
+        }
+    }
+}
+BENCHMARK(BM_HashSetInsert2)->Range(1<<10, 1<<20);
+
+static void BM_HashSetSearch2(benchmark::State& state) {
+    HashSet_t<int> hashSet;
+    for (int i = 0; i < state.range(0); ++i) {
+        hashSet.insert(i);
+    }
+    for (auto _ : state) {
+        for (int i = 0; i < state.range(0); ++i) {
+            benchmark::DoNotOptimize(hashSet.search(i));
+        }
+    }
+}
+BENCHMARK(BM_HashSetSearch2)->Range(1<<10, 1<<20);
+
+// Google Benchmark for std::unordered_set
+static void BM_UnorderedSetInsert2(benchmark::State& state) {
+    std::unordered_set<int> stdSet;
+    for (auto _ : state) {
+        for (int i = 0; i < state.range(0); ++i) {
+            stdSet.insert(i);
+        }
+    }
+}
+BENCHMARK(BM_UnorderedSetInsert2)->Range(1<<10, 1<<20);
+
+static void BM_UnorderedSetSearch2(benchmark::State& state) {
+    std::unordered_set<int> stdSet;
+    for (int i = 0; i < state.range(0); ++i) {
+        stdSet.insert(i);
+    }
+    for (auto _ : state) {
+        for (int i = 0; i < state.range(0); ++i) {
+            benchmark::DoNotOptimize(stdSet.find(i));
+        }
+    }
+}
+BENCHMARK(BM_UnorderedSetSearch2)->Range(1<<10, 1<<20);
