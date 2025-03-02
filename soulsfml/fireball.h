@@ -80,7 +80,8 @@ private:
     // Container for poolables (flyweight)
     std::vector<std::shared_ptr<Entity>> _fireballs;
     // Atomic counter variable used as lock for fireball shots
-    std::atomic<int> _thr_current_count_fireball{0};
+    // std::atomic<int> _thr_current_count_fireball{0};
+    SafeNumeric<int> _thr_current_count_fireball{0};
         
 public:
     FireballSystem() : _player(nullptr) {}

@@ -202,15 +202,15 @@ void FireballSystem::threadLatchFireball(std::latch& latch, int index) {
 
 void FireballSystem::signalShoot() {
 
-    _thr_current_count_fireball++;
+    _thr_current_count_fireball.increment();
 
-    if (_thr_current_count_fireball == _thr_fireball_count) {
+    if (_thr_current_count_fireball.get() == _thr_fireball_count) {
 
 #ifdef DEBUG_MODE_STATES
         logManager.logDebug("Signal shoot reached {} fireballs. Re-enable shoot.", _thr_fireball_count);
 #endif
 
-        _thr_current_count_fireball = 0;
+        _thr_current_count_fireball.set(0);
         
         if (_player) {
             _player->input.shoot = false;
