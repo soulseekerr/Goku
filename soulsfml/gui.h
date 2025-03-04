@@ -10,8 +10,8 @@
 #include "imgui-SFML.h" // for ImGui::SFML::* functions and SFML-specific overloads
 
 // #include "core/vector.h"
-#include "core/log_levels.h"
-#include "core/logger.h"
+#include "log_levels.h"
+#include "logger.h"
 #include "sprite2d.h"
 #include "gamewindow.h"
 #include "animable.h"

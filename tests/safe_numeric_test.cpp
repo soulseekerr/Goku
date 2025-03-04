@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <thread>
 #include <vector>
-#include "core/core.h"
+#include "core.h"
 
 // --- SafeNumeric Tests ---
 TEST(SafeNumericTest, BasicOperations) {

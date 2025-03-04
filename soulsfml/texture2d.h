@@ -4,9 +4,9 @@
 #include <format>
 #include <cmath>
 
-#include "core/utils.h"
-#include "ecs/entity.h"
-#include "core/vector2.h"
+#include "utils.h"
+#include "entity.h"
+#include "vector2.h"
 #include "color.h"
 #include "image.h"
 

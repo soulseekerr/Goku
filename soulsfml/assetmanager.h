@@ -6,8 +6,8 @@
 #include <cstdint>
 #include <map>
 
-#include "core/singleton.h"
-#include "core/hashset.h"
+#include "singleton.h"
+#include "hashset.h"
 #include "texture2d.h"
 
 namespace soul {

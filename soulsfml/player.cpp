@@ -3,130 +3,83 @@
 #include "state.h"
 
 #include <format>
+#include <iostream>
+#include <fstream>
+#include <nlohmann/json.hpp>
 
 using namespace soul;
+using json = nlohmann::json;
 
 Player::Player(const std::string& name) : Animable(name) {}
 
 // Load the sprite data and the transform scalars
 void Player::loadData() {
-    
-    const std::string filePath = "/Users/soulseeker/Projects/GitHub/gokugame/textures/Kid Goku.png";
+    std::ifstream file("/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/player.json");
+    json data;
+    file >> data;
 
     const soul::sSpriteData spriteData = {
-        filePath, // Filename for the image file
-        soul::Vector2f(1.2f, 1.2f), // Scaling the sprite from the image
-        soul::Vector2i(10, 128), // Initial px position in the Sprite sheet
-        soul::Vector2i(80, 102), // Initial px size in the Sprite sheet
-        soul::Vector2f(300, 450), // Coordinates px of screen as they are defined 0,0 from top left.
-        false, // Filter Transparency By Color
-        soul::Color(0, 0, 0, 0) // Filtering Color
+        // Filename for the image file
+        data["spriteData"]["filePath"],
+        // Scaling the sprite from the image
+        soul::Vector2f(data["spriteData"]["scale"][0], data["spriteData"]["scale"][1]),
+        // Initial px position in the Sprite sheet
+        soul::Vector2i(data["spriteData"]["spriteSheetPosition"][0], data["spriteData"]["spriteSheetPosition"][1]),
+        // Initial px size in the Sprite sheet
+        soul::Vector2i(data["spriteData"]["spriteSheetSize"][0], data["spriteData"]["spriteSheetSize"][1]),
+        // Coordinates px of screen as they are defined 0,0 from top left.
+        soul::Vector2f(data["spriteData"]["screenPosition"][0], data["spriteData"]["screenPosition"][1]), 
+        // Filter Transparency By Color
+        data["spriteData"]["filterTransparency"], 
+        // Filtering Color
+        soul::Color(
+            data["spriteData"]["filterColor"][0],
+            data["spriteData"]["filterColor"][1],
+            data["spriteData"]["filterColor"][2],
+            data["spriteData"]["filterColor"][3]) 
     };
 
     const soul::sTransformScalars scalars = {
-        6.0f, // initialVelocityX
-        -700.0f,  // initialVelocityY
-        1700.0f, // gravity
-        1, // direction
-        0.0f, // angle
-        450 // groundY
+        data["transformScalars"]["initialVelocityX"],
+        data["transformScalars"]["initialVelocityY"],
+        data["transformScalars"]["gravity"],
+        data["transformScalars"]["direction"],
+        data["transformScalars"]["angle"],
+        data["transformScalars"]["groundY"]
     };
-    
+
     Animable::load(spriteData, scalars);
 
-    // Idle 2nd line
-    auto animIdle = std::make_shared<soul::SpriteAnimation>();
-    animIdle->addFrame(10, 128, 80, 102, 0.25f);
-    animIdle->addFrame(100, 128, 80, 102, 0.25f);
-    animIdle->addFrame(190, 128, 80, 102, 0.25f);
-    animIdle->addFrame(100, 128, 80, 102, 0.25f);
-    Animable::addAnimation(soul::AnimationState::Idle, animIdle);
+    std::map<std::string, soul::AnimationState> anim_states = {
+        {"Idle", soul::AnimationState::Idle},
+        {"Walk", soul::AnimationState::Walk},
+        {"Jump", soul::AnimationState::Jump},
+        {"Punch", soul::AnimationState::Punch},
+        {"PunchStick", soul::AnimationState::PunchStick},
+        {"Shoot", soul::AnimationState::Shoot},
+        {"Kick", soul::AnimationState::Kick},
+        {"Kick2", soul::AnimationState::Kick2},
+        {"JumpKick", soul::AnimationState::JumpKick},
+        {"Defensive", soul::AnimationState::Defensive},
+        {"KnockedOut", soul::AnimationState::Knocked},
+        {"ShootFireball", soul::AnimationState::ShootFireball}
+    };
 
-    // Walk
-    auto animWalk = std::make_shared<soul::SpriteAnimation>();
-    animWalk->addFrame(645, 235, 110, 90, 0.05f);
-    Animable::addAnimation(soul::AnimationState::Walk, animWalk);
+    for (const auto& [anim_name, anim_state] : anim_states) {
+        auto anim = data["animations"][anim_name];
 
-    // Jump 6th line
-    auto animJump = std::make_shared<soul::SpriteAnimation>();
-    animJump->addFrame(190, 550, 80, 115, 0.10f);
-    animJump->addFrame(190, 550, 80, 115, 0.10f);
-    animJump->addFrame(190, 550, 80, 115, 0.10f);
-    animJump->addFrame(190, 550, 80, 115, 0.10f);
-    animJump->addFrame(460, 550, 80, 115, 0.20f);
-    animJump->addFrame(460, 550, 80, 115, 0.10f);
-    animJump->addFrame(10, 128, 80, 102, 0.20f);
-    Animable::addAnimation(soul::AnimationState::Jump, animJump);
+        if (anim.empty()) {
+            logManager.logError("Animation not found: " + anim_name);
+            continue;
+        }
+    
+        auto spriteAnim = std::make_shared<soul::SpriteAnimation>();
+        for (const auto& frame : anim) {
+            spriteAnim->addFrame(frame["x"], frame["y"], frame["width"], frame["height"], frame["duration"]);
+        }
 
-    auto animPunch = std::make_shared<soul::SpriteAnimation>();
-    animPunch->addFrame(420, 1535, 90, 84, 0.20f);
-    animPunch->addFrame(510, 1535, 70, 84, 0.15f);
-    animPunch->addFrame(580, 1535, 85, 84, 0.15f);
-    Animable::addAnimation(soul::AnimationState::Punch, animPunch);
-
-    auto animShoot = std::make_shared<SpriteAnimation>();
-    animShoot->addFrame(10, 2470, 70, 88, 0.1f);
-    animShoot->addFrame(85, 2470, 80, 88, 0.1f);
-    animShoot->addFrame(175, 2470, 80, 88, 0.1f);
-    animShoot->addFrame(255, 2470, 80, 88, 0.1f);
-    animShoot->addFrame(335, 2470, 80, 88, 0.1f);
-    animShoot->addFrame(415, 2470, 80, 88, 0.1f);
-    animShoot->addFrame(495, 2470, 80, 88, 0.1f);
-    Animable::addAnimation(soul::AnimationState::Shoot, animShoot);
-
-    auto animKick = std::make_shared<SpriteAnimation>();
-    animKick->addFrame(270, 1640, 85, 87, 0.15f);
-    animKick->addFrame(360, 1640, 85, 87, 0.15f);
-    animKick->addFrame(450, 1640, 95, 87, 0.15f);
-    animKick->addFrame(360, 1640, 85, 87, 0.15f);
-    Animable::addAnimation(soul::AnimationState::Kick, animKick);
-
-    auto animKick2 = std::make_shared<SpriteAnimation>();
-    animKick2->addFrame(560, 1640, 70, 88, 0.15f);
-    animKick2->addFrame(630, 1640, 70, 88, 0.15f);
-    animKick2->addFrame(700, 1640, 80, 88, 0.15f);
-    animKick2->addFrame(630, 1640, 70, 88, 0.15f);
-    Animable::addAnimation(soul::AnimationState::Kick2, animKick2);
-
-    auto animJumpKick = std::make_shared<SpriteAnimation>();
-    animJumpKick->addFrame(810, 1640, 80, 88, 0.15f);
-    animJumpKick->addFrame(890, 1640, 60, 88, 0.15f);
-    animJumpKick->addFrame(1030, 1640, 65, 88, 0.15f);
-    animJumpKick->addFrame(1095, 1640, 88, 88, 0.15f);
-    animJumpKick->addFrame(1185, 1640, 88, 88, 0.15f);
-    Animable::addAnimation(soul::AnimationState::JumpKick, animJumpKick);
-
-    auto animDef = std::make_shared<SpriteAnimation>();
-    animDef->addFrame(10, 1535, 85, 84, 0.10f);
-    animDef->addFrame(90, 1535, 85, 84, 0.10f);
-    animDef->addFrame(170, 1535, 85, 84, 0.10f);
-    animDef->addFrame(250, 1535, 85, 84, 0.10f);
-    animDef->addFrame(170, 1535, 85, 84, 0.10f);
-    animDef->addFrame(90, 1535, 85, 84, 0.10f);
-    animDef->addFrame(10, 1535, 85, 84, 0.10f);
-    Animable::addAnimation(soul::AnimationState::Defensive, animDef);
-
-    auto animPunchStick = std::make_shared<SpriteAnimation>();
-    animPunchStick->addFrame(10, 1875, 75, 90, 0.10f);
-    animPunchStick->addFrame(80, 1865, 65, 102, 0.10f);
-    animPunchStick->addFrame(140, 1855, 70, 112, 0.10f);
-    animPunchStick->addFrame(205, 1855, 95, 112, 0.10f);
-    animPunchStick->addFrame(205, 1855, 95, 112, 0.10f);
-    animPunchStick->addFrame(10, 1875, 75, 90, 0.10f);
-    Animable::addAnimation(soul::AnimationState::PunchStick, animPunchStick);
-
-    // Knocked sprite 10th line
-    auto animKnockedOut = std::make_shared<SpriteAnimation>();
-    animKnockedOut->addFrame(10, 1020, 80, 90, 0.40f);
-    animKnockedOut->addFrame(90, 1020, 110, 90, 0.40f);
-    animKnockedOut->addFrame(200, 1020, 90, 90, 0.40f);
-    animKnockedOut->addFrame(300, 1020, 110, 90, 0.40f);
-    animKnockedOut->addFrame(400, 1020, 110, 91, 0.75f);
-    animKnockedOut->addFrame(400, 1020, 110, 91, 0.75f);
-    animKnockedOut->addFrame(400, 1020, 110, 91, 0.75f);
-    animKnockedOut->addFrame(90, 1020, 110, 90, 0.30f);
-    animKnockedOut->addFrame(10, 1020, 80, 90, 0.30f);
-    Animable::addAnimation(soul::AnimationState::Knocked, animKnockedOut);
+        Animable::addAnimation(anim_state, spriteAnim);
+    }
 
     auto animFire = std::make_shared<soul::SpriteAnimation>();
         animFire->addFrame(0, 0, 70, 70, 0.05f);

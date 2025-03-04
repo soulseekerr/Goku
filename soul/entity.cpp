@@ -1,6 +1,6 @@
 
 #include "entity.h"
-#include "core/scene.h"
+#include "scene.h"
 
 // Generate a random number generator for entity IDs
 soul::RandomNumberGenerator soul::Entity::_gen;

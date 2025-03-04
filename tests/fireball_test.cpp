@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "fireball.h"
 #include "player.h"
-#include "core/vector2.h"
+#include "vector2.h"
 #include <memory>
 
 using namespace soul;

@@ -13,8 +13,8 @@
 #include "imgui.h" // necessary for ImGui::*, imgui-SFML.h doesn't include imgui.h
 #include "imgui-SFML.h" // for ImGui::SFML::* functions and SFML-specific overloads
 
-#include "core/singleton.h"
-#include "core/logger.h"
+#include "singleton.h"
+#include "logger.h"
 
 using soul::LoggerManager;
 

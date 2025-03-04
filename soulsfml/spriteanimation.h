@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sprite2d.h"
-#include "core/vector_t.h"
+#include "vector_t.h"
 
 #include <map>
 

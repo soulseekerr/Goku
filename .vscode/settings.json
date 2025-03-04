@@ -68,6 +68,7 @@
         "print": "cpp",
         "concepts": "cpp",
         "numeric": "cpp",
-        "barrier": "cpp"
+        "barrier": "cpp",
+        "future": "cpp"
     }
 }

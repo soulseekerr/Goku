@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 #include "texture2d.h"
-#include "core/utils.h"
+#include "utils.h"
 #include <iostream>
 
 

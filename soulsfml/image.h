@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/utils.h"
+#include "utils.h"
 
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Sprite.hpp>

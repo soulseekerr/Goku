@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "ecs/entity.h"
+#include "entity.h"
 #include <iostream>
 
 // Demonstrate some basic assertions.

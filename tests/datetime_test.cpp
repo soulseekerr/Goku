@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "core/datetime.h"
+#include "datetime.h"
 #include <iostream>
 
 using namespace soul;

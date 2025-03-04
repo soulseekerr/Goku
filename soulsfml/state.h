@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/singleton.h"
+#include "singleton.h"
 #include "spriteanimation.h"
 
 namespace soul {

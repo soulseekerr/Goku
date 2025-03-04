@@ -1,6 +1,6 @@
 
 #include "fireball.h"
-#include "core/logger.h"
+#include "logger.h"
 #include "player.h"
 
 using namespace soul;

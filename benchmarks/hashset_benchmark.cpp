@@ -1,5 +1,5 @@
 #include <benchmark/benchmark.h>
-#include "core/hashset.h"
+#include "hashset.h"
 
 #include <vector>
 #include <unordered_map>

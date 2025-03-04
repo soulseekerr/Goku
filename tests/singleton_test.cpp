@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <thread>
 #include <vector>
-#include "core/singleton.h"
+#include "singleton.h"
 
 namespace soul {
 

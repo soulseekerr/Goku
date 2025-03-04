@@ -1,5 +1,5 @@
 
-#include "core/logger.h"
+#include "logger.h"
 #include "sprite2d.h"
 #include "spriteanimation.h"
 #include "assetmanager.h"

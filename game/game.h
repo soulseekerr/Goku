@@ -2,8 +2,8 @@
 
 #include "gamewindow.h"
 #include "state.h"
-#include "core/logger.h"
-#include "core/utils.h"
+#include "logger.h"
+#include "utils.h"
 #include "animable.h"
 #include "gui.h"
 

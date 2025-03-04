@@ -7,9 +7,9 @@
 #include <mutex>
 #include <optional>
 
-#include "core/singleton.h"
-#include "core/logger.h"
-#include "ecs/entity.h"
+#include "singleton.h"
+#include "logger.h"
+#include "entity.h"
 
 namespace soul {
 

@@ -1,7 +1,7 @@
 #include <benchmark/benchmark.h>
 #include <thread>
 #include <vector>
-#include "core/core.h"  // SafeNumeric<>
+#include "core.h"  // SafeNumeric<>
 
 // Benchmark SafeNumeric Single Thread
 static void BM_SafeNumeric_Increment(benchmark::State& state) {

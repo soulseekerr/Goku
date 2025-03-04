@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/core.h"
-#include "core/logger.h"
+#include "core.h"
+#include "logger.h"
 
 #include <iostream>
 #include <random>

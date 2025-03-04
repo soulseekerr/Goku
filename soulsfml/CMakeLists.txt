@@ -42,8 +42,8 @@ FetchContent_MakeAvailable(imgui-sfml)
 
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soul")
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soulsfml")
+include_directories(BEFORE "/opt/homebrew/Cellar/nlohmann-json/3.11.3/include")
 include_directories(BEFORE "/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1")
-
 
 set(SOURCES
     gamewindow.cpp

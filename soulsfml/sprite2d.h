@@ -4,9 +4,9 @@
 #include <format>
 #include <math.h>
 
-#include "core/core.h"
-#include "core/vector2.h"
-#include "core/rect.h"
+#include "core.h"
+#include "vector2.h"
+#include "rect.h"
 #include "color.h"
 #include "texture2d.h"
 

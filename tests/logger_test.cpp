@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "core/logger.h"
+#include "logger.h"
 #include <sstream>
 
 using namespace soul;

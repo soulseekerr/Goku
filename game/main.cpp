@@ -1,6 +1,6 @@
 
-#include "core/logger.h"
-#include "core/utils.h"
+#include "logger.h"
+#include "utils.h"
 #include "game.h"
 
 #ifdef DEBUGMODE

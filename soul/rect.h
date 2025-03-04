@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/vector2.h"
+#include "vector2.h"
 
 namespace soul {
 

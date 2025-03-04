@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "core/time_elapsed.h"
+#include "time_elapsed.h"
 #include <iostream>
 #include <thread>
 

@@ -1,9 +1,9 @@
 
-#include "core/logger.h"
+#include "logger.h"
 #include "assetmanager.h"
 #include "animable.h"
 #include "state.h"
-#include "core/utils.h"
+#include "utils.h"
 #include "gui.h"
 #include "gamewindow.h"
 

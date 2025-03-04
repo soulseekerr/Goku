@@ -18,12 +18,13 @@ include(FetchContent)
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
 
+include_directories(BEFORE "/opt/homebrew/Cellar/nlohmann-json/3.11.3/include")
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soul")
 
 set(SOURCES 
-    core/datetime.cpp
-    core/logger.cpp
-    ecs/entity.cpp
+    datetime.cpp
+    logger.cpp
+    entity.cpp
 )
 
 add_library(libfmt SHARED IMPORTED)

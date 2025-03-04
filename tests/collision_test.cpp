@@ -2,7 +2,7 @@
 #include <benchmark/benchmark.h>
 #include <chrono>
 #include <unordered_set>
-#include "core/rect.h"
+#include "rect.h"
 
 namespace soul {
 
