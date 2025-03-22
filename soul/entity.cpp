@@ -1,6 +1,6 @@
 
 #include "entity.h"
-#include "scene.h"
+// #include "scene.h"
 
 // Generate a random number generator for entity IDs
 soul::RandomNumberGenerator soul::Entity::_gen;
@@ -22,14 +22,4 @@ const std::string& soul::Entity::tag() const {
 // Set the active state of the entity
 void soul::Entity::setActive(bool active) {
     _active = active;
-}
-
-// Get the scene that the entity belongs to
-const std::shared_ptr<soul::AScene>& soul::Entity::getSceneRef() const {
-    return _sceneRef;
-}
-
-// Set the scene that the entity belongs to
-void soul::Entity::setSceneRef(std::shared_ptr<AScene> sceneRef) {
-    _sceneRef = sceneRef;
 }

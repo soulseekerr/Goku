@@ -1,0 +1,9 @@
+{
+    "app_name": "Goku",
+    "version": "1.0.0",
+    "paths": {
+        "assets": "data/assets/",
+        "textures": "data/textures/",
+        "fonts": "data/fonts/"
+    }
+}

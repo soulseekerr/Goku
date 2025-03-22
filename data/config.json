@@ -1,0 +1,8 @@
+{
+    "config": "config",
+    "fonts": "fonts",
+    "textures": "textures",
+    "test": {
+        "filePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/test/SpriteTest.png"
+    }
+}

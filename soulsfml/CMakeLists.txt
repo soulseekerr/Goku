@@ -58,6 +58,8 @@ set(SOURCES
     entitymanager.cpp
     player.cpp
     fireball.cpp
+    canvas.cpp
+    scene.cpp
 )
 
 add_library(${MY_LIB_NAME} SHARED ${SOURCES})

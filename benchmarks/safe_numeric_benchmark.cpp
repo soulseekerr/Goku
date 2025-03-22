@@ -5,7 +5,7 @@
 
 // Benchmark SafeNumeric Single Thread
 static void BM_SafeNumeric_Increment(benchmark::State& state) {
-    SafeNumeric<int> num(0);
+    soul::SafeNumeric<int> num(0);
     for (auto _ : state) {
         num.increment();
     }
@@ -13,7 +13,7 @@ static void BM_SafeNumeric_Increment(benchmark::State& state) {
 BENCHMARK(BM_SafeNumeric_Increment);
 
 static void BM_SafeNumeric_Add(benchmark::State& state) {
-    SafeNumeric<int> num(0);
+    soul::SafeNumeric<int> num(0);
     for (auto _ : state) {
         num.add(10);
     }
@@ -22,7 +22,7 @@ BENCHMARK(BM_SafeNumeric_Add);
 
 // Benchmark SafeNumeric Multi-Threaded
 static void BM_SafeNumeric_Increment_MultiThreaded(benchmark::State& state) {
-    SafeNumeric<int> num(0);
+    soul::SafeNumeric<int> num(0);
     constexpr int THREADS = 10;
     
     for (auto _ : state) {
@@ -41,7 +41,7 @@ BENCHMARK(BM_SafeNumeric_Increment_MultiThreaded)->Threads(10);
 
 // Benchmark SafeFlag
 static void BM_SafeFlag_Set(benchmark::State& state) {
-    SafeFlag flag;
+    soul::SafeFlag flag;
     for (auto _ : state) {
         flag.set();
     }
@@ -49,7 +49,7 @@ static void BM_SafeFlag_Set(benchmark::State& state) {
 BENCHMARK(BM_SafeFlag_Set);
 
 static void BM_SafeFlag_Clear(benchmark::State& state) {
-    SafeFlag flag;
+    soul::SafeFlag flag;
     for (auto _ : state) {
         flag.clear();
     }
@@ -58,7 +58,7 @@ BENCHMARK(BM_SafeFlag_Clear);
 
 // Multi-threaded SafeFlag
 static void BM_SafeFlag_MultiThreaded(benchmark::State& state) {
-    SafeFlag flag;
+    soul::SafeFlag flag;
     constexpr int THREADS = 10;
 
     for (auto _ : state) {

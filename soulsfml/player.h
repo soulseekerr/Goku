@@ -12,6 +12,15 @@
 
 namespace soul {
 
+struct PlayerAttributes {
+    int currentHealth = 1;
+    int maxHealth = 1;
+    int currentMana = 1;
+    int maxMana = 1;
+    int currentExp = 1;
+    int maxExp = 1;
+    int level = 1;
+};
 
 class Player : public Animable {
 public:
@@ -29,10 +38,13 @@ public:
 
     virtual void render() override;
 
+    _ALWAYS_INLINE_ PlayerAttributes& getAttributes() { return _attributes; }
+
 private:
-    const std::string _filePathFireball = "/Users/soulseeker/Projects/GitHub/gokugame/debug/textures/fireballs.png";    
     // System of Fireballs shot by the Player
     FireballSystem _fireballs;
+    // Player attributes
+    PlayerAttributes _attributes;
 };
 
 } // namespace soul

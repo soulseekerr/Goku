@@ -16,6 +16,11 @@
       "angle": 0.0,
       "groundY": 450
     },
+    "fireballs": {
+      "filePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/fireballs.png",
+      "speedX": 400.0,
+      "lifetime": 1.5
+    },
     "animations": {
       "Idle": [
         { "x": 10, "y": 128, "width": 80, "height": 102, "duration": 0.25 },
@@ -113,6 +118,15 @@
         { "x": 980, "y": 0, "width": 70, "height": 70, "duration": 0.05 },
         { "x": 1050, "y": 0, "width": 70, "height": 70, "duration": 0.05 }
       ]
+    },
+    "attributes": {
+      "current_health": 1000,
+      "max_health": 1000,
+      "current_mana": 100,
+      "max_mana": 100,
+      "current_exp": 2310,
+      "max_exp": 3000,
+      "level": 3
     }
   }
   

@@ -118,7 +118,7 @@ bool Fireball::update(float dt) {
     return Animable::update(dt);
 }
 
-void FireballSystem::initFireballs(Player* player) {
+void FireballSystem::initFireballs(Player* player, string_view filePath, float speedX, float lifetime) {
     _player = player;
     const auto& transform = _player->getTransform();
     const auto& pos = _player->getPosition();
@@ -133,8 +133,8 @@ void FireballSystem::initFireballs(Player* player) {
         int direction = transform.direction;
         int initialPosX = pos.x + direction * (id-1) * 70;
         int initialPosY = pos.y;
-        float initialLifetime = 2.0f;
-        float speedX = 300.0f;
+        float initialLifetime = lifetime;
+        // float speedX = 300.0f;
         float angle = -90 * direction;  
 
         // Dont use auto keyword here to allow implicit casting

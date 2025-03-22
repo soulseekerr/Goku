@@ -6,7 +6,11 @@
 
 // Caught with -Wdangling 
 // warning: temporary whose address is used as value of local variable ...
-// string_view foo(const string& s LIFEIME_BOUND) ...
+// string_view foo(const string& s LIFEIME_BOUND) 
+// Clang-specific annotation that helps the compiler 
+// enforce lifetime safety when dealing with references or pointers.
+// It tells the compiler that a function's return value must not outlive 
+// one of its input arguments, preventing dangling references.
 #if defined(__clang__)
 #define LIFETIME_BOUND [[clang::lifetimebound]]
 #else
@@ -17,6 +21,7 @@
 #define _ALWAYS_INLINE_ inline
 #endif
 
+namespace soul {
 
 template <class T>
 class SafeNumeric {
@@ -109,3 +114,5 @@ public:
 		flag.store(p_value, std::memory_order_release);
 	}
 };
+
+} // namespace soul

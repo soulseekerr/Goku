@@ -5,7 +5,7 @@
 
 // --- SafeNumeric Tests ---
 TEST(SafeNumericTest, BasicOperations) {
-    SafeNumeric<int> num(10);
+    soul::SafeNumeric<int> num(10);
     
     EXPECT_EQ(num.get(), 10);
     
@@ -20,7 +20,7 @@ TEST(SafeNumericTest, BasicOperations) {
 }
 
 TEST(SafeNumericTest, AtomicIncrementsMultiThreaded) {
-    SafeNumeric<int> num(0);
+    soul::SafeNumeric<int> num(0);
     constexpr int THREADS = 10;
     constexpr int INCREMENTS = 1000;
 
@@ -44,7 +44,7 @@ TEST(SafeNumericTest, AtomicIncrementsMultiThreaded) {
 
 // --- SafeFlag Tests ---
 TEST(SafeFlagTest, SetClearCheck) {
-    SafeFlag flag;
+    soul::SafeFlag flag;
 
     EXPECT_FALSE(flag.is_set());
 
@@ -56,7 +56,7 @@ TEST(SafeFlagTest, SetClearCheck) {
 }
 
 TEST(SafeFlagTest, MultiThreadedToggle) {
-    SafeFlag flag;
+    soul::SafeFlag flag;
     constexpr int THREADS = 10;
 
     auto toggle_task = [&]() {

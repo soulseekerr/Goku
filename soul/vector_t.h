@@ -79,11 +79,11 @@ public:
 
     const T& operator[](size_t index) const { return ptr_[index]; }
 
-    uint32_t size() const { return  num_elements_; }
+    [[nodiscard]] uint32_t size() const { return  num_elements_; }
 
-    uint32_t capacity() const { return  capacity_; }
+    [[nodiscard]] uint32_t capacity() const { return  capacity_; }
 
-    bool empty() const { return num_elements_ == 0; }
+    [[nodiscard]] bool empty() const { return num_elements_ == 0; }
 
     T& back() const {
         if (empty()) throw std::out_of_range("Vector is empty");
@@ -157,7 +157,7 @@ public:
     }
 
     // Compute the average of elements
-    double average() const {
+    [[nodiscard]] double average() const {
         if (num_elements_ == 0) {
             throw std::runtime_error("Cannot compute average of an empty vector");
         }
@@ -166,7 +166,7 @@ public:
     }
 
     // Compute the median of elements
-    double median() const {
+    [[nodiscard]] double median() const {
         if (num_elements_ == 0) {
             throw std::runtime_error("Cannot compute median of an empty vector");
         }

@@ -38,7 +38,7 @@ private:
 };
 
 // Forward declaration of AScene
-class AScene;
+// class AScene;
 class Entity;
 
 struct IRenderable {
@@ -80,7 +80,7 @@ private:
     // Active state of the entity
     bool _active {true};
     // Renderable is necessarily defined in a Scene
-    std::shared_ptr<AScene> _sceneRef;
+    // std::shared_ptr<AScene> _sceneRef;
 
 protected:
     LoggerManager& logManager = LoggerManager::getInstance();
@@ -97,9 +97,6 @@ public:
     _ALWAYS_INLINE_ bool isActive() const { return _active; }
 
     void setActive(bool active);
-
-    void setSceneRef(std::shared_ptr<AScene> sceneRef);
-    const std::shared_ptr<AScene>& getSceneRef() const;
 
     // Load the entity with specialized logic
     virtual void loadData() override {}

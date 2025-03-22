@@ -1,6 +1,7 @@
 
 #include "game.h"
 #include "player.h"
+#include "scene.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Font.hpp>
@@ -19,13 +20,17 @@ Game::Game()
 #endif
     gw_.initialise("Goku", 2056, 1329, true, 60);
 
+    // Load data from json file
     player_->loadData();
 
 #ifdef DEBUGMODE
+    const std::string spriteTestFile = pathManager.getFilePath(PathManager::FileType::Test, "SpriteTest.png")->string();
     guiStates_ = std::make_shared<soul::GuiAnimableStates>(player_);
-    const std::string spriteTestFile = "/Users/soulseeker/Projects/GitHub/gokugame/textures/Kid Goku.png";
     guiSpriteTest_ = std::make_shared<soul::GuiSpriteTest>(spriteTestFile);
 #endif
+
+    scene_ = std::make_unique<soul::Scene>(player_);
+    scene_->initialise();
 }
 
 Game::~Game() {}
@@ -33,20 +38,6 @@ Game::~Game() {}
 int Game::run() {
     sf::Clock deltaClock;
     auto lastTime = std::chrono::high_resolution_clock::now();
-
-    sf::Font font;
-    const string fontFilename = "/Users/soulseeker/Projects/cpp_projects/sfml_sparky/build/bin/fonts/MontereyFLF-Bold.ttf";
-    if (!font.openFromFile(fontFilename)) {
-        std::cout << "Error while opening font file!" << fontFilename << std::endl;
-        return -1;
-    }
-
-    sf::Text text(font);
-    text.setFillColor(sf::Color(20, 25, 25));
-    text.setCharacterSize(20);
-   
-    auto text_y = gw_.window.getSize().y/20 - (float)text.getCharacterSize();
-    text.setPosition(sf::Vector2f(gw_.window.getSize().x - 150, text_y));
 
     // Main game loop
     while (gw_.window.isOpen()) {
@@ -122,14 +113,13 @@ int Game::run() {
         // Update the states and animation associated to the current movement or action
         player_->update(dt);
 
+        scene_->update(dt);
+
         // Clear the window
         gw_.window.clear(sf::Color(50, 50, 50, 0));
 
-        // Calculate frame time and FPS
-        text.setString(std::format("{:.1f} f/s", 1/dt));
-        gw_.window.draw(text);
-
         player_->render();
+        scene_->render();
 
 #ifdef DEBUGMODE
         guiDebugLog_->render(gw_);

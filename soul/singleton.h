@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <mutex>  // since C++11 std::call_once
+#include <functional> // since C++11 std::function
 
 namespace soul {
 
@@ -16,17 +17,24 @@ class SingletonT {
 // Protected constructor accessed from inherited classes
 protected:
     SingletonT() {}
-    ~SingletonT() {}
+    // virtual as we have virtual function onInit to be called and avoid compiler warning
+    virtual ~SingletonT() {}  
     SingletonT(SingletonT&) = delete;
     SingletonT& operator=(const SingletonT& o) = delete;
 
 public:
     static T& getInstance() {
+        //  Thread-Safe and lazy Initialization 
         std::call_once(initFlag, []() {
             instance_.reset(new T());
+            instance_->onInit();  // Call the derived class initialization function
         });
         return *instance_;
     }
+
+protected:
+    // Derived class must implement this to perform initialization
+    virtual void onInit() {}
 
 private:
     // Unique instance of the class

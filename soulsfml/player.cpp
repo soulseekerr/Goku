@@ -18,6 +18,14 @@ void Player::loadData() {
     json data;
     file >> data;
 
+    _attributes.currentHealth = data["attributes"]["current_health"];
+    _attributes.maxHealth = data["attributes"]["max_health"];
+    _attributes.currentMana = data["attributes"]["current_mana"];
+    _attributes.maxMana = data["attributes"]["max_mana"];
+    _attributes.currentExp = data["attributes"]["current_exp"];
+    _attributes.maxExp = data["attributes"]["max_exp"];
+    _attributes.level = data["attributes"]["level"];
+
     const soul::sSpriteData spriteData = {
         // Filename for the image file
         data["spriteData"]["filePath"],
@@ -81,24 +89,6 @@ void Player::loadData() {
         Animable::addAnimation(anim_state, spriteAnim);
     }
 
-    auto animFire = std::make_shared<soul::SpriteAnimation>();
-        animFire->addFrame(0, 0, 70, 70, 0.05f);
-        animFire->addFrame(140, 0, 70, 70, 0.05f);
-        animFire->addFrame(210, 0, 70, 70, 0.05f);
-        animFire->addFrame(280, 0, 70, 70, 0.05f);
-        animFire->addFrame(350, 0, 70, 70, 0.05f);
-        animFire->addFrame(420, 0, 70, 70, 0.05f);
-        animFire->addFrame(490, 0, 70, 70, 0.05f);
-        animFire->addFrame(560, 0, 70, 70, 0.05f);
-        animFire->addFrame(630, 0, 70, 70, 0.05f);
-        animFire->addFrame(700, 0, 70, 70, 0.05f);
-        animFire->addFrame(770, 0, 70, 70, 0.05f);
-        animFire->addFrame(840, 0, 70, 70, 0.05f);
-        animFire->addFrame(910, 0, 70, 70, 0.05f);
-        animFire->addFrame(980, 0, 70, 70, 0.05f);
-        animFire->addFrame(1050, 0, 70, 70, 0.05f);
-    Animable::addAnimation(soul::AnimationState::ShootFireball, animFire);
-
     Animable::resetPosition();
 
     soul::IdleState* idleState = Animable::registerMovement<soul::IdleState>(soul::AnimationState::Idle);
@@ -130,7 +120,10 @@ void Player::loadData() {
     Animable::setActionState(*Animable::getActionState<soul::ActionIdleState>(soul::AnimationState::ActionIdle));
 
     // provide Player position and other metrics
-    _fireballs.initFireballs(this);
+    _fireballs.initFireballs(this, 
+        data["fireballs"]["filePath"].get<std::string>(),
+        data["fireballs"]["speedX"].get<float>(),
+        data["fireballs"]["lifetime"].get<float>());
 }
 
 bool Player::update(float dt) {

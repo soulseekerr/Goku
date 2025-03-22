@@ -5,8 +5,6 @@
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/soul",
-                "${workspaceFolder}/soul/core",
-                "${workspaceFolder}/soul/ecs",
                 "${workspaceFolder}/debug/_deps/googletest-src/googletest/include",
                 "${workspaceFolder}/debug/_deps/benchmark-src/include",
                 "${workspaceFolder}/debug/_deps/sfml-src/include",
@@ -15,7 +13,8 @@
                 "${workspaceFolder}/debug/_deps/imgui-src",
                 "${workspaceFolder}/debug/_deps/imgui-sfml-src",
                 "/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1",
-                "/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1/__thread"
+                "/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1/__thread",
+                "/opt/homebrew/Cellar/nlohmann-json/3.11.3/include"
             ],
             "defines": [],
             "macFrameworkPath": [

@@ -93,7 +93,7 @@ public:
 
     const std::vector<std::shared_ptr<Entity>>& getFireballs() const { return _fireballs; }
     
-    void initFireballs(Player* player);
+    void initFireballs(Player* player, std::string_view filePath, float speedX, float lifetime);
 
     void latchFireballs();
 
