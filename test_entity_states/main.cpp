@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "gui.h"
 #include "gamewindow.h"
+#include "loaders.h"
 
 #include <iostream>
 #include <thread>
@@ -31,12 +32,13 @@ int main(int argc, char** argv) {
     // sf::RenderWindow window(sf::VideoMode(800, 600), "Animable Object States");
     // window.setFramerateLimit(60);
 
-    std::shared_ptr<soul::Animable> player = std::make_shared<soul::Player>("PlayerSprite");
-    player->loadData();
+    const std::string playerFile = "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/player_goku.json";
+    std::unique_ptr<soul::Player> player;
+    player = soul::Loader<soul::Player>::load(playerFile);
     
-    std::shared_ptr<soul::GuiAnimableStates> guiStates = std::make_shared<soul::GuiAnimableStates>(player);
+    std::unique_ptr<soul::GuiAnimableStates> guiStates = std::make_unique<soul::GuiAnimableStates>(*player.get());
     const std::string spriteTestFile = "/Users/soulseeker/Projects/GitHub/gokugame/textures/Kid Goku.png";
-    std::shared_ptr<soul::GuiSpriteTest> guiSpriteTest = std::make_shared<soul::GuiSpriteTest>(spriteTestFile);
+    std::unique_ptr<soul::GuiSpriteTest> guiSpriteTest = std::make_unique<soul::GuiSpriteTest>(spriteTestFile);
 
     sf::Clock deltaClock;
     auto lastTime = std::chrono::high_resolution_clock::now();

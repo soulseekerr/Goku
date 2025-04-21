@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.28.1)
 set(TESTS_NAME gokutests)
 project(${TESTS_NAME})
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -g -O0 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -g -O0 -Wall -Wextra -pedantic") # -Werror
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")
 
-# Use google test for unit tests
+# Use google test for unit tests    
 include(FetchContent)
 
 FetchContent_Declare(
@@ -22,6 +22,7 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 include_directories((BEFORE "../debug/_deps/googletest-src/googletest/include/gtest"))
 include_directories((BEFORE "../debug/_deps/benchmark-src/include/benchmark"))
+include_directories(BEFORE "/opt/homebrew/Cellar/nlohmann-json/3.11.3/include")
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soul")
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soulsfml")
 include_directories(BEFORE "../debug/_deps/sfml-src/include")

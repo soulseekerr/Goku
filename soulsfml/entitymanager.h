@@ -29,7 +29,7 @@ private:
     std::map<std::string, std::vector<std::shared_ptr<Entity>>> _mapEntities;
 
 public:
-    _ALWAYS_INLINE_ const size_t getTotalEntities() const { return _entities.size(); }
+    _ALWAYS_INLINE_ size_t getTotalEntities() const { return _entities.size(); }
 
     _ALWAYS_INLINE_ std::vector<std::shared_ptr<Entity>>& getEntities() { return _entities; }
 

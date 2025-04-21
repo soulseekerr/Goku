@@ -1,37 +1,53 @@
 {
-    "spriteData": {
-      "filePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/Kid Goku.png",
-      "scale": [1.2, 1.2],
-      "spriteSheetPosition": [10, 128],
-      "spriteSheetSize": [80, 102],
-      "screenPosition": [300, 450],
-      "filterTransparency": false,
-      "filterColor": [0, 0, 0, 0]
-    },
-    "transformScalars": {
-      "initialVelocityX": 6.0,
-      "initialVelocityY": -700.0,
-      "gravity": 1700.0,
-      "direction": 1,
-      "angle": 0.0,
-      "groundY": 450
-    },
-    "fireballs": {
-      "filePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/fireballs.png",
-      "speedX": 400.0,
-      "lifetime": 1.5
-    },
-    "animations": {
-      "Idle": [
+  "spriteData": {
+    "spritePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/Kid Goku.png",
+    "scale": [1.2, 1.2],
+    "spriteSheetPosition": [10, 128],
+    "spriteSheetSize": [80, 102],
+    "screenPosition": [300, 450],
+    "filterTransparency": false,
+    "filterColor": [0, 0, 0, 0]
+  },
+  "transformScalars": {
+    "initialVelocityX": 6.0,
+    "initialVelocityY": -700.0,
+    "gravity": 1700.0,
+    "direction": 1,
+    "angle": 0.0,
+    "groundY": 450
+  },
+  "fireballs": {
+    "jsonPath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/player_goku.json",
+    "spritePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/fireballs.png",
+    "speedX": 400.0,
+    "speedY": 0.0,
+    "lifetime": 1.5,
+    "scale": [1.5, 1.5],
+    "spriteSheetPosition": [10, 128],
+    "spriteSheetSize": [70, 70],
+    "filterTransparency": false,
+    "filterColor": [0, 0, 0, 0],
+    "angle": -90.0
+  },
+  "animations": {
+    "Idle": {
+      "type": "movement",
+      "frames": [
         { "x": 10, "y": 128, "width": 80, "height": 102, "duration": 0.25 },
         { "x": 100, "y": 128, "width": 80, "height": 102, "duration": 0.25 },
         { "x": 190, "y": 128, "width": 80, "height": 102, "duration": 0.25 },
         { "x": 100, "y": 128, "width": 80, "height": 102, "duration": 0.25 }
-      ],
-      "Walk": [
+      ]
+    },
+    "Walk": {
+      "type": "movement",
+      "frames": [
         { "x": 645, "y": 235, "width": 110, "height": 90, "duration": 0.05 }
-      ],
-      "Jump": [
+      ]
+    },
+    "Jump": {
+      "type": "movement",
+      "frames": [
         { "x": 190, "y": 550, "width": 80, "height": 115, "duration": 0.10 },
         { "x": 190, "y": 550, "width": 80, "height": 115, "duration": 0.10 },
         { "x": 190, "y": 550, "width": 80, "height": 115, "duration": 0.10 },
@@ -39,13 +55,19 @@
         { "x": 460, "y": 550, "width": 80, "height": 115, "duration": 0.20 },
         { "x": 460, "y": 550, "width": 80, "height": 115, "duration": 0.10 },
         { "x": 10, "y": 128, "width": 80, "height": 102, "duration": 0.20 }
-      ],
-      "Punch": [
+      ]
+    },
+    "Punch": {
+      "type": "action",
+      "frames": [
         { "x": 420, "y": 1535, "width": 90, "height": 84, "duration": 0.20 },
         { "x": 510, "y": 1535, "width": 70, "height": 84, "duration": 0.15 },
         { "x": 580, "y": 1535, "width": 85, "height": 84, "duration": 0.15 }
-      ],
-      "Defensive": [
+      ]
+    },
+    "Defensive": {
+      "type": "action",
+      "frames": [
         { "x": 10, "y": 1535, "width": 85, "height": 84, "duration": 0.10 },
         { "x": 90, "y": 1535, "width": 85, "height": 84, "duration": 0.10 },
         { "x": 170, "y": 1535, "width": 85, "height": 84, "duration": 0.10 },
@@ -53,35 +75,50 @@
         { "x": 170, "y": 1535, "width": 85, "height": 84, "duration": 0.10 },
         { "x": 90, "y": 1535, "width": 85, "height": 84, "duration": 0.10 },
         { "x": 10, "y": 1535, "width": 85, "height": 84, "duration": 0.10 }
-      ],
-      "Kick": [
+      ]
+    },
+    "Kick": {
+      "type": "action",
+      "frames": [
         { "x": 270, "y": 1640, "width": 85, "height": 87, "duration": 0.15 },
         { "x": 360, "y": 1640, "width": 85, "height": 87, "duration": 0.15 },
         { "x": 450, "y": 1640, "width": 95, "height": 87, "duration": 0.15 },
         { "x": 360, "y": 1640, "width": 85, "height": 87, "duration": 0.15 }
-      ],
-      "Kick2": [
+      ]
+    },
+    "Kick2": {
+      "type": "action", 
+      "frames": [
         { "x": 560, "y": 1640, "width": 70, "height": 88, "duration": 0.15 },
         { "x": 630, "y": 1640, "width": 70, "height": 88, "duration": 0.15 },
         { "x": 700, "y": 1640, "width": 80, "height": 88, "duration": 0.15 },
         { "x": 630, "y": 1640, "width": 70, "height": 88, "duration": 0.15 }
-      ],
-      "JumpKick": [
+      ]
+    },
+    "JumpKick": {
+      "type": "action", 
+      "frames": [
         { "x": 810, "y": 1640, "width": 80, "height": 88, "duration": 0.15 },
         { "x": 890, "y": 1640, "width": 60, "height": 88, "duration": 0.15 },
         { "x": 1030, "y": 1640, "width": 65, "height": 88, "duration": 0.15 },
         { "x": 1095, "y": 1640, "width": 88, "height": 88, "duration": 0.15 },
         { "x": 1185, "y": 1640, "width": 88, "height": 88, "duration": 0.15 }
-      ],  
-      "PunchStick": [
+      ]
+    },  
+    "PunchStick": {
+      "type": "action", 
+      "frames": [
         { "x": 10, "y": 1875, "width": 75, "height": 90, "duration": 0.10 },
         { "x": 80, "y": 1865, "width": 65, "height": 102, "duration": 0.10 },
         { "x": 140, "y": 1855, "width": 70, "height": 112, "duration": 0.10 },
         { "x": 205, "y": 1855, "width": 95, "height": 112, "duration": 0.10 },
         { "x": 205, "y": 1855, "width": 95, "height": 112, "duration": 0.10 },
         { "x": 10, "y": 1875, "width": 75, "height": 90, "duration": 0.10 }
-      ],
-      "KnockedOut": [
+      ]
+    },
+    "Knocked": {
+      "type": "action", 
+      "frames": [
         { "x": 10, "y": 1020, "width": 80, "height": 90, "duration": 0.40 },
         { "x": 90, "y": 1020, "width": 110, "height": 90, "duration": 0.40 },
         { "x": 200, "y": 1020, "width": 90, "height": 90, "duration": 0.40 },
@@ -91,8 +128,11 @@
         { "x": 400, "y": 1020, "width": 110, "height": 91, "duration": 0.75 },
         { "x": 90, "y": 1020, "width": 110, "height": 90, "duration": 0.30 },
         { "x": 10, "y": 1020, "width": 80, "height": 90, "duration": 0.30 }
-      ],
-      "Shoot": [
+      ]
+    },
+    "Shoot": {
+      "type": "action",
+      "frames": [
         { "x": 10, "y": 2470, "width": 70, "height": 88, "duration": 0.1 },
         { "x": 85, "y": 2470, "width": 80, "height": 88, "duration": 0.1 },
         { "x": 175, "y": 2470, "width": 80, "height": 88, "duration": 0.1 },
@@ -100,8 +140,11 @@
         { "x": 335, "y": 2470, "width": 80, "height": 88, "duration": 0.1 },
         { "x": 415, "y": 2470, "width": 80, "height": 88, "duration": 0.1 },
         { "x": 495, "y": 2470, "width": 80, "height": 88, "duration": 0.1 }
-      ],
-      "ShootFireball": [
+      ]
+    },
+    "ShootFireball": {
+      "type": "action",
+      "frames": [
         { "x": 0, "y": 0, "width": 70, "height": 70, "duration": 0.05 },
         { "x": 140, "y": 0, "width": 70, "height": 70, "duration": 0.05 },
         { "x": 210, "y": 0, "width": 70, "height": 70, "duration": 0.05 },
@@ -118,15 +161,15 @@
         { "x": 980, "y": 0, "width": 70, "height": 70, "duration": 0.05 },
         { "x": 1050, "y": 0, "width": 70, "height": 70, "duration": 0.05 }
       ]
-    },
-    "attributes": {
-      "current_health": 1000,
-      "max_health": 1000,
-      "current_mana": 100,
-      "max_mana": 100,
-      "current_exp": 2310,
-      "max_exp": 3000,
-      "level": 3
     }
+  },
+  "attributes": {
+    "current_health": 878,
+    "max_health": 1000,
+    "current_mana": 100,
+    "max_mana": 100,
+    "current_exp": 2310,
+    "max_exp": 3000,
+    "level": 3
   }
-  
+}  

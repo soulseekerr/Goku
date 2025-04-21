@@ -131,7 +131,7 @@ public:
         }
     }
 
-    const uint64_t getCountElements() const { return elementCount; }
+    uint64_t getCountElements() const { return elementCount; }
 
 private:
     // Get hash value for a key

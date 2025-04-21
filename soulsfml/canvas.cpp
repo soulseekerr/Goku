@@ -15,20 +15,20 @@ Canvas::Canvas(const std::string& name, Scene& scene)
     : Entity(name), _scene(scene) {
 }
 
-void Canvas::loadTexts(const std::string& fontFilename) {
+void Canvas::load(const CanvasProperties& props) {
+    _props = props;
+
     auto& logManager = LoggerManager::getInstance();
-    logManager.log("Load Font file {}", fontFilename);
+    logManager.log("Load Font file {}", props.fontFilename);
 
     _font = std::make_shared<sf::Font>();
-    if (!_font->openFromFile(fontFilename))
-        throw GameException("Could not load font file");
+    if (!_font->openFromFile(props.fontFilename))
+        throw GameException(std::format("Could not load font file {}", props.fontFilename).c_str());
     
     logManager.log("Font file is loaded.");
 
-    _text = std::make_shared<sf::Text>(*_font.get(), toString<size_t>(frameCount), 20);
-    _text->setFillColor(sf::Color(240, 255, 255));
-    // text.setFillColor(sf::Color(20, 25, 25));
-    // text.setCharacterSize(20);
+    _text = std::make_shared<sf::Text>(*_font.get(), toString<size_t>(frameCount), props.fontSize);
+    _text->setFillColor(props.fontColor);
 
     auto wSize = _scene.gw.window.getSize();
     logManager.log("Window Size: {},{}", wSize.x, wSize.y);
@@ -38,10 +38,20 @@ void Canvas::loadTexts(const std::string& fontFilename) {
     _text->setPosition(sf::Vector2f(wSize.x - 150, text_y));
 
     _lifeText = std::make_shared<sf::Text>(*_font.get(), std::format("Life {}/{}", 
-        _scene.player->getAttributes().currentHealth, _scene.player->getAttributes().maxHealth), 20);
+    _scene.player->getAttributes().currentHealth, _scene.player->getAttributes().maxHealth), 20);
     
     _lifeText->setFillColor(sf::Color(155, 155, 255));
     _lifeText->setPosition(sf::Vector2f(wSize.x - 150, text_y + 30));
+
+    // Set up the background bar (gray)
+    _backgroundBar = std::make_shared<sf::RectangleShape>(sf::Vector2f(props.hbarWidth, props.hbarHeight));
+    _backgroundBar->setPosition(props.hbarPosition);
+    _backgroundBar->setFillColor(props.hbbgColor);
+
+    // Set up the foreground bar (green)
+    _foregroundBar = std::make_shared<sf::RectangleShape>(sf::Vector2f(props.hbarWidth, props.hbarHeight));
+    _foregroundBar->setPosition(props.hbarPosition);
+    _foregroundBar->setFillColor(props.hbfgColor);
 }
 
 void Canvas::loadBackground(const std::string& bgFilename) {
@@ -58,31 +68,6 @@ void Canvas::loadBackground(const std::string& bgFilename) {
         exit(-1);
     }
 }
-
-// Draw the health bar on the window
-// void Canvas::drawHealthBar() {
-//     sf::Vector2f barPosition {20.0f, 40.0f};
-//     float barWidth = 300.0f;
-//     float barHeight = 20.0f;
-
-//     auto maxHealth = scene.player->attributes.maxHealth;
-//     auto currentHealth = scene.player->attributes.currentHealth;
-
-//     float healthPercentage = ( (float) currentHealth ) / ( (float) maxHealth );
-
-//     // Set up the background bar (gray)
-//     sf::RectangleShape backgroundBar(sf::Vector2f(barWidth, barHeight));
-//     backgroundBar.setPosition(barPosition);
-//     backgroundBar.setFillColor(sf::Color(50, 50, 50));
-
-//     // Set up the foreground bar (green)
-//     sf::RectangleShape healthBar(sf::Vector2f(barWidth * healthPercentage, barHeight));
-//     healthBar.setPosition(barPosition);
-//     healthBar.setFillColor(sf::Color(100, 250, 50)); // Green color
-
-//     scene.gameWindow.window.draw(backgroundBar);
-//     scene.gameWindow.window.draw(healthBar);
-// }
 
 // void Canvas::drawFireBar(float dt) {
 //     auto& attrs = scene.player->attributes;
@@ -130,7 +115,7 @@ void Canvas::loadBackground(const std::string& bgFilename) {
 
 bool Canvas::update(float dt) {
 
-        // float MS_PER_FRAME = 1000.0f / 60.0f;
+    // float MS_PER_FRAME = 1000.0f / 60.0f;
     // float start = getCurrentTimeMS();
 
     // end loop
@@ -163,6 +148,15 @@ void Canvas::render() {
         _scene.gw.window.draw(*_lifeText.get());
     }
 
-    // drawHealthBar();
+    // Update the health bar in the screen
+    auto maxHealth = _scene.player->getAttributes().maxHealth;
+    auto currentHealth = _scene.player->getAttributes().currentHealth;
+    float healthPercentage = ( (float) currentHealth ) / ( (float) maxHealth );
+
+    _foregroundBar->setSize(sf::Vector2f(_props.hbarWidth * healthPercentage, _props.hbarHeight));
+
+    _scene.gw.window.draw(*_backgroundBar);
+    _scene.gw.window.draw(*_foregroundBar);
+
     // drawFireBar(totalTime.asSeconds());
 }

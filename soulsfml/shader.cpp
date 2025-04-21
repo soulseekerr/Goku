@@ -1,5 +1,7 @@
 
 #include "shader.h"
+#include "pathmanager.h"
+
 #include <iostream>
 
 using namespace soul;
@@ -10,6 +12,7 @@ bool Shader::isLoaded() const {
 
 bool Shader::load(const std::string& shader_name) {
 
+    auto shaderPath = PathManager::getInstance().getFolderPath(PathManager::FileType::Shader)->string();
     auto shader_frag_file = std::format("{}/{}.frag", shaderPath, shader_name);
         
     std::cout << "Loading shader " << shader_name << std::endl;

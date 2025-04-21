@@ -61,7 +61,7 @@ void EntityManager::update()
 {
     // Add the new entities in the containers
     for (auto e : _entitiesToAdd) {
-        // std::cout << "Add Entity " << e->tag() << " to map entities" << endl; 
+        std::cout << "Add Entity " << e->tag() << " to map entities" << endl; 
         _entities.push_back(e);
         _mapEntities[e->tag()].push_back(e);
     }

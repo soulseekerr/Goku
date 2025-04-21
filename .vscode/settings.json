@@ -69,6 +69,7 @@
         "concepts": "cpp",
         "numeric": "cpp",
         "barrier": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "semaphore": "cpp"
     }
 }

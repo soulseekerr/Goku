@@ -1,0 +1,19 @@
+{
+    "Global": {
+        "fontPath": "MontereyFLF-Bold.ttf",
+        "fontSize": 20,
+        "fontColor": [240, 255, 255]
+    },
+    "Life": {
+        "fontPath": "MontereyFLF-Bold.ttf",
+        "fontSize": 20,
+        "fontColor": [155, 255, 255]
+    },
+    "HealthBar": {
+        "width": 300,
+        "height": 20,
+        "position": [20,40],
+        "backgroundColor": [50, 50, 50],
+        "foregroundColor": [100, 250, 50]
+    }
+}

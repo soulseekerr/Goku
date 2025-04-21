@@ -23,28 +23,31 @@ struct PlayerAttributes {
 };
 
 class Player : public Animable {
+    private:
+    // System of Fireballs shot by the Player
+    FireballSystem _fireballs;
+    // Player attributes
+    PlayerAttributes _attributes;
+
 public:
     Player() = delete;
     explicit Player(const std::string& name);
     virtual ~Player() = default;
 
-    // Load the entity with specialized logic
-    virtual void loadData() override;
-
     // Update the entity with specialized logic
     virtual bool update(float dt) override;
-
-    virtual void updateData(int id) override {}
 
     virtual void render() override;
 
     _ALWAYS_INLINE_ PlayerAttributes& getAttributes() { return _attributes; }
 
-private:
-    // System of Fireballs shot by the Player
-    FireballSystem _fireballs;
-    // Player attributes
-    PlayerAttributes _attributes;
+    void setAttributes(const PlayerAttributes& attributes) {
+        _attributes = attributes;
+    }
+
+    _ALWAYS_INLINE_ FireballSystem& getFireballSystem() { return _fireballs; }
+
+    void initFireballs(const std::string& filePath, float speedX, float lifetime);
 };
 
 } // namespace soul

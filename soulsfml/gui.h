@@ -77,12 +77,12 @@ public:
  */
 class GuiAnimableStates : public GuiWindow {
 private:
-    std::shared_ptr<soul::Animable> animable;
+    soul::Animable& animable;
 public:
     int tmp_pos_x, tmp_pos_y;
     int tmp_jumpForce, tmp_gravityForce;
 
-    explicit GuiAnimableStates(std::shared_ptr<soul::Animable> s) : GuiWindow(), animable(s) {
+    explicit GuiAnimableStates(soul::Animable& s) : GuiWindow(), animable(s) {
         init();
     }
     virtual ~GuiAnimableStates() {}

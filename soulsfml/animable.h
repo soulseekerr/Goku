@@ -97,19 +97,15 @@ public:
     explicit Animable(const std::string& name);
     virtual ~Animable() = default;
 
-    // Load the entity with specialized logic
-    virtual void loadData() override {}
-
     // Update the entity with specialized logic
     virtual bool update(float dt) override;
-
-    virtual void updateData(int id) override;
 
     virtual void render() override;
 
     // Get methods to access the sprite and animations
     _ALWAYS_INLINE_ sf::Sprite& getSprite() const {
-        return _sprite->getSprite();}
+        return _sprite->getSprite();
+    }
     
     _ALWAYS_INLINE_ std::shared_ptr<AnimationSet>& getAnimations() { 
         return _animations;

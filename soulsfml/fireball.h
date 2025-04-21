@@ -2,6 +2,8 @@
 
 #include "animable.h"
 #include "spriteanimation.h"
+#include "pathmanager.h"
+#include "shader.h"
 
 #include <latch>
 
@@ -12,6 +14,7 @@ class Player;
 struct sFireballMetrics {
     float   speedX {250.0f};
     float   lifetime {1.0f};
+    float   current_lifetime {1.0f};
     int     direction {1};
 };
 
@@ -23,12 +26,16 @@ class FireballSystem;
  */
 class Fireball : public Animable {
 private:
+    // Path Manager
+    PathManager& pathManager = PathManager::getInstance();
     // Reference to the system of fireballs
     FireballSystem& _system;
     sFireballMetrics _metrics;
     soul::Vector2f _initialPosition;
     float _angleSprite;
     int _previousDirection {1};
+
+    // FireballShader _fireballShader;
 
 public:
     Fireball() = delete;
@@ -46,18 +53,17 @@ public:
 
     virtual ~Fireball() = default;
 
-    // Load the entity with specialized logic
-    virtual void loadData() override;
-
     // Update the entity with specialized logic
     virtual bool update(float dt) override;
 
-    virtual void updateData(int id) override;
+    virtual void render() override;
+
+    void reset(int id);
 
     const float& getSpeedX() const { return _metrics.speedX; }
     const float& getLifetime() const { return _metrics.lifetime; }
 
-    const int getPreviousDirection() const { return _previousDirection; }
+    int getPreviousDirection() const { return _previousDirection; }
     void setPreviousDirection(int dir) { _previousDirection = dir; }
 };
 
@@ -68,17 +74,14 @@ public:
 class FireballSystem {
 private:
     soul::LoggerManager& logManager = soul::LoggerManager::getInstance();
-    
+    // Path Manager
+    PathManager& pathManager = PathManager::getInstance();
     // Pointer to the instance of Player
-    Player* _player;
-    // Current position and direction to save when we shoot
-    // soul::Vector2f _currentPosition;
-    // int _currentDirection;
-    
+    Player* _player;    
     // Number of fireballs to shoot
     static constexpr int _thr_fireball_count = 2;
     // Container for poolables (flyweight)
-    std::vector<std::shared_ptr<Entity>> _fireballs;
+    std::vector<std::shared_ptr<Fireball>> _fireballs;
     // Atomic counter variable used as lock for fireball shots
     // std::atomic<int> _thr_current_count_fireball{0};
     SafeNumeric<int> _thr_current_count_fireball{0};
@@ -91,13 +94,11 @@ public:
 
     const int getFireballCount() const { return _thr_fireball_count; }
 
-    const std::vector<std::shared_ptr<Entity>>& getFireballs() const { return _fireballs; }
+    const std::vector<std::shared_ptr<Fireball>>& getFireballs() const { return _fireballs; }
     
-    void initFireballs(Player* player, std::string_view filePath, float speedX, float lifetime);
+    void initFireballs(Player* player, const std::string& filePath, float speedX, float lifetime);
 
     void latchFireballs();
-
-    void threadLatchFireball(std::latch& latch, int index);
 
     void update(float dt);
 

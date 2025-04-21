@@ -1,0 +1,72 @@
+{
+    "name": "SceneTest",
+    "description": "A test scene for the game engine.",
+    "objects": [
+        {
+            "name": "Tile1",
+            "filePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/block.jpg",
+            "type": "Tile",
+            "spriteSheetPosition": [0, 0],
+            "spriteSheetSize": [250, 50],
+            "screenPosition": [400, 300],
+            "scale": [1.0, 1.0],
+            "size": [250, 50],
+            "collision": true
+        },
+        {
+            "name": "Tile2",
+            "filePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/block.jpg",
+            "type": "Tile",
+            "spriteSheetPosition": [250, 0],
+            "spriteSheetSize": [250, 50],
+            "screenPosition": [800, 300],
+            "scale": [1.0, 1.0],
+            "size": [250, 50],
+            "collision": true
+        },
+        {
+            "name": "TileGround1",
+            "filePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/block.jpg",
+            "type": "Tile",
+            "spriteSheetPosition": [50, 250],
+            "spriteSheetSize": [500, 50],
+            "screenPosition": [0, 0],
+            "scale": [1.0, 1.0],
+            "size": [500, 50],
+            "collision": true
+        },
+        {
+            "name": "TileGround2",
+            "filePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/block.jpg",
+            "type": "Tile",
+            "spriteSheetPosition": [50, 250],
+            "spriteSheetSize": [500, 50],
+            "screenPosition": [500, 0],
+            "scale": [1.0, 1.0],
+            "size": [500, 50],
+            "collision": true
+        },
+        {
+            "name": "TileGround3",
+            "filePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/block.jpg",
+            "type": "Tile",
+            "spriteSheetPosition": [50, 250],
+            "spriteSheetSize": [500, 50],
+            "screenPosition": [1000, 0],
+            "scale": [1.0, 1.0],
+            "size": [500, 50],
+            "collision": true
+        },
+        {
+            "name": "TileGround4",
+            "filePath": "/Users/soulseeker/Projects/GitHub/Goku20250301/Goku/data/textures/block.jpg",
+            "type": "Tile",
+            "spriteSheetPosition": [50, 250],
+            "spriteSheetSize": [600, 50],
+            "screenPosition": [1500, 0],
+            "scale": [1.0, 1.0],
+            "size": [600, 50],
+            "collision": true
+        }
+    ]
+}

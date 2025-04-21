@@ -14,6 +14,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>/lib")
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 include_directories((BEFORE "../debug/_deps/googletest-src/googletest/include/gtest"))
+include_directories(BEFORE "/opt/homebrew/Cellar/nlohmann-json/3.11.3/include")
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soul")
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soulsfml")
 

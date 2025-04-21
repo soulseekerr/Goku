@@ -4,6 +4,30 @@
 
 using namespace soul;
 
+/**
+ * @brief Get Animation State from String
+ */
+soul::AnimationState animationStateFromString(const std::string& str) {
+    static const std::unordered_map<std::string, soul::AnimationState> s_map = {
+        {"Idle", soul::AnimationState::Idle},
+        {"Walk", soul::AnimationState::Walk},
+        {"Jump", soul::AnimationState::Jump},
+        {"Punch", soul::AnimationState::Punch},
+        {"PunchStick", soul::AnimationState::PunchStick},
+        {"Shoot", soul::AnimationState::Shoot},
+        {"Kick", soul::AnimationState::Kick},
+        {"Kick2", soul::AnimationState::Kick2},
+        {"JumpKick", soul::AnimationState::JumpKick},
+        {"Defensive", soul::AnimationState::Defensive},
+        {"Knocked", soul::AnimationState::Knocked},
+        {"ShootFireball", soul::AnimationState::ShootFireball}
+    };
+
+    auto it = s_map.find(str);
+    if (it != s_map.end()) return it->second;
+    throw std::runtime_error("Unknown AnimationState: " + str);
+}
+
 void MovementState::translateX(Animable& a, float dt) {
 
     if (a.input.left) {

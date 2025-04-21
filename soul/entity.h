@@ -42,8 +42,6 @@ private:
 class Entity;
 
 struct IRenderable {
-    // Load the entity with specialized logic
-    virtual void loadData() = 0;
     // Render the entity with specialized logic
     virtual void render() = 0;
 };
@@ -51,8 +49,6 @@ struct IRenderable {
 struct IUpdatable {
     // Update the entity with specialized logic
     [[nodiscard]] virtual bool update(float dt) = 0;
-    // Update data
-    virtual void updateData(int id) = 0;
 };
 
 /**
@@ -98,13 +94,8 @@ public:
 
     void setActive(bool active);
 
-    // Load the entity with specialized logic
-    virtual void loadData() override {}
-
     // Update the entity with specialized logic
     virtual bool update(float dt) override { return _active; }
-
-    virtual void updateData(int id) override {}
 
     virtual void render() override {}
 };

@@ -110,8 +110,6 @@ void Animable::setActionState(ActionState& state) {
     _currentActionState->enter(*this);
 }
 
-void Animable::updateData(int id) {}
-
 bool Animable::update(float dt) {
 
     handleInput();

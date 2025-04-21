@@ -2,10 +2,12 @@
 
 #include "logger.h"
 #include "canvas.h"
+#include "player.h"
 #include "gui.h"
 #include "entitymanager.h"
 #include "assetmanager.h"
 #include "pathmanager.h"
+#include "vector2.h"
 
 #include <memory>
 #include <vector>
@@ -26,6 +28,8 @@ private:
     LoggerManager& logManager = LoggerManager::getInstance();
     // Path Manager
     PathManager& pathManager = PathManager::getInstance();
+    // Scene Name
+    std::string _name;
 
 public:
     // Game Window
@@ -34,32 +38,24 @@ public:
     EntityManager&  entities = EntityManager::getInstance();
     // Container for Assets
     AssetManager&  assets = AssetManager::getInstance();
+    // Always a Player in the Scene
+    std::unique_ptr<Player> player;
     // Canvas 2D layer
     std::shared_ptr<Canvas> canvasLayer;
-    // Always a Player in the Scene
-    std::shared_ptr<Player> player;
 
 public:
     /**
      * @brief Constructs a Scene with a given player instance.
      *
-     * @param p The player's instance in a shared smart pointer.
+     * @param name Scene name.
      */
-    Scene(shared_ptr<Player> p) : player(p) {
-        canvasLayer = std::make_shared<Canvas>("Canvas", *this);
-    }
+    explicit Scene(const std::string& name);
 
     /**
      * @brief Destructor.
      *
      */
     virtual ~Scene() {}
-
-    /**
-     * @brief Initialise the objects in the Game instance.
-     *
-     */
-    void initialise();
 
     /**
      * @brief Update the scene in the game loop.
@@ -73,6 +69,15 @@ public:
      *
      */
     void render();
+
+private:
+    /**
+     * @brief Handle collision between player and platform.
+     *
+     * @param playerBounds The bounding box of the player.
+     * @param platformBounds The bounding box of the platform.
+     */
+    void _handleCollision(soul::Rect<float>& playerBounds, const soul::Rect<float>& platformBounds);
 };
 
 } // namespace soul

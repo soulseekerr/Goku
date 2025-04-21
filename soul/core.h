@@ -3,6 +3,7 @@
 #include <atomic>
 #include <type_traits>
 #include <semaphore>
+#include <string_view>
 
 // Caught with -Wdangling 
 // warning: temporary whose address is used as value of local variable ...
@@ -20,6 +21,34 @@
 #ifndef _ALWAYS_INLINE_
 #define _ALWAYS_INLINE_ inline
 #endif
+
+#if defined(__clang__) or defined(__GNUC__)
+#define __TYPE_NAME__ __PRETTY_FUNCTION__
+#elif defined(_MSC_VER)
+#define __TYPE_NAME__ __FUNCSIG__
+#else
+#define __TYPE_NAME__ "unknown"
+#endif
+
+// This macro is used to get the type name of a template parameter.
+template <typename T>
+constexpr std::string_view get_type_name() {
+	#if defined(__clang__) or defined(__GNUC__)
+		std::string_view pfn = __PRETTY_FUNCTION__;
+		constexpr std::string_view prefix = "constexpr std::string_view get_type_name() [with T = ";
+		constexpr std::string_view suffix = "]";
+		auto start = pfn.find(prefix) + prefix.size();
+		auto end = pfn.rfind(suffix);
+		return pfn.substr(start, end - start);
+	#elif defined(_MSC_VER)
+		std::string_view pfn = __FUNCSIG__;
+		return pfn;
+	#else
+		return "unknown";
+	#endif		
+}
+#define GET_TYPE_NAME(T) get_type_name<T>()
+
 
 namespace soul {
 

@@ -30,7 +30,7 @@ public:
 
     std::shared_ptr<Texture2d>& addTextureImageFilter(const std::string& name, const std::string& file_path, bool is_smooth, const soul::Color& backgroundColor);
 
-    const size_t getCountTextures() const;
+    size_t getCountTextures() const;
 
 private:
     HashSet_t<std::string, StringHash> textureKeys;

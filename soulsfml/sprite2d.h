@@ -18,17 +18,6 @@ namespace fs = std::filesystem;
 namespace soul {
 
 /**
- * @brief Exception class for Shader
- */
-class ShaderException : std::exception {
-    const char* msg;
-public:
-    ShaderException() = delete;
-    explicit ShaderException(const char* p_msg) noexcept : msg(p_msg) {}
-    const char* what() const noexcept { return msg; } 
-}; 
-
-/**
  * @brief Sprite Data
  *  Contains the data for the sprite
  * */

@@ -8,8 +8,8 @@ project(${MY_LIB_NAME} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_LIBRARIES "-stdlib=libc++")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++20 -g -O0 -Wall -I/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1 -fprofile-instr-generate -fcoverage-mapping")
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++20 -g -O0 -Wall -Wextra -pedantic -I/opt/homebrew/Cellar/llvm/19.1.7/include/c++/v1 -fprofile-instr-generate -fcoverage-mapping")
+# -Werror
 message(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
@@ -60,6 +60,7 @@ set(SOURCES
     fireball.cpp
     canvas.cpp
     scene.cpp
+    tile.cpp
 )
 
 add_library(${MY_LIB_NAME} SHARED ${SOURCES})

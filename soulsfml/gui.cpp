@@ -93,10 +93,10 @@ void GuiDebugLog::render(GameWindow& gw) {
 
 
 void GuiAnimableStates::init() {
-    tmp_pos_x = animable->getPosition().x;
-    tmp_pos_y = animable->getPosition().y;
-    tmp_jumpForce = animable->getTransform().initialVelocityY;
-    tmp_gravityForce = animable->getTransform().gravity;
+    tmp_pos_x = animable.getPosition().x;
+    tmp_pos_y = animable.getPosition().y;
+    tmp_jumpForce = animable.getTransform().initialVelocityY;
+    tmp_gravityForce = animable.getTransform().gravity;
 }
 
 void GuiAnimableStates::render(GameWindow& gw) {
@@ -111,28 +111,28 @@ void GuiAnimableStates::render(GameWindow& gw) {
     ImGui::InputInt("Gravity Force", &tmp_gravityForce);
 
     if (ImGui::Button("Update")) {        
-        auto tr = animable->getTransform();
+        auto tr = animable.getTransform();
         tr.initialVelocityY = tmp_jumpForce;
         tr.gravity = tmp_gravityForce;
 
-        animable->setPosition(tmp_pos_x, tmp_pos_y);
-        animable->setTransform(tr);
+        animable.setPosition(tmp_pos_x, tmp_pos_y);
+        animable.setTransform(tr);
 
         LoggerManager::getInstance().log("Player attributes change event: Pos({},{}) JumpForce {} Gravity {}", 
-            animable->getPosition().x, animable->getPosition().y,
-            animable->getTransform().initialVelocityY, animable->getTransform().gravity);
+            animable.getPosition().x, animable.getPosition().y,
+            animable.getTransform().initialVelocityY, animable.getTransform().gravity);
     }
 
-    ImGui::Text("Position : %f, %f", animable->getPosition().x, animable->getPosition().y);
+    ImGui::Text("Position : %f, %f", animable.getPosition().x, animable.getPosition().y);
 
-    auto scale = animable->getSprite().getScale();
+    auto scale = animable.getSprite().getScale();
     // auto velocity = stats.getVelocity();
     ImGui::Text("Sprite Scale x,y : %.0f, %.0f", scale.x, scale.y);
 
     // ImGui::Text("Velocity x,y : %d, %d", velocity.x, velocity.y);
-    ImGui::Text("Jumping : %s", animable->input.is_jumping ? "Yes" : "No");
-    ImGui::Text("Punching : %s", animable->input.punch ? "Yes" : "No");
-    ImGui::Text("Shooting : %s", animable->input.is_shooting ? "Yes" : "No");
+    ImGui::Text("Jumping : %s", animable.input.is_jumping ? "Yes" : "No");
+    ImGui::Text("Punching : %s", animable.input.punch ? "Yes" : "No");
+    ImGui::Text("Shooting : %s", animable.input.is_shooting ? "Yes" : "No");
     
     ImGui::End();
 }

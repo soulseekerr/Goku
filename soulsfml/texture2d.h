@@ -47,8 +47,6 @@ public:
     // Update the entity with specialized logic
     virtual bool update(float dt) { return isActive(); }
 
-    virtual void updateData(int id) {}
-
     sf::Texture& getTexture();
 
     Response loadTexture(const std::string& filePath);

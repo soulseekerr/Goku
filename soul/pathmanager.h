@@ -19,7 +19,7 @@ class PathManager : public SingletonT<PathManager> {
     MAKE_SINGLETON(PathManager)
 
 public:
-    enum class FileType { Texture, Font, Config, Test };
+    enum class FileType { Texture, Font, Config, Test, Shader, Scene, Data };
 
 private:
     // ordering not necessary, unordered_map is faster than map, O(1) average vs O(log n)
@@ -67,6 +67,15 @@ public:
         return std::nullopt; // Return empty if type not found
     }
 
+    std::optional<fs::path> getFolderPath(FileType type) const {
+        auto it = directories.find(type);
+        if (it != directories.end()) {
+            return projectRoot / it->second;
+        }
+        return std::nullopt; // Return empty if type not found
+    }
+
+
     /// Get any file in the project folder (generic usage)
     fs::path getFullPath(const std::string& relativePath) const {
         return projectRoot / relativePath;
@@ -93,6 +102,9 @@ public:
         directories[FileType::Texture] = config.value("textures", "textures");
         directories[FileType::Font] = config.value("fonts", "fonts");
         directories[FileType::Config] = config.value("config", "config");
+        directories[FileType::Shader] = config.value("shaders", "shaders");
+        directories[FileType::Scene] = config.value("scenes", "scenes");
+        directories[FileType::Data] = config.value("data", "");
     }
 
 private:
@@ -103,7 +115,9 @@ private:
         nlohmann::json defaultConfig = {
             {"textures", "textures"},
             {"fonts", "fonts"},
-            {"config", "config"}
+            {"config", "config"},
+            {"shaders", "shaders"},
+            {"scenes", "scenes"}
         };
 
         std::ofstream file(path);

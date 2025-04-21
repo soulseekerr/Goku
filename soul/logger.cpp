@@ -53,7 +53,10 @@ LoggerFile::LoggerFile(const LOG_LEVEL level, const std::string& fileName)
 LoggerFile::~LoggerFile() {}
 
 void LoggerFile::write(const LOG_LEVEL level, const std::string& s) {
-    file_ << DateTime().toString() << ": " << s << std::endl;
+    auto level_code = std::format("[{}, {}] ", getLogLevelString(level), DateTime().timeToString());
+    auto str =  level_code + s;
+
+    file_ << DateTime().toString() << ": " << str << std::endl;
 }
 
 void LoggerManager::addLogger(shared_ptr<ILogger> logger) {

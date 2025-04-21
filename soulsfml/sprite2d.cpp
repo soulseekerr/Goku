@@ -49,6 +49,7 @@ void Sprite2d::setScaleFactor(int fx, int fy) {
 }
 
 void Sprite2d::setPosition(float x, float y) {
+    position = {x, y};
     _sprite->setPosition(sf::Vector2f(x, y));
 }
 

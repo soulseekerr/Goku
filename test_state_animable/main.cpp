@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
     actionIdleState->defineDependencies(stateManager);
     punchState->defineDependencies(stateManager);
 
-    auto animable = std::make_shared<soul::Animable>(name);
+    auto animable = std::make_unique<soul::Animable>(name);
 
     soul::sSpriteData spriteData = {
         filePath, // Filename for the image file
@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
 
     animable->resetPosition();
 
-    std::shared_ptr<soul::GuiAnimableStates> guiStates = std::make_shared<soul::GuiAnimableStates>(animable);
+    std::shared_ptr<soul::GuiAnimableStates> guiStates = std::make_shared<soul::GuiAnimableStates>(*animable.get());
     const std::string spriteTestFile = "/Users/soulseeker/Projects/GitHub/gokugame/textures/Kid Goku.png";
     std::shared_ptr<soul::GuiSpriteTest> guiSpriteTest = std::make_shared<soul::GuiSpriteTest>(spriteTestFile);
 

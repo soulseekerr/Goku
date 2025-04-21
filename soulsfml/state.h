@@ -110,6 +110,7 @@ public:
     }
 };
 
+
 class IdleState : public MovementState {
 public:
     IdleState() = default;
@@ -265,5 +266,6 @@ public:
     void update(Animable& a, float dt) override;
     void enter(Animable& a) override;
 };
+    
 
 } // namespace soul
