@@ -1,6 +1,7 @@
 Goku is a 2D (SFML) game engine whose target is showcase of C++ design patterns used usually in video games.
 Goku aka Dragon ball character.
 
+![Alt text](Image%2025-02-2025%20at%2000.18.jpeg)
 
 Patterns such as Singleton, State, and Flyweight are impleemnted for modularity and scalability.
 Inspired by Entity-Component-System (ECS) architecture, Entities ar eused in the game loop in order to enhance performance and flexibility.
