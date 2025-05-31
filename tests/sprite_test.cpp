@@ -13,7 +13,7 @@ TEST(SpriteTest, BasicAssertions) {
     auto hasError = false;
     
     auto name = "PlayerSprite";
-    auto filePath = "/Users/soulseeker/Projects/GitHub/gokugame/textures/Kid Goku.png";
+    auto filePath = "./data/textures/Kid Goku.png";
     auto isSmooth = true;
 
     sprite = std::make_shared<soul::Sprite2d>(name);
@@ -29,7 +29,7 @@ TEST(SpriteTest, BasicAssertions) {
     EXPECT_EQ(hasError, false);
 
     auto name2 = "EnemySprite";
-    auto filePath2 = "/Users/soulseeker/Projects/GitHub/gokugame/textures/enemy.png";
+    auto filePath2 = "./data/textures/enemy.png";
     auto isSmooth2 = true;
     auto trColor = soul::Color(153, 41, 189);  // purple
 
