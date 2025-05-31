@@ -10,6 +10,7 @@ add_subdirectory(test_spriteanim)
 add_subdirectory(test_animable)
 add_subdirectory(test_state_animable)
 add_subdirectory(test_entity_states)
+add_subdirectory(test_jthread)
 
 # Enable Doxygen
 find_package(Doxygen REQUIRED)
