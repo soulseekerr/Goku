@@ -19,10 +19,7 @@ TEST(SpriteTest, BasicAssertions) {
     sprite = std::make_shared<soul::Sprite2d>(name);
 
     try {
-        sprite->loadTexture(
-            filePath, 
-            soul::Vector2f(1.0f, 1.0f), 
-            isSmooth);
+        sprite->loadTexture(filePath, soul::Vector2f(1.0f, 1.0f), isSmooth);
     }
     catch(soul::TextureException& e) {
        std::cout << "Error: " << e.what() << std::endl;

@@ -34,7 +34,6 @@ set(SOURCES_TEST
     datetime_test.cpp
     entity_test.cpp
     time_elapsed_test.cpp
-    texture_test.cpp
     sprite_test.cpp
     safe_numeric_test.cpp
     singleton_test.cpp

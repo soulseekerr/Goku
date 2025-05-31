@@ -92,7 +92,7 @@ public:
 
     const Player& getPlayer() const { return *_player; } 
 
-    const int getFireballCount() const { return _thr_fireball_count; }
+    int getFireballCount() const { return _thr_fireball_count; }
 
     const std::vector<std::shared_ptr<Fireball>>& getFireballs() const { return _fireballs; }
     
