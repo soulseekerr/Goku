@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <benchmark/benchmark.h>
 #include <chrono>
 #include <unordered_set>
 #include "rect.h"

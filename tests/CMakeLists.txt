@@ -21,7 +21,6 @@ FetchContent_MakeAvailable(googletest)
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 include_directories((BEFORE "../debug/_deps/googletest-src/googletest/include/gtest"))
-include_directories((BEFORE "../debug/_deps/benchmark-src/include/benchmark"))
 include_directories(BEFORE "/opt/homebrew/Cellar/nlohmann-json/3.11.3/include")
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soul")
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/soulsfml")
@@ -60,7 +59,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     link_directories("${CMAKE_SOURCE_DIR}/release/soul")
 endif()
 
-target_link_libraries(${TESTS_NAME} GTest::gtest_main benchmark::benchmark libsoul libsoulsfml sfml-system sfml-window sfml-graphics)
+target_link_libraries(${TESTS_NAME} GTest::gtest_main libsoul libsoulsfml sfml-system sfml-window sfml-graphics)
 
 include(GoogleTest)
 gtest_discover_tests(${TESTS_NAME})
