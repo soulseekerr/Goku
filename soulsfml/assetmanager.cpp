@@ -59,4 +59,4 @@ std::shared_ptr<Texture2d>& AssetManager::addTextureImageFilter(const std::strin
     return getTexture(name);
 }
 
-size_t AssetManager::getCountTextures() const { return textureKeys.getCountElements(); }
+size_t AssetManager::getCountTextures() const { return textureKeys.size(); }

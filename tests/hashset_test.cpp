@@ -4,7 +4,7 @@
 namespace soul {
 
 TEST(HashSetTest, InsertAndSearch) {
-    HashSet_t<int> hashSet;
+    HashSet<int> hashSet;
     EXPECT_TRUE(hashSet.insert(10));
     EXPECT_TRUE(hashSet.insert(20));
     EXPECT_TRUE(hashSet.insert(30));
@@ -17,7 +17,7 @@ TEST(HashSetTest, InsertAndSearch) {
 }
 
 TEST(HashSetTest, Remove) {
-    HashSet_t<int> hashSet;
+    HashSet<int> hashSet;
     hashSet.insert(10);
     hashSet.insert(20);
     hashSet.insert(30);
@@ -28,7 +28,7 @@ TEST(HashSetTest, Remove) {
 }
 
 TEST(HashSetTest, Resize) {
-    HashSet_t<int> hashSet(0.5f); // Lower load factor to trigger resize sooner
+    HashSet<int> hashSet(0.5f); // Lower load factor to trigger resize sooner
     for (int i = 1; i <= 50; ++i) {
         hashSet.insert(i);
     }
@@ -39,13 +39,13 @@ TEST(HashSetTest, Resize) {
 }
 
 TEST(HashSetTest, EdgeCases) {
-    HashSet_t<int> hashSet;
+    HashSet<int> hashSet;
     EXPECT_FALSE(hashSet.remove(99)); // Removing from empty set
     EXPECT_FALSE(hashSet.search(1000)); // Searching empty set
 }
 
 TEST(HashSetTest, CollisionHandling) {
-    HashSet_t<int> hashSet;
+    HashSet<int> hashSet;
     int key1 = 10, key2 = 21; // Assuming they hash to the same bucket
     hashSet.insert(key1);
     hashSet.insert(key2);
@@ -55,7 +55,7 @@ TEST(HashSetTest, CollisionHandling) {
 }
 
 TEST(HashSetTest, LargeDatasetPerformance) {
-    HashSet_t<int> hashSet;
+    HashSet<int> hashSet;
     constexpr int largeSize = 100000;
     for (int i = 0; i < largeSize; ++i) {
         hashSet.insert(i);
@@ -65,11 +65,11 @@ TEST(HashSetTest, LargeDatasetPerformance) {
         EXPECT_TRUE(hashSet.search(i));
     }
     
-    EXPECT_EQ(hashSet.getCountElements(), largeSize);
+    EXPECT_EQ(hashSet.size(), largeSize);
 }
 
 TEST(HashSetTest, LargeDatasetPerformance2) {
-    HashSet_t<int> hashSet;
+    HashSet<int> hashSet;
     constexpr int largeSize = 100000;
     
     auto startInsert = std::chrono::high_resolution_clock::now();
@@ -88,7 +88,7 @@ TEST(HashSetTest, LargeDatasetPerformance2) {
     std::chrono::duration<double> searchDuration = endSearch - startSearch;
     std::cout << "Search time: " << searchDuration.count() << " seconds" << std::endl;
     
-    EXPECT_EQ(hashSet.getCountElements(), largeSize);
+    EXPECT_EQ(hashSet.size(), largeSize);
 }
 
 } // namespace soul

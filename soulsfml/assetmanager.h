@@ -33,7 +33,7 @@ public:
     size_t getCountTextures() const;
 
 private:
-    HashSet_t<std::string, StringHash> textureKeys;
+    HashSet<std::string, StringHash> textureKeys;
     std::map<std::string, std::shared_ptr<Texture2d>> mapTextures;
 };
 
