@@ -43,7 +43,7 @@ public:
 
 private:
     // The frames that make up the animation
-    Vector_t<Frame> _frames;
+    Vector<Frame> _frames;
     // The frame index we are currently at
     int _currentFrameIndex {0};
     // Current frame time
